@@ -4,29 +4,14 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Star, Sparkles } from "lucide-react";
 import Image from "next/image";
-import DevisModal from "@/components/devisModal";
+import Link from "next/link";
+import DevModal from "@/components/DevModal";
 import { services } from "@/types/home_service";
-import FormReviews, { ReviewFormData } from "@/components/formReviews";
 
 export default function HomePage() {
-  const [isDevisModalOpen, setIsDevisModalOpen] = useState(false);
-  const [selectedService, setSelectedService] = useState("");
-  const [isReviewFormOpen, setIsReviewFormOpen] = useState(false);
+  const [isDevModalOpen, setIsDevModalOpen] = useState(false);
 
   // Animation variants
-  const fadeInLeft = {
-    initial: { opacity: 0, x: -30 },
-    animate: { opacity: 1, x: 0 }
-  };
-
-  const stagger = {
-    animate: {
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
-
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -39,19 +24,18 @@ export default function HomePage() {
 
   const cardVariants = {
     hidden: { opacity: 0, y: 30 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
       transition: {
         duration: 0.6,
-        ease: "easeOut"
+        ease: "easeOut" as const
       }
     }
   };
 
-  const handleLearnMore = (serviceType: string) => {
-    setSelectedService(serviceType);
-    setIsDevisModalOpen(true);
+  const handleLearnMore = () => {
+    setIsDevModalOpen(true);
   };
 
   return (
@@ -90,7 +74,7 @@ export default function HomePage() {
           />
         </div>
 
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
+        <div className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-16 xl:px-24">
           {/* Mobile Layout */}
           <div className="lg:hidden">
             {/* Title */}
@@ -179,7 +163,7 @@ export default function HomePage() {
               className="flex flex-col gap-3"
             >
               <motion.button
-                onClick={() => setIsDevisModalOpen(true)}
+                onClick={() => setIsDevModalOpen(true)}
                 whileTap={{ scale: 0.98 }}
                 className="w-full px-6 py-3.5 rounded-full bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white font-bold text-center shadow-lg shadow-purple-500/30 transition-all duration-300 flex items-center justify-center gap-2"
               >
@@ -196,148 +180,143 @@ export default function HomePage() {
             </motion.div>
           </div>
 
-          {/* Desktop Layout */}
-          <div className="hidden lg:grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+          {/* Desktop Layout - Apple Style Two Column */}
+          <div className="hidden lg:grid lg:grid-cols-2 gap-16 xl:gap-24 items-center">
             {/* Left - Content */}
-            <motion.div
-              variants={stagger}
-              initial="initial"
-              animate="animate"
-            >
-              {/* Badge */}
-              <motion.div
-                variants={fadeInLeft}
-                transition={{ duration: 0.6 }}
-                className="flex items-center gap-3 mb-6"
+            <div>
+              {/* Overline */}
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: [0.25, 0.4, 0.25, 1] }}
+                className="text-purple-400/80 text-sm font-medium tracking-[0.15em] uppercase mb-5"
               >
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/30">
-                  <Sparkles className="w-4 h-4 text-purple-400" />
-                  <span className="text-sm font-semibold text-purple-400 uppercase tracking-wider">
-                    Agence de Location Premium
-                  </span>
-                </div>
-              </motion.div>
+                Location Premium à Marrakech
+              </motion.p>
 
-              {/* Title */}
+              {/* Main Title */}
               <motion.h1
-                variants={fadeInLeft}
-                transition={{ duration: 0.6 }}
-                className="text-4xl lg:text-5xl xl:text-6xl font-black text-white mb-6 leading-tight tracking-tight"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.1, ease: [0.25, 0.4, 0.25, 1] }}
+                className="text-5xl xl:text-6xl font-bold text-white leading-[1.1] tracking-[-0.02em] mb-6"
               >
-                Votre voyage
+                Votre voyage.
                 <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-fuchsia-400">
-                  Notre Passion
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-fuchsia-400 to-purple-400">
+                  Notre Passion.
                 </span>
               </motion.h1>
 
               {/* Description */}
               <motion.p
-                variants={fadeInLeft}
-                transition={{ duration: 0.6 }}
-                className="text-xl text-white/70 leading-relaxed mb-10"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.4, 0.25, 1] }}
+                className="text-lg xl:text-xl text-white/50 leading-relaxed mb-10 max-w-[520px]"
               >
-                Découvrez la liberté de la route avec H12.
-                Location de voitures premium à Marrakech, kilométrage illimité et service multilingue pour une expérience sans compromis.
-                </motion.p>
+                Découvrez la liberté de la route avec H12. Kilométrage illimité,
+                service multilingue, expérience sans compromis.
+              </motion.p>
 
-              {/* Stats */}
+              {/* Stats Row */}
               <motion.div
-                variants={fadeInLeft}
-                transition={{ duration: 0.6 }}
-                className="flex flex-wrap gap-10 mb-10"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.3, ease: [0.25, 0.4, 0.25, 1] }}
+                className="flex items-center gap-4 mb-10"
               >
                 {[
-                  { value: '500+', label: 'Happy Clients' },
-                  { value: '40+', label: 'Premium Vehicles' },
-                  { value: '4.9★', label: 'Client Rating' }
+                  { value: '500', suffix: '+', label: 'Clients' },
+                  { value: '40', suffix: '+', label: 'Véhicules' },
+                  { value: '4.9', label: 'Note', hasStar: true }
                 ].map((stat, idx) => (
-                  <div key={idx}>
-                    <div className="text-3xl font-black bg-gradient-to-r from-purple-400 to-fuchsia-400 bg-clip-text text-transparent">
-                      {stat.value}
+                  <div key={idx} className="px-5 py-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06] text-center">
+                    <div className="flex items-center justify-center gap-1">
+                      <span className="text-3xl font-black text-white tracking-tighter">{stat.value}</span>
+                      {stat.suffix && <span className="text-xl font-bold text-purple-400">{stat.suffix}</span>}
+                      {stat.hasStar && (
+                        <Star className="w-4 h-4 text-purple-400 fill-purple-400 ml-0.5" />
+                      )}
                     </div>
-                    <div className="text-sm text-white/50">{stat.label}</div>
+                    <div className="text-xs text-white/40 mt-1">{stat.label}</div>
                   </div>
                 ))}
               </motion.div>
 
               {/* CTA Buttons */}
               <motion.div
-                variants={fadeInLeft}
-                transition={{ duration: 0.6 }}
-                className="flex flex-col sm:flex-row gap-4"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.4, ease: [0.25, 0.4, 0.25, 1] }}
+                className="flex items-center gap-4"
               >
                 <motion.button
-                  onClick={() => setIsDevisModalOpen(true)}
-                  whileHover={{ scale: 1.02, y: -2 }}
+                  onClick={() => setIsDevModalOpen(true)}
+                  whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.98 }}
-                  className="group px-8 py-4 rounded-full bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white font-bold text-center shadow-lg shadow-purple-500/30 transition-all duration-300 flex items-center justify-center gap-2"
+                  className="group px-7 py-3.5 rounded-full bg-white text-black text-[15px] font-medium flex items-center gap-2 transition-colors hover:bg-white/90"
                 >
-                  Découvrir notre flotte
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  Réserver maintenant
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200" />
                 </motion.button>
 
                 <motion.button
-                  whileHover={{ scale: 1.02 }}
+                  whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.98 }}
-                  className="px-8 py-4 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white font-semibold text-center transition-all duration-300 hover:bg-white/15"
+                  className="px-7 py-3.5 rounded-full bg-white/[0.06] border border-white/10 text-[15px] font-medium text-white transition-colors hover:bg-white/10"
                 >
-                  Savoir Plus
+                  En savoir plus
                 </motion.button>
               </motion.div>
-            </motion.div>
+            </div>
 
-            {/* Right - Floating Image Card */}
-            <motion.div 
-              initial={{ opacity: 0, x: 30 }}
+            {/* Right - Image Card */}
+            <motion.div
+              initial={{ opacity: 0, x: 40 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="relative"
+              transition={{ duration: 1, delay: 0.3, ease: [0.25, 0.4, 0.25, 1] }}
+              className="relative flex justify-center"
             >
-              {/* Blurred background image */}
-              <div className="absolute inset-0 -m-8">
-                <div className="relative w-full h-full">
+              {/* Ambient Glow */}
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-600/25 via-fuchsia-600/15 to-purple-600/25 blur-[80px] rounded-full" />
+
+              {/* Image Container */}
+              <div className="relative max-w-[466px] w-full">
+                <div className="relative aspect-square rounded-3xl overflow-hidden border border-white/[0.08]">
                   <Image
                     src="/car.png"
-                    alt=""
+                    alt="H12 Premium Vehicle"
                     fill
-                    className="object-cover blur-3xl opacity-20 scale-110"
+                    priority
+                    className="object-cover"
                   />
+                  {/* Subtle gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
                 </div>
-              </div>
 
-              {/* Floating image card */}
-              <motion.div 
-                className="relative"
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.3 }}
-              >
-                <div className="relative w-full aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl shadow-purple-500/30 border border-white/10">
-                  {/* Gradient overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-transparent to-fuchsia-500/5 z-10" />
-                  
-                  {/* Car Image */}
-                  <motion.div
-                    animate={{
-                      y: [0, -10, 0],
-                    }}
-                    transition={{
-                      duration: 6,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                    }}
-                    className="relative w-full h-full"
-                  >
-                    <Image
-                      src="/car.png"
-                      alt="H12 Premium Car"
-                      fill
-                      priority
-                      className="object-cover"
-                    />
-                  </motion.div>
-                </div>
-              </motion.div>
+                {/* Floating Icon Pills */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: 0.7, ease: [0.25, 0.4, 0.25, 1] }}
+                  className="absolute -top-4 -right-4 px-4 py-2.5 rounded-full bg-white flex items-center gap-2 shadow-lg"
+                >
+                  <div className="w-6 h-6 rounded-full bg-black flex items-center justify-center">
+                    <Star className="w-3.5 h-3.5 text-white fill-white" />
+                  </div>
+                  <span className="text-sm font-medium text-black">4.9</span>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: 0.9, ease: [0.25, 0.4, 0.25, 1] }}
+                  className="absolute -bottom-3 -left-3 w-10 h-10 rounded-full bg-black flex items-center justify-center shadow-lg"
+                >
+                  <span className="text-white font-bold text-lg">I</span>
+                </motion.div>
+              </div>
             </motion.div>
           </div>
         </div>
@@ -361,9 +340,9 @@ export default function HomePage() {
         />
       </div>
 
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 relative z-10">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 relative z-10">
         {/* Section Header */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -390,148 +369,85 @@ export default function HomePage() {
           </p>
         </motion.div>
 
-        {/* Services Grid - Liquid Glass Cards */}
-        <motion.div 
+        {/* Services Grid - Tobkal Style Cards */}
+        <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5"
         >
-          {services.map((service, index) => (
-            <motion.div
-              key={index}
-              variants={cardVariants}
-              whileHover={{ y: -8 }}
-              className="group relative"
-            >
-              {/* Liquid Glass Card */}
-              <div className="relative h-full rounded-[32px] overflow-hidden">
-                {/* Blurred background effect */}
-                <div className="absolute inset-0 bg-gradient-to-br from-white/[0.15] to-white/[0.05] backdrop-blur-3xl" />
-                
-                {/* Liquid glass effect layers */}
-                <div className="absolute inset-0 bg-gradient-to-br from-white/[0.08] via-transparent to-white/[0.03]" />
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(168,85,247,0.1),transparent_50%)]" />
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(217,70,239,0.08),transparent_50%)]" />
-                
-                {/* Subtle border effect */}
-                <div className="absolute inset-0 border border-white/10 rounded-[32px]" />
-                <div className="absolute inset-[1px] border border-white/5 rounded-[31px]" />
-                
-                {/* Content container */}
-                <div className="relative z-10 h-full p-8 flex flex-col">
-                  {/* Icon with glass effect */}
-                  <div className="mb-8">
-                    <div className="relative w-16 h-16">
-                      {/* Glass orb background */}
-                      <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/[0.15] to-white/[0.05] backdrop-blur-xl border border-white/10" />
-                      
-                      {/* Inner glass layer */}
-                      <div className="absolute inset-2 rounded-xl bg-gradient-to-br from-white/[0.1] to-white/[0.02] backdrop-blur-sm" />
-                      
-                      {/* Icon */}
-                      <div className="relative w-full h-full flex items-center justify-center">
-                        <service.icon className="w-8 h-8 text-white" />
-                      </div>
-                      
-                      {/* Glass highlight */}
-                      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
-                    </div>
+          {services.map((service, index) => {
+            const tags = ['01', '02', '03'];
+            const ctaLabels: Record<string, string> = {
+              car: 'Louer une Voiture',
+              motorbike: 'Louer une Moto',
+              excursion: 'Trouver une Excursion'
+            };
+
+            const CardContent = (
+              <div className="relative bg-black rounded-[20px] sm:rounded-[24px] overflow-hidden h-[300px] sm:h-[350px] lg:h-[400px] hover:scale-[1.02] hover:shadow-2xl transition-all duration-500">
+                {/* Image */}
+                <Image
+                  src="/car.png"
+                  alt={service.title}
+                  fill
+                  className="object-cover opacity-70 group-hover:opacity-90 group-hover:scale-105 transition-all duration-700"
+                />
+
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-black/20" />
+
+                {/* Number Tag - Top Left */}
+                <div className="absolute top-4 left-4 sm:top-5 sm:left-5">
+                  <div className="w-8 h-8 sm:w-9 sm:h-9 bg-white/10 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center">
+                    <span className="text-[11px] sm:text-[12px] font-bold text-white/80">{tags[index]}</span>
                   </div>
-
-                  {/* Title with gradient reveal */}
-                  <h3 className="text-2xl font-bold text-white mb-4">
-                    <span className="relative inline-block">
-                      {service.title}
-                      <span className="absolute inset-0 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-fuchsia-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                        {service.title}
-                      </span>
-                    </span>
-                  </h3>
-
-                  {/* Description */}
-                  <p className="text-white/60 leading-relaxed mb-6 flex-grow">
-                    {service.description}
-                  </p>
-
-                  {/* Glass divider */}
-                  <div className="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent mb-6" />
-
-                  {/* Features with minimal dots */}
-                  <div className="space-y-3 mb-8">
-                    {service.features.map((feature, idx) => (
-                      <div key={idx} className="flex items-center gap-3">
-                        <div className="relative">
-                          <div className="w-1.5 h-1.5 rounded-full bg-white/40" />
-                          <div className="absolute inset-0 w-1.5 h-1.5 rounded-full bg-white/20 blur-[2px]" />
-                        </div>
-                        <span className="text-sm text-white/70">{feature}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Apple-style button */}
-                  <motion.button
-                    onClick={() => handleLearnMore(service.serviceType)}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="relative w-full py-3.5 px-6 rounded-2xl overflow-hidden group/btn"
-                  >
-                    {/* Button glass background */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/[0.15] to-white/[0.05] backdrop-blur-xl border border-white/10" />
-                    
-                    {/* Button inner glass */}
-                    <div className="absolute inset-[1px] rounded-[15px] bg-gradient-to-br from-white/[0.1] to-white/[0.02] backdrop-blur-sm" />
-                    
-                    {/* Hover gradient overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-fuchsia-600/20 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-500 rounded-2xl" />
-                    
-                    {/* Button content */}
-                    <div className="relative z-10 flex items-center justify-center gap-2">
-                      <span className="font-semibold text-white text-sm tracking-wide">
-                        En savoir plus
-                      </span>
-                      <ArrowRight className="w-4 h-4 text-white/80 group-hover/btn:text-white group-hover/btn:translate-x-1 transition-all duration-300" />
-                    </div>
-                    
-                    {/* Glass highlight on button */}
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-16 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-50" />
-                  </motion.button>
                 </div>
 
-                {/* Liquid reflection effects */}
-                <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-                <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white/3 to-transparent opacity-0 group-hover:opacity-50 transition-opacity duration-1000" />
-                
-                {/* Corner glow effects */}
-                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-purple-600/5 to-transparent rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tl from-fuchsia-600/5 to-transparent rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100" />
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
+                {/* Accent line at top */}
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-10 sm:w-12 h-1 bg-purple-500 rounded-b-full" />
 
-        {/* Bottom CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="mt-16 lg:mt-20 text-center"
-        >
-          <p className="text-white/60 mb-6">
-            Vous ne trouvez pas ce que vous cherchez ?
-          </p>
-          <motion.button
-            onClick={() => setIsDevisModalOpen(true)}
-            whileHover={{ scale: 1.02, y: -2 }}
-            whileTap={{ scale: 0.98 }}
-            className="px-8 py-4 rounded-full bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white font-bold shadow-lg shadow-purple-500/30 transition-all duration-300 inline-flex items-center gap-2"
-          >
-            Contactez-nous pour une solution sur mesure
-            <ArrowRight className="w-5 h-5" />
-          </motion.button>
+                {/* Content Card - Bottom - Fixed Height */}
+                <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4">
+                  <div className="bg-white/10 backdrop-blur-xl rounded-xl sm:rounded-2xl p-3.5 sm:p-4 border border-white/10 group-hover:bg-white/15 group-hover:border-white/20 transition-all duration-500 h-[160px] sm:h-[180px] flex flex-col">
+                    <h3 className="text-[16px] sm:text-[18px] font-bold text-white mb-1.5 sm:mb-2">
+                      {service.title}
+                    </h3>
+                    <p className="text-[12px] sm:text-[13px] text-white/60 leading-relaxed mb-auto">
+                      {service.description}
+                    </p>
+                    <div className="flex items-center justify-between mt-3">
+                      <span className="text-[11px] sm:text-[12px] font-semibold text-purple-400 tracking-wide">
+                        {ctaLabels[service.serviceType]}
+                      </span>
+                      <div className="w-7 h-7 sm:w-8 sm:h-8 bg-purple-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                        <ArrowRight size={12} className="sm:w-[14px] sm:h-[14px] text-white" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+
+            // Only "Location de voitures" (car) links to its page
+            return service.serviceType === 'car' ? (
+              <motion.div key={index} variants={cardVariants} className="group">
+                <Link href="/voiture" className="block">
+                  {CardContent}
+                </Link>
+              </motion.div>
+            ) : (
+              <motion.div
+                key={index}
+                variants={cardVariants}
+                onClick={() => handleLearnMore()}
+                className="group cursor-pointer"
+              >
+                {CardContent}
+              </motion.div>
+            );
+          })}
         </motion.div>
       </div>
     </section>
@@ -735,26 +651,34 @@ export default function HomePage() {
             </motion.div>
           </div>
 
-          {/* Indicators and CTA */}
+          {/* CTA Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="mt-16 lg:mt-20 text-center"
+            className="mt-16 lg:mt-20 flex flex-col sm:flex-row items-center justify-center gap-4"
           >
-            
-            <p className="text-white/60 mb-6">
-              Rejoignez nos clients satisfaits et vivez l&apos;expérience du voyage premium
-            </p>
+            <Link href="/voiture">
+              <motion.button
+                whileHover={{ scale: 1.03, y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                className="group relative px-8 py-4 rounded-full bg-gradient-to-r from-purple-600 via-fuchsia-500 to-purple-600 bg-[length:200%_100%] text-white text-[15px] font-semibold flex items-center gap-2 shadow-lg shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/40 transition-all duration-500 hover:bg-right"
+              >
+                <span className="relative z-10">Louer une Voiture</span>
+                <ArrowRight className="w-4 h-4 relative z-10 group-hover:translate-x-1 transition-transform duration-300" />
+                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-600 via-fuchsia-500 to-purple-600 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500" />
+              </motion.button>
+            </Link>
+
             <motion.button
-              onClick={() => setIsReviewFormOpen(true)}
-              whileHover={{ scale: 1.02, y: -2 }}
+              onClick={() => handleLearnMore()}
+              whileHover={{ scale: 1.03, y: -2 }}
               whileTap={{ scale: 0.98 }}
-              className="px-8 py-4 rounded-full bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white font-bold shadow-lg shadow-purple-500/30 transition-all duration-300 inline-flex items-center gap-2"
+              className="group relative px-8 py-4 rounded-full bg-white/[0.03] backdrop-blur-sm border border-purple-500/30 text-[15px] font-semibold text-white flex items-center gap-2 hover:border-purple-500/50 hover:bg-purple-500/10 transition-all duration-300"
             >
-              Partagez Votre Expérience
-              <ArrowRight className="w-5 h-5" />
+              Louer une Moto
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
             </motion.button>
           </motion.div>
         </div>
@@ -807,10 +731,7 @@ export default function HomePage() {
 
               {/* Contact Button */}
               <motion.button
-                onClick={() => {
-                  setSelectedService("");
-                  setIsDevisModalOpen(true);
-                }}
+                onClick={() => setIsDevModalOpen(true)}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
                 className="px-8 py-4 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white font-semibold hover:bg-white/15 transition-all duration-300"
@@ -822,29 +743,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      
 
-
-      {/* DevisModal */}
-      <DevisModal 
-        isOpen={isDevisModalOpen} 
-        onClose={() => setIsDevisModalOpen(false)}
-        serviceType={selectedService}
-      />
-
-      <FormReviews
-        isOpen={isReviewFormOpen}
-        onClose={() => setIsReviewFormOpen(false)}
-        onSubmit={(data: ReviewFormData) => {
-          // Here you would typically save the review to your backend
-          // No console.log or alert needed
-        }}
-        onShowDevisModal={() => {
-          // Show devis modal directly
-          setSelectedService(""); // Or set a default service
-          setIsDevisModalOpen(true);
-        }}
-      />
+      {/* DevModal */}
+      <DevModal isOpen={isDevModalOpen} onClose={() => setIsDevModalOpen(false)} />
     </div>
   );
 }

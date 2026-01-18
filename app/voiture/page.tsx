@@ -2,10 +2,9 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Star, Sparkles, Fuel, Users, Settings, Car, ArrowRight, Heart, Shield, Calendar } from "lucide-react";
+import { Star, Fuel, Users, Settings, Car, ArrowRight, Heart, Shield, X, CheckCircle } from "lucide-react";
 import Image from "next/image";
-import DevisModal from "@/components/devisModal";
-import FormReviews, { ReviewFormData } from "@/components/formReviews";
+import DevModal from "@/components/DevModal";
 
 const cars = [
   {
@@ -14,7 +13,7 @@ const cars = [
     category: "Luxe",
     price: "4500",
     period: "jour",
-    image: "/cars/mercedes-s-class.png",
+    image: "/car.png",
     description: "Le summum du luxe automobile avec toutes les options premium",
     features: ["7 Places", "Automatique", "Diesel", "Full Options"],
     rating: 4.9,
@@ -32,7 +31,7 @@ const cars = [
     category: "SUV Luxury",
     price: "3800",
     period: "jour",
-    image: "/cars/bmw-x7.png",
+    image: "/car.png",
     description: "SUV spacieux et élégant pour toute la famille",
     features: ["7 Places", "Automatique", "Essence", "Toit Panoramique"],
     rating: 4.8,
@@ -50,7 +49,7 @@ const cars = [
     category: "SUV Premium",
     price: "4200",
     period: "jour",
-    image: "/cars/range-rover.png",
+    image: "/car.png",
     description: "Performance et luxe dans un SUV tout-terrain",
     features: ["5 Places", "Automatique", "Diesel", "4x4"],
     rating: 4.7,
@@ -68,7 +67,7 @@ const cars = [
     category: "SUV Sport",
     price: "3900",
     period: "jour",
-    image: "/cars/porsche-cayenne.png",
+    image: "/car.png",
     description: "Élégance sportive et performance exceptionnelle",
     features: ["5 Places", "Automatique", "Essence", "Sport+"],
     rating: 4.9,
@@ -86,7 +85,7 @@ const cars = [
     category: "SUV Coupe",
     price: "3600",
     period: "jour",
-    image: "/cars/audi-q8.png",
+    image: "/car.png",
     description: "Design coupé avec technologie de pointe",
     features: ["5 Places", "Automatique", "Diesel", "Quattro"],
     rating: 4.6,
@@ -104,7 +103,7 @@ const cars = [
     category: "Électrique",
     price: "4100",
     period: "jour",
-    image: "/cars/tesla-model-x.png",
+    image: "/car.png",
     description: "Innovation électrique avec portes papillon",
     features: ["7 Places", "Automatique", "Électrique", "Autopilot"],
     rating: 4.8,
@@ -122,7 +121,7 @@ const cars = [
     category: "SUV Luxe",
     price: "3700",
     period: "jour",
-    image: "/cars/lexus-lx.png",
+    image: "/car.png",
     description: "Confort exceptionnel et fiabilité légendaire",
     features: ["7 Places", "Automatique", "Essence", "Mark Levinson"],
     rating: 4.7,
@@ -140,7 +139,7 @@ const cars = [
     category: "SUV Confort",
     price: "2800",
     period: "jour",
-    image: "/cars/vw-touareg.png",
+    image: "/car.png",
     description: "Confort allemand et technologie avancée",
     features: ["5 Places", "Automatique", "Diesel", "Air Suspension"],
     rating: 4.5,
@@ -158,7 +157,7 @@ const cars = [
     category: "SUV Adventure",
     price: "3200",
     period: "jour",
-    image: "/cars/jeep-cherokee.png",
+    image: "/car.png",
     description: "Aventure et capacité tout-terrain supérieure",
     features: ["5 Places", "Automatique", "Essence", "4x4 Select"],
     rating: 4.4,
@@ -176,7 +175,7 @@ const cars = [
     category: "SUV Prestige",
     price: "4400",
     period: "jour",
-    image: "/cars/cadillac-escalade.png",
+    image: "/car.png",
     description: "Prestige américain avec intérieur cinéma",
     features: ["7 Places", "Automatique", "Essence", "AKG Studio"],
     rating: 4.8,
@@ -201,47 +200,43 @@ const categories = [
 
 export default function VoiturePage() {
   const [selectedCategory, setSelectedCategory] = useState("Tous");
-  const [isDevisModalOpen, setIsDevisModalOpen] = useState(false);
-  const [isReviewFormOpen, setIsReviewFormOpen] = useState(false);
-  const [selectedCar, setSelectedCar] = useState<number | null>(null);
+  const [isDevModalOpen, setIsDevModalOpen] = useState(false);
+  const [expandedCarId, setExpandedCarId] = useState<number | null>(null);
   const [favorites, setFavorites] = useState<number[]>([1, 3, 6, 10]);
 
-  const filteredCars = selectedCategory === "Tous" 
-    ? cars 
-    : cars.filter(car => 
-        selectedCategory === "SUV" 
+  const filteredCars = selectedCategory === "Tous"
+    ? cars
+    : cars.filter(car =>
+        selectedCategory === "SUV"
           ? car.category.includes("SUV")
           : car.category.includes(selectedCategory)
       );
 
   const handleFavorite = (id: number) => {
-    setFavorites(prev => 
-      prev.includes(id) 
+    setFavorites(prev =>
+      prev.includes(id)
         ? prev.filter(favId => favId !== id)
         : [...prev, id]
     );
   };
 
-  const handleReserve = (carId: number) => {
-    setSelectedCar(carId);
-    setIsDevisModalOpen(true);
+  const handleCardClick = (carId: number) => {
+    setExpandedCarId(expandedCarId === carId ? null : carId);
   };
 
-  const handleInfo = (carId: number) => {
-    // In a real app, you would navigate to a detailed car page
-    console.log(`More info for car ${carId}`);
-    // For now, we'll just show a simple alert
-    const car = cars.find(c => c.id === carId);
-    alert(`Plus d'informations pour: ${car?.name}\n\nDescription: ${car?.description}\n\nCaractéristiques:\n- ${car?.features.join("\n- ")}`);
+  const handleReserve = () => {
+    setExpandedCarId(null);
+    setIsDevModalOpen(true);
   };
 
   return (
-    <div className="min-h-screen pt-32 pb-20">
-      {/* Hero Section */}
-      <section className="relative pb-16">
+    <div className="min-h-screen">
+      {/* Hero Section - Apple Style */}
+      <section className="relative pt-24 sm:pt-28 pb-12 lg:pt-40 lg:pb-20 overflow-hidden">
+        {/* Animated Background Elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <motion.div 
-            className="absolute top-1/4 -left-20 w-[500px] h-[500px] rounded-full bg-gradient-to-r from-purple-600/10 to-fuchsia-600/10 blur-3xl"
+          <motion.div
+            className="absolute top-1/4 -left-20 w-[500px] h-[500px] rounded-full bg-gradient-to-r from-purple-600/20 to-fuchsia-600/20 blur-3xl"
             animate={{
               scale: [1, 1.2, 1],
               opacity: [0.2, 0.4, 0.2],
@@ -252,42 +247,267 @@ export default function VoiturePage() {
               ease: "easeInOut"
             }}
           />
+          <motion.div
+            className="absolute bottom-1/4 -right-20 w-[400px] h-[400px] rounded-full bg-gradient-to-l from-fuchsia-600/15 to-purple-600/15 blur-3xl"
+            animate={{
+              scale: [1.2, 1, 1.2],
+              opacity: [0.15, 0.3, 0.15],
+            }}
+            transition={{
+              duration: 10,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 1
+            }}
+          />
         </div>
 
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 relative z-10">
-          {/* Header */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20 mb-6">
-              <Car className="w-4 h-4 text-purple-400" />
-              <span className="text-sm font-semibold text-purple-400 uppercase tracking-wider">
-                Notre Collection
-              </span>
-            </div>
-            
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight">
-              Explorez Notre
-              <br />
+        <div className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-16 xl:px-24">
+          {/* Mobile Layout */}
+          <div className="lg:hidden">
+            {/* Title */}
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="text-4xl sm:text-5xl font-black text-white mb-3 leading-tight tracking-tight"
+            >
+              Notre Flotte{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-fuchsia-400">
-                Flotte Exclusive
+                Exclusive
               </span>
-            </h1>
-            
-            <p className="text-lg sm:text-xl text-white/60 max-w-2xl mx-auto">
-              Des véhicules premium soigneusement sélectionnés pour votre confort et votre style
-            </p>
-          </motion.div>
+            </motion.h1>
 
+            {/* Badge */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="flex items-center gap-3 mb-6"
+            >
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20">
+                <Car className="w-4 h-4 text-purple-400" />
+                <span className="text-sm font-semibold text-purple-400">
+                  Collection Premium
+                </span>
+              </div>
+            </motion.div>
+
+            {/* Image Card - Mobile */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="relative mb-6"
+            >
+              <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl shadow-purple-500/20">
+                <Image
+                  src="/car.png"
+                  alt="H12 Premium Car"
+                  fill
+                  priority
+                  className="object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent" />
+              </div>
+            </motion.div>
+
+            {/* Description */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="text-base sm:text-lg text-white/70 leading-relaxed mb-8"
+            >
+              Des berlines élégantes aux SUV puissants, découvrez des véhicules premium pour chaque occasion.
+            </motion.p>
+
+            {/* Stats - Mobile */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="grid grid-cols-3 gap-4 mb-8"
+            >
+              {[
+                { value: '10+', label: 'Modèles' },
+                { value: '100%', label: 'Assurés' },
+                { value: '4.9★', label: 'Note' }
+              ].map((stat, idx) => (
+                <div key={idx} className="text-center">
+                  <div className="text-2xl sm:text-3xl font-black bg-gradient-to-r from-purple-400 to-fuchsia-400 bg-clip-text text-transparent">
+                    {stat.value}
+                  </div>
+                  <div className="text-xs text-white/50">{stat.label}</div>
+                </div>
+              ))}
+            </motion.div>
+
+            {/* CTA Button - Mobile */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              className="flex flex-col gap-3"
+            >
+              <motion.button
+                onClick={() => {
+                  document.getElementById('cars-grid')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }}
+                whileTap={{ scale: 0.98 }}
+                className="w-full px-6 py-3.5 rounded-full bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white font-bold text-center shadow-lg shadow-purple-500/30 transition-all duration-300 flex items-center justify-center gap-2"
+              >
+                Voir notre Flotte
+                <ArrowRight className="w-4 h-4" />
+              </motion.button>
+            </motion.div>
+          </div>
+
+          {/* Desktop Layout - Apple Style Two Column */}
+          <div className="hidden lg:grid lg:grid-cols-2 gap-16 xl:gap-24 items-center">
+            {/* Left - Content */}
+            <div>
+              {/* Overline */}
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: [0.25, 0.4, 0.25, 1] }}
+                className="text-purple-400/80 text-sm font-medium tracking-[0.15em] uppercase mb-5"
+              >
+                Location de Voitures Premium
+              </motion.p>
+
+              {/* Main Title */}
+              <motion.h1
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.1, ease: [0.25, 0.4, 0.25, 1] }}
+                className="text-5xl xl:text-6xl font-bold text-white leading-[1.1] tracking-[-0.02em] mb-6"
+              >
+                Notre Flotte.
+                <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-fuchsia-400 to-purple-400">
+                  Votre Liberté.
+                </span>
+              </motion.h1>
+
+              {/* Description */}
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.4, 0.25, 1] }}
+                className="text-lg xl:text-xl text-white/50 leading-relaxed mb-10 max-w-[520px]"
+              >
+                Des berlines élégantes aux SUV puissants, explorez notre collection
+                de véhicules premium. Chaque modèle, une promesse d&apos;excellence.
+              </motion.p>
+
+              {/* Stats Row */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.3, ease: [0.25, 0.4, 0.25, 1] }}
+                className="flex items-center gap-4 mb-10"
+              >
+                {[
+                  { value: '10', suffix: '+', label: 'Modèles' },
+                  { value: '100', suffix: '%', label: 'Assurés' },
+                  { value: '4.9', label: 'Note', hasStar: true }
+                ].map((stat, idx) => (
+                  <div key={idx} className="px-5 py-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06] text-center">
+                    <div className="flex items-center justify-center gap-1">
+                      <span className="text-3xl font-black text-white tracking-tighter">{stat.value}</span>
+                      {stat.suffix && <span className="text-xl font-bold text-purple-400">{stat.suffix}</span>}
+                      {stat.hasStar && (
+                        <Star className="w-4 h-4 text-purple-400 fill-purple-400 ml-0.5" />
+                      )}
+                    </div>
+                    <div className="text-xs text-white/40 mt-1">{stat.label}</div>
+                  </div>
+                ))}
+              </motion.div>
+
+              {/* CTA Button */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.4, ease: [0.25, 0.4, 0.25, 1] }}
+                className="flex items-center gap-4"
+              >
+                <motion.button
+                  onClick={() => {
+                    document.getElementById('cars-grid')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                  }}
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="group px-7 py-3.5 rounded-full bg-white text-black text-[15px] font-medium flex items-center gap-2 transition-colors hover:bg-white/90"
+                >
+                  Voir notre Flotte
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200" />
+                </motion.button>
+              </motion.div>
+            </div>
+
+            {/* Right - Image Card */}
+            <motion.div
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1, delay: 0.3, ease: [0.25, 0.4, 0.25, 1] }}
+              className="relative flex justify-center"
+            >
+              {/* Ambient Glow */}
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-600/25 via-fuchsia-600/15 to-purple-600/25 blur-[80px] rounded-full" />
+
+              {/* Image Container */}
+              <div className="relative max-w-[466px] w-full">
+                <div className="relative aspect-square rounded-3xl overflow-hidden border border-white/[0.08]">
+                  <Image
+                    src="/car.png"
+                    alt="H12 Premium Vehicle"
+                    fill
+                    priority
+                    className="object-cover"
+                  />
+                  {/* Subtle gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+                </div>
+
+                {/* Floating Icon Pills */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: 0.7, ease: [0.25, 0.4, 0.25, 1] }}
+                  className="absolute -top-4 -right-4 px-4 py-2.5 rounded-full bg-white flex items-center gap-2 shadow-lg"
+                >
+                  <div className="w-6 h-6 rounded-full bg-black flex items-center justify-center">
+                    <Star className="w-3.5 h-3.5 text-white fill-white" />
+                  </div>
+                  <span className="text-sm font-medium text-black">4.9</span>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: 0.9, ease: [0.25, 0.4, 0.25, 1] }}
+                  className="absolute -bottom-3 -left-3 w-10 h-10 rounded-full bg-black flex items-center justify-center shadow-lg"
+                >
+                  <Car className="w-5 h-5 text-white" />
+                </motion.div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Categories Filter Section */}
+      <section className="relative py-8 lg:py-12">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-16">
           {/* Categories Filter */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="flex flex-wrap gap-3 justify-center mb-12"
+            className="flex flex-wrap gap-3 justify-center"
           >
             {categories.map((category) => (
               <button
@@ -303,158 +523,251 @@ export default function VoiturePage() {
               </button>
             ))}
           </motion.div>
-
-          {/* Stats */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16"
-          >
-            {[
-              { icon: Car, value: "10+", label: "Modèles Premium" },
-              { icon: Shield, value: "100%", label: "Assurés" },
-              { icon: Star, value: "4.8★", label: "Note Moyenne" },
-              { icon: Calendar, value: "24/7", label: "Disponibilité" },
-            ].map((stat, idx) => (
-              <div key={idx} className="text-center p-6 rounded-2xl bg-gradient-to-b from-white/[0.05] to-white/[0.02] backdrop-blur-sm border border-white/10">
-                <stat.icon className="w-8 h-8 text-purple-400 mx-auto mb-3" />
-                <div className="text-2xl font-black bg-gradient-to-r from-purple-400 to-fuchsia-400 bg-clip-text text-transparent mb-1">
-                  {stat.value}
-                </div>
-                <div className="text-sm text-white/60">{stat.label}</div>
-              </div>
-            ))}
-          </motion.div>
         </div>
       </section>
 
       {/* Cars Grid */}
-      <section className="py-8">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
-            {filteredCars.map((car, index) => (
-              <motion.div
-                key={car.id}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                whileHover={{ y: -8 }}
-                className="group relative"
-              >
-                {/* Card */}
-                <div className="relative h-full rounded-3xl bg-gradient-to-b from-white/[0.05] to-white/[0.02] backdrop-blur-xl border border-white/10 p-6 overflow-hidden transition-all duration-500 hover:border-purple-500/30">
-                  {/* Favorite Button */}
-                  <button
-                    onClick={() => handleFavorite(car.id)}
-                    className="absolute top-4 right-4 z-20 p-2 rounded-full bg-black/40 backdrop-blur-sm border border-white/10 hover:border-purple-500/50 transition-all duration-300"
+      <section id="cars-grid" className="py-8">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-16">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+            {filteredCars.map((car, index) => {
+              const isExpanded = expandedCarId === car.id;
+
+              return (
+                <motion.div
+                  key={car.id}
+                  layout
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    duration: 0.5,
+                    delay: index * 0.08,
+                    layout: { duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }
+                  }}
+                  className={`group cursor-pointer ${isExpanded ? 'md:col-span-2 lg:col-span-3' : ''}`}
+                  onClick={() => !isExpanded && handleCardClick(car.id)}
+                >
+                  <motion.div
+                    layout
+                    className={`relative bg-black overflow-hidden transition-all duration-500 ${
+                      isExpanded
+                        ? 'rounded-[24px] sm:rounded-[32px]'
+                        : 'rounded-[20px] sm:rounded-[24px] hover:scale-[1.02] hover:shadow-2xl'
+                    }`}
                   >
-                    <Heart 
-                      className={`w-5 h-5 transition-all duration-300 ${
-                        favorites.includes(car.id) 
-                          ? "fill-red-500 text-red-500" 
-                          : "text-white/60 hover:text-red-400"
-                      }`} 
-                    />
-                  </button>
+                    {/* Collapsed Card View */}
+                    {!isExpanded && (
+                      <div className="relative h-[320px] sm:h-[380px] lg:h-[420px]">
+                        {/* Car Image - Full Bleed */}
+                        <Image
+                          src={car.image}
+                          alt={car.name}
+                          fill
+                          className="object-cover opacity-70 group-hover:opacity-90 group-hover:scale-105 transition-all duration-700"
+                        />
 
-                  {/* Badge */}
-                  <div className="absolute top-4 left-4 z-20">
-                    <div className="px-3 py-1 rounded-full bg-gradient-to-r from-purple-600/20 to-fuchsia-600/20 border border-purple-500/30">
-                      <span className="text-xs font-semibold text-purple-400">{car.category}</span>
-                    </div>
-                  </div>
+                        {/* Gradient Overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-black/20" />
 
-                  {/* Car Image */}
-                  <div className="relative h-48 mb-6 rounded-2xl overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent z-10" />
-                    <div className="relative w-full h-full">
-                      <Image
-                        src={car.image}
-                        alt={car.name}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-700"
-                      />
-                    </div>
-                    
-                    {/* Price Tag */}
-                    <div className="absolute bottom-4 left-4 z-20">
-                      <div className="px-4 py-2 rounded-full bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white font-bold shadow-lg shadow-purple-500/30">
-                        <span className="text-lg">{car.price} MAD</span>
-                        <span className="text-xs opacity-90 ml-1">/{car.period}</span>
-                      </div>
-                    </div>
-                  </div>
+                        {/* Favorite Button - Top Right */}
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleFavorite(car.id);
+                          }}
+                          className="absolute top-4 right-4 sm:top-5 sm:right-5 z-20 w-8 h-8 sm:w-9 sm:h-9 bg-white/10 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center hover:bg-white/20 transition-all duration-300"
+                        >
+                          <Heart
+                            className={`w-4 h-4 sm:w-[18px] sm:h-[18px] transition-all duration-300 ${
+                              favorites.includes(car.id)
+                                ? "fill-red-500 text-red-500"
+                                : "text-white/80 hover:text-red-400"
+                            }`}
+                          />
+                        </button>
 
-                  {/* Car Info */}
-                  <div className="mb-6">
-                    <h3 className="text-xl font-bold text-white mb-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-purple-400 group-hover:to-fuchsia-400 transition-all duration-300">
-                      {car.name}
-                    </h3>
-                    
-                    <p className="text-white/60 text-sm mb-4 line-clamp-2">
-                      {car.description}
-                    </p>
-
-                    {/* Features */}
-                    <div className="grid grid-cols-2 gap-3 mb-4">
-                      <div className="flex items-center gap-2">
-                        <Fuel className="w-4 h-4 text-purple-400" />
-                        <span className="text-sm text-white/70">{car.fuel}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Users className="w-4 h-4 text-purple-400" />
-                        <span className="text-sm text-white/70">{car.seats} Places</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Settings className="w-4 h-4 text-purple-400" />
-                        <span className="text-sm text-white/70">{car.transmission}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Sparkles className="w-4 h-4 text-purple-400" />
-                        <span className="text-sm text-white/70">{car.year}</span>
-                      </div>
-                    </div>
-
-                    {/* Rating */}
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <div className="flex items-center gap-1">
-                          <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                          <span className="text-white font-medium">{car.rating}</span>
+                        {/* Category Badge - Top Left */}
+                        <div className="absolute top-4 left-4 sm:top-5 sm:left-5 z-20">
+                          <div className="px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20">
+                            <span className="text-[10px] sm:text-[11px] font-bold text-white/90 uppercase tracking-wide">{car.category}</span>
+                          </div>
                         </div>
-                        <span className="text-white/50 text-sm">({car.reviews} avis)</span>
-                      </div>
-                      <div className="text-sm text-white/70">
-                        {car.power}
-                      </div>
-                    </div>
-                  </div>
 
-                  {/* Buttons */}
-                  <div className="flex gap-3">
-                    <motion.button
-                      onClick={() => handleInfo(car.id)}
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="flex-1 py-3 px-4 rounded-xl bg-white/5 border border-white/10 text-white font-medium text-sm hover:bg-white/10 transition-all duration-300 flex items-center justify-center gap-2"
-                    >
-                      <span>Plus d&apos;infos</span>
-                      <ArrowRight className="w-4 h-4" />
-                    </motion.button>
+                        {/* Accent line at top */}
+                        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-10 sm:w-12 h-1 bg-purple-500 rounded-b-full" />
 
-                    <motion.button
-                      onClick={() => handleReserve(car.id)}
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white font-bold text-sm shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 transition-all duration-300"
-                    >
-                      Réserver
-                    </motion.button>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+                        {/* Content Card - Bottom */}
+                        <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4">
+                          <div className="bg-white/10 backdrop-blur-xl rounded-xl sm:rounded-2xl p-3.5 sm:p-4 border border-white/10 group-hover:bg-white/15 group-hover:border-white/20 transition-all duration-500">
+                            {/* Header: Name + Price */}
+                            <div className="flex items-start justify-between mb-2">
+                              <h3 className="text-[15px] sm:text-[17px] font-bold text-white leading-tight pr-2">
+                                {car.name}
+                              </h3>
+                              <div className="flex-shrink-0 text-right">
+                                <span className="text-[14px] sm:text-[16px] font-black text-purple-400">{car.price}</span>
+                                <span className="text-[10px] sm:text-[11px] text-white/50 ml-0.5">MAD/{car.period}</span>
+                              </div>
+                            </div>
+
+                            {/* Features Row */}
+                            <div className="flex items-center gap-3 sm:gap-4 mb-3">
+                              <div className="flex items-center gap-1.5">
+                                <Users className="w-3.5 h-3.5 text-purple-400" />
+                                <span className="text-[11px] sm:text-[12px] text-white/70">{car.seats}pl</span>
+                              </div>
+                              <div className="flex items-center gap-1.5">
+                                <Fuel className="w-3.5 h-3.5 text-purple-400" />
+                                <span className="text-[11px] sm:text-[12px] text-white/70">{car.fuel}</span>
+                              </div>
+                              <div className="flex items-center gap-1.5">
+                                <Settings className="w-3.5 h-3.5 text-purple-400" />
+                                <span className="text-[11px] sm:text-[12px] text-white/70">{car.transmission}</span>
+                              </div>
+                            </div>
+
+                            {/* Footer: Rating + CTA */}
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-1.5">
+                                <Star className="w-3.5 h-3.5 text-yellow-400 fill-current" />
+                                <span className="text-[12px] sm:text-[13px] font-semibold text-white">{car.rating}</span>
+                                <span className="text-[10px] sm:text-[11px] text-white/40">({car.reviews})</span>
+                              </div>
+                              <div className="flex items-center gap-1.5 text-purple-400">
+                                <span className="text-[11px] sm:text-[12px] font-semibold tracking-wide">Détails</span>
+                                <div className="w-6 h-6 sm:w-7 sm:h-7 bg-purple-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                  <ArrowRight size={12} className="sm:w-[14px] sm:h-[14px] text-white" />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Expanded Card View */}
+                    {isExpanded && (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.3, delay: 0.1 }}
+                        className="grid lg:grid-cols-2 gap-0"
+                      >
+                        {/* Left - Large Image */}
+                        <div className="relative h-[280px] sm:h-[350px] lg:h-[480px]">
+                          <Image
+                            src={car.image}
+                            alt={car.name}
+                            fill
+                            className="object-cover"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-black/80 hidden lg:block" />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent lg:hidden" />
+
+                          {/* Close Button */}
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setExpandedCarId(null);
+                            }}
+                            className="absolute top-4 right-4 sm:top-6 sm:right-6 z-20 w-10 h-10 bg-white/10 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center hover:bg-white/20 transition-all duration-300"
+                          >
+                            <X className="w-5 h-5 text-white" />
+                          </button>
+
+                          {/* Category Badge */}
+                          <div className="absolute top-4 left-4 sm:top-6 sm:left-6 z-20">
+                            <div className="px-4 py-2 rounded-full bg-purple-500/20 backdrop-blur-md border border-purple-500/30">
+                              <span className="text-xs font-bold text-purple-300 uppercase tracking-wider">{car.category}</span>
+                            </div>
+                          </div>
+
+                          {/* Accent line */}
+                          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-16 h-1.5 bg-gradient-to-r from-purple-500 to-fuchsia-500 rounded-b-full" />
+                        </div>
+
+                        {/* Right - Details */}
+                        <div className="relative bg-gradient-to-br from-black via-[#0a0a0a] to-black p-6 sm:p-8 lg:p-10 flex flex-col">
+                          {/* Header */}
+                          <div className="mb-6">
+                            <div className="flex items-center gap-2 mb-2">
+                              <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                              <span className="text-sm font-semibold text-white">{car.rating}</span>
+                              <span className="text-xs text-white/40">({car.reviews} avis)</span>
+                            </div>
+                            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2">{car.name}</h2>
+                            <p className="text-white/50 text-sm sm:text-base">{car.description}</p>
+                          </div>
+
+                          {/* Price */}
+                          <div className="bg-white/5 rounded-2xl p-4 sm:p-5 mb-6 border border-white/10">
+                            <div className="flex items-end justify-between">
+                              <div>
+                                <p className="text-xs text-white/40 uppercase tracking-wider mb-1">Prix par jour</p>
+                                <div className="flex items-baseline gap-1">
+                                  <span className="text-3xl sm:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-fuchsia-400">{car.price}</span>
+                                  <span className="text-white/50 text-sm">MAD</span>
+                                </div>
+                              </div>
+                              <div className="text-right">
+                                <p className="text-xs text-white/40 mb-1">Année</p>
+                                <p className="text-lg font-bold text-white">{car.year}</p>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Specs Grid */}
+                          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+                            {[
+                              { icon: Users, label: 'Places', value: car.seats },
+                              { icon: Fuel, label: 'Carburant', value: car.fuel },
+                              { icon: Settings, label: 'Boîte', value: car.transmission },
+                              { icon: Car, label: 'Puissance', value: car.power },
+                            ].map((spec, idx) => (
+                              <div key={idx} className="bg-white/5 rounded-xl p-3 text-center border border-white/5">
+                                <spec.icon className="w-4 h-4 text-purple-400 mx-auto mb-1.5" />
+                                <p className="text-[10px] text-white/40 uppercase tracking-wider mb-0.5">{spec.label}</p>
+                                <p className="text-sm font-semibold text-white">{spec.value}</p>
+                              </div>
+                            ))}
+                          </div>
+
+                          {/* Insurance & Features */}
+                          <div className="bg-gradient-to-r from-purple-500/10 to-fuchsia-500/10 rounded-2xl p-4 sm:p-5 mb-6 border border-purple-500/20">
+                            <div className="flex items-center gap-2 mb-3">
+                              <Shield className="w-5 h-5 text-purple-400" />
+                              <p className="text-sm font-semibold text-white">Assurance tous risques incluse</p>
+                            </div>
+                            <div className="grid grid-cols-2 gap-2">
+                              {car.features.map((feature, idx) => (
+                                <div key={idx} className="flex items-center gap-2">
+                                  <CheckCircle className="w-3.5 h-3.5 text-green-400" />
+                                  <span className="text-xs text-white/70">{feature}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* CTA Button */}
+                          <motion.button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleReserve();
+                            }}
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            className="w-full py-4 bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white text-base font-bold rounded-full shadow-lg shadow-purple-500/30 flex items-center justify-center gap-2 hover:shadow-xl hover:shadow-purple-500/40 transition-all duration-300 mt-auto"
+                          >
+                            Réserver ce véhicule
+                            <ArrowRight className="w-5 h-5" />
+                          </motion.button>
+                        </div>
+                      </motion.div>
+                    )}
+                  </motion.div>
+                </motion.div>
+              );
+            })}
           </div>
 
           {/* No Results */}
@@ -474,60 +787,70 @@ export default function VoiturePage() {
             </motion.div>
           )}
 
-          {/* CTA Section */}
+        </div>
+      </section>
+
+      {/* Moto CTA Section */}
+      <section className="relative py-20 lg:py-28 overflow-hidden">
+        {/* Background Gradient */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-gradient-to-r from-fuchsia-600/10 to-purple-600/10 blur-3xl"
+            animate={{
+              scale: [1, 1.1, 1],
+              opacity: [0.1, 0.2, 0.1],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          />
+        </div>
+
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="mt-20 text-center"
+            transition={{ duration: 0.8, ease: [0.25, 0.4, 0.25, 1] }}
+            className="text-center"
           >
-            <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-purple-600/10 to-fuchsia-600/10 border border-purple-500/20 mb-6">
-              <Sparkles className="w-5 h-5 text-purple-400" />
-              <span className="text-sm font-semibold text-purple-400">
-                Besoin d&apos;un véhicule spécifique ?
-              </span>
-            </div>
-            
-            <h2 className="text-3xl lg:text-4xl font-bold text-white mb-6">
-              Véhicule sur mesure ?
-            </h2>
-            
-            <p className="text-white/60 max-w-xl mx-auto mb-8">
-              Contactez-nous pour discuter de vos besoins spécifiques. Nous trouverons la solution parfaite pour vous.
+            {/* Subtitle */}
+            <p className="text-purple-400/80 text-sm font-medium tracking-[0.15em] uppercase mb-4">
+              Explorer Marrakech Autrement
             </p>
-            
+
+            {/* Main Title */}
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
+              Voulez-vous une{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-400 via-purple-400 to-fuchsia-400">
+                Moto ?
+              </span>
+            </h2>
+
+            {/* Description */}
+            <p className="text-lg text-white/50 max-w-xl mx-auto mb-10">
+              Parcourez Marrakech en toute liberté avec notre collection de motos et scooters premium.
+            </p>
+
+            {/* CTA Button */}
             <motion.button
-              onClick={() => setIsDevisModalOpen(true)}
-              whileHover={{ scale: 1.02, y: -2 }}
+              onClick={() => setIsDevModalOpen(true)}
+              whileHover={{ scale: 1.03, y: -2 }}
               whileTap={{ scale: 0.98 }}
-              className="px-8 py-4 rounded-full bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white font-bold shadow-lg shadow-purple-500/30 transition-all duration-300 inline-flex items-center gap-2"
+              className="group px-8 py-4 rounded-full bg-white text-black text-[15px] font-medium inline-flex items-center gap-2 transition-colors hover:bg-white/90"
             >
-              Demander un devis personnalisé
-              <ArrowRight className="w-5 h-5" />
+              Découvrir les motos
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200" />
             </motion.button>
           </motion.div>
         </div>
       </section>
 
-      {/* Modals */}
-      <DevisModal 
-        isOpen={isDevisModalOpen} 
-        onClose={() => setIsDevisModalOpen(false)}
-        serviceType="car-rental"
-      />
 
-      <FormReviews
-        isOpen={isReviewFormOpen}
-        onClose={() => setIsReviewFormOpen(false)}
-        onSubmit={(data: ReviewFormData) => {
-          // Handle review submission
-          console.log("Review submitted:", data);
-        }}
-        onShowDevisModal={() => {
-          setIsDevisModalOpen(true);
-        }}
-      />
+      {/* Dev Modal */}
+      <DevModal isOpen={isDevModalOpen} onClose={() => setIsDevModalOpen(false)} />
     </div>
   );
 }

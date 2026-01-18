@@ -5,19 +5,19 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-import { ChevronDown, Car, Bike, MapPin } from "lucide-react";
+import { ChevronDown, Car, Bike } from "lucide-react";
 import { useModal } from "@/context/modalContext";
 
 const navLinks = [
   { href: "/", label: "Accueil" },
-  { 
-    label: "Louer", 
+  {
+    label: "Louer",
     dropdown: [
       { href: "/voiture", label: "Voiture", icon: Car },
       { href: "/moto", label: "Moto", icon: Bike },
-      { href: "/excursion", label: "Excursion", icon: MapPin },
     ]
   },
+  { href: "/excursion", label: "Excursion" },
   { href: "/about", label: "À Propos" },
 ];
 
@@ -64,11 +64,11 @@ export default function Navbar() {
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-      className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 lg:px-8"
+      className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 lg:px-12 xl:px-20"
     >
       <div
         className={`max-w-[1400px] mx-auto transition-all duration-500 ${
-          scrolled ? "mt-2" : "mt-4"
+          scrolled ? "mt-2" : "mt-3"
         }`}
       >
         {/* Main Header Container - Glassmorphic with Purple theme */}
@@ -82,7 +82,7 @@ export default function Navbar() {
           {/* Top highlight line - Purple glow */}
           <div className="absolute inset-x-0 top-0 h-[1px] rounded-t-2xl bg-gradient-to-r from-transparent via-purple-400/60 to-transparent" />
 
-          <div className="px-6 py-4">
+          <div className="px-4 sm:px-5 py-4">
             <div className="flex items-center justify-between">
               {/* Logo - Using Image Component */}
               <Link href="/" className="flex items-center gap-3 relative z-10 group">
@@ -91,33 +91,29 @@ export default function Navbar() {
                   whileTap={{ scale: 0.98 }}
                   className="flex items-center gap-3"
                 >
-                  {/* Logo Container with Glass Effect */}
-                  <div className="relative w-16 h-12 flex items-center justify-center">
+                  {/* Logo Container */}
+                  <div className="relative w-14 h-11 flex items-center justify-center">
                     {/* Glass effect background */}
-                    <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-white/[0.15] to-white/[0.05] backdrop-blur-xl border border-white/10" />
-                    <div className="absolute inset-[1px] rounded-[11px] bg-gradient-to-br from-white/[0.1] to-white/[0.02] backdrop-blur-sm" />
-                    
+                    <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-white/[0.12] to-white/[0.04] backdrop-blur-xl border border-white/10" />
+
                     {/* Logo Image */}
-                    <div className="relative w-full h-full flex items-center justify-center p-2">
+                    <div className="relative w-full h-full flex items-center justify-center p-1.5">
                       <Image
                         src="/logo_h12.png"
                         alt="H12 Logo"
-                        width={80}
-                        height={40}
+                        width={70}
+                        height={35}
                         className="object-contain w-full h-full"
                         priority
                       />
                     </div>
-                    
-                    {/* Glass highlight */}
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
                   </div>
                 </motion.div>
               </Link>
 
               {/* Desktop Navigation - Centered Glassmorphic Pill */}
               <div className="hidden lg:flex items-center justify-center absolute left-1/2 -translate-x-1/2">
-                <div className="relative flex items-center gap-1 p-1.5 rounded-full bg-white/[0.06] border border-purple-500/20 backdrop-blur-sm shadow-lg shadow-purple-500/5">
+                <div className="relative flex items-center gap-0.5 p-1.5 rounded-full bg-white/[0.05] border border-purple-500/15 backdrop-blur-sm">
                   {navLinks.map((link) => (
                     <div 
                       key={link.label}
@@ -130,7 +126,7 @@ export default function Navbar() {
                         <>
                           <button
                             onClick={() => setHoveredDropdown(hoveredDropdown === link.label ? null : link.label)}
-                            className={`relative px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 group/nav flex items-center gap-1 ${
+                            className={`relative px-4 py-2.5 rounded-full text-[13px] font-medium transition-all duration-300 group/nav flex items-center gap-1 ${
                               hoveredDropdown === link.label || link.dropdown?.some(item => activeLink === item.href)
                                 ? "text-purple-300 font-semibold"
                                 : "text-white/60 hover:text-white"
@@ -166,7 +162,7 @@ export default function Navbar() {
                                 <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-purple-400/60 to-transparent" />
                                 
                                 <div className="p-2">
-                                  {link.dropdown.map((item, idx) => (
+                                  {link.dropdown?.map((item, idx) => (
                                     <motion.div
                                       key={item.href}
                                       initial={{ opacity: 0, x: -10 }}
@@ -202,7 +198,7 @@ export default function Navbar() {
                         <Link
                           href={link.href}
                           onClick={() => setActiveLink(link.href)}
-                          className="relative px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 group/nav"
+                          className="relative px-4 py-2.5 rounded-full text-[13px] font-medium transition-all duration-300 group/nav"
                         >
                           <span
                             className={`relative z-10 transition-colors duration-300 ${
@@ -234,33 +230,19 @@ export default function Navbar() {
               <div className="hidden lg:flex items-center gap-4 relative z-10">
                 <motion.button
                   onClick={() => setIsDevisModalOpen(true)}
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="group relative px-8 py-3 rounded-full overflow-hidden"
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  className="group relative px-5 py-2.5 rounded-full overflow-hidden"
                 >
-                  {/* Animated gradient background */}
+                  {/* Gradient background */}
                   <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-600 bg-[length:200%_100%] animate-gradient-x" />
-                  
-                  {/* Glow effect */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-fuchsia-600 blur-xl opacity-50 group-hover:opacity-75 transition-opacity duration-300" />
-                  
-                  {/* Top highlight */}
-                  <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/50 to-transparent" />
-                  
-                  {/* Inner glow */}
-                  <div className="absolute inset-x-4 top-1 h-4 bg-gradient-to-b from-white/30 to-transparent rounded-full blur-sm" />
-                  
+
+                  {/* Subtle glow */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-fuchsia-600 blur-lg opacity-40 group-hover:opacity-60 transition-opacity duration-300" />
+
                   {/* Text */}
-                  <span className="relative z-10 text-white font-bold text-sm tracking-wide flex items-center gap-2">
+                  <span className="relative z-10 text-white font-semibold text-[13px] tracking-wide">
                     Nous Contacter
-                    {/* <svg 
-                      className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" 
-                      fill="none" 
-                      viewBox="0 0 24 24" 
-                      stroke="currentColor"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg> */}
                   </span>
                 </motion.button>
               </div>
@@ -268,7 +250,7 @@ export default function Navbar() {
               {/* Mobile Menu Button */}
               <motion.button
                 whileTap={{ scale: 0.95 }}
-                className="lg:hidden relative w-11 h-11 flex items-center justify-center rounded-xl bg-white/[0.06] border border-purple-500/20 shadow-lg shadow-purple-500/10"
+                className="lg:hidden relative w-10 h-10 flex items-center justify-center rounded-xl bg-white/[0.06] border border-purple-500/15"
                 onClick={() => setIsOpen(!isOpen)}
                 aria-label="Toggle menu"
               >
@@ -339,7 +321,7 @@ export default function Navbar() {
                               className="overflow-hidden"
                             >
                               <div className="ml-4 mt-2 pl-4 border-l border-purple-500/20 flex flex-col gap-2">
-                                {link.dropdown.map((item, idx) => (
+                                {link.dropdown?.map((item, idx) => (
                                   <motion.div
                                     key={item.href}
                                     initial={{ opacity: 0, x: -10 }}
