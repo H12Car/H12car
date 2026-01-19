@@ -201,18 +201,6 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Back to Top Button */}
-        <motion.button
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          whileHover={{ scale: 1.1, y: -2 }}
-          whileTap={{ scale: 0.95 }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="fixed bottom-6 right-6 z-50 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 text-white shadow-lg flex items-center justify-center transition-all"
-          aria-label="Retour en haut"
-        >
-          <ChevronUp className="w-5 h-5" />
-        </motion.button>
       </footer>
 
       {/* DevModal */}
