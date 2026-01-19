@@ -76,26 +76,13 @@ export default function HomePage() {
 
         <div className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-16 xl:px-24">
           {/* Mobile Layout */}
-          <div className="lg:hidden">
-            {/* Title */}
-            <motion.h1 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="text-4xl sm:text-5xl font-black text-white mb-3 leading-tight tracking-tight"
-            >
-              Your Journey,{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-fuchsia-400">
-                Our Passion
-              </span>
-            </motion.h1>
-
+          <div className="lg:hidden text-center">
             {/* Badge */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="flex items-center gap-3 mb-6"
+              transition={{ duration: 0.6 }}
+              className="flex items-center justify-center gap-3 mb-4"
             >
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20">
                 <Sparkles className="w-4 h-4 text-purple-400" />
@@ -104,6 +91,20 @@ export default function HomePage() {
                 </span>
               </div>
             </motion.div>
+
+            {/* Title */}
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="text-4xl sm:text-5xl font-black text-white mb-4 leading-tight tracking-tight"
+            >
+              Votre voyage.
+              <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-fuchsia-400">
+                Notre Passion.
+              </span>
+            </motion.h1>
 
             {/* Image Card - Mobile */}
             <motion.div
@@ -114,7 +115,7 @@ export default function HomePage() {
             >
               <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl shadow-purple-500/20">
                 <Image
-                  src="/h12_mercedes.png"
+                  src="/h12_hero.png"
                   alt="H12 Premium Car"
                   fill
                   priority
@@ -125,59 +126,50 @@ export default function HomePage() {
             </motion.div>
 
             {/* Description */}
-            <motion.p 
+            <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-base sm:text-lg text-white/70 leading-relaxed mb-8"
+              className="text-base sm:text-lg text-white/50 leading-relaxed mb-6 max-w-md mx-auto"
             >
-              Experience the freedom of the open road with H12. Premium vehicles, expert-guided excursions, and unforgettable adventures await.
+              Découvrez la liberté de la route avec H12. Kilométrage illimité, service multilingue, expérience sans compromis.
             </motion.p>
 
             {/* Stats - Mobile */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="grid grid-cols-3 gap-4 mb-8"
+              className="flex items-center justify-center gap-3 mb-8"
             >
               {[
-                { value: '500+', label: 'Clients' },
-                { value: '40+', label: 'Vehicles' },
-                { value: '4.9★', label: 'Rating' }
+                { value: '500', suffix: '+', label: 'Clients' },
+                { value: '40', suffix: '+', label: 'Véhicules' },
+                { value: '4.9', label: 'Note', hasStar: true }
               ].map((stat, idx) => (
-                <div key={idx} className="text-center">
-                  <div className="text-2xl sm:text-3xl font-black bg-gradient-to-r from-purple-400 to-fuchsia-400 bg-clip-text text-transparent">
-                    {stat.value}
+                <div key={idx} className="px-4 py-2 rounded-xl bg-white/[0.03] border border-white/[0.06] text-center">
+                  <div className="flex items-center justify-center gap-0.5">
+                    <span className="text-xl sm:text-2xl font-black text-white">{stat.value}</span>
+                    {stat.suffix && <span className="text-sm font-bold text-purple-400">{stat.suffix}</span>}
+                    {stat.hasStar && <Star className="w-3 h-3 text-purple-400 fill-purple-400 ml-0.5" />}
                   </div>
-                  <div className="text-xs text-white/50">{stat.label}</div>
+                  <div className="text-[10px] text-white/40 mt-0.5">{stat.label}</div>
                 </div>
               ))}
             </motion.div>
 
-            {/* CTA Buttons - Mobile */}
-            <motion.div 
+            {/* CTA Button - Mobile */}
+            <motion.button
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5 }}
-              className="flex flex-col gap-3"
+              onClick={() => setIsDevModalOpen(true)}
+              whileTap={{ scale: 0.98 }}
+              className="mx-auto px-7 py-3.5 rounded-full bg-white text-black text-sm font-semibold shadow-lg flex items-center gap-2 hover:bg-white/90 transition-all"
             >
-              <motion.button
-                onClick={() => setIsDevModalOpen(true)}
-                whileTap={{ scale: 0.98 }}
-                className="w-full px-6 py-3.5 rounded-full bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white font-bold text-center shadow-lg shadow-purple-500/30 transition-all duration-300 flex items-center justify-center gap-2"
-              >
-                Explore Our Fleet
-                <ArrowRight className="w-4 h-4" />
-              </motion.button>
-
-              <motion.button
-                whileTap={{ scale: 0.98 }}
-                className="w-full px-6 py-3.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white font-semibold text-center transition-all duration-300"
-              >
-                Learn More
-              </motion.button>
-            </motion.div>
+              Réserver maintenant
+              <ArrowRight className="w-4 h-4" />
+            </motion.button>
           </div>
 
           {/* Desktop Layout - Apple Style Two Column */}
@@ -285,7 +277,7 @@ export default function HomePage() {
               <div className="relative max-w-[466px] w-full">
                 <div className="relative aspect-square rounded-3xl overflow-hidden border border-white/[0.08]">
                   <Image
-                    src="/h12_mercedes.png"
+                    src="/h12_hero.png"
                     alt="H12 Premium Vehicle"
                     fill
                     priority

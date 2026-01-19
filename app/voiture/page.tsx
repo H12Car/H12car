@@ -264,26 +264,13 @@ export default function VoiturePage() {
 
         <div className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-16 xl:px-24">
           {/* Mobile Layout */}
-          <div className="lg:hidden">
-            {/* Title */}
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="text-4xl sm:text-5xl font-black text-white mb-3 leading-tight tracking-tight"
-            >
-              Notre Flotte{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-fuchsia-400">
-                Exclusive
-              </span>
-            </motion.h1>
-
+          <div className="lg:hidden text-center">
             {/* Badge */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="flex items-center gap-3 mb-6"
+              transition={{ duration: 0.6 }}
+              className="flex items-center justify-center gap-3 mb-4"
             >
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20">
                 <Car className="w-4 h-4 text-purple-400" />
@@ -292,6 +279,20 @@ export default function VoiturePage() {
                 </span>
               </div>
             </motion.div>
+
+            {/* Title */}
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="text-4xl sm:text-5xl font-black text-white mb-4 leading-tight tracking-tight"
+            >
+              Notre Flotte.
+              <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-fuchsia-400">
+                Votre Liberté.
+              </span>
+            </motion.h1>
 
             {/* Image Card - Mobile */}
             <motion.div
@@ -302,7 +303,7 @@ export default function VoiturePage() {
             >
               <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl shadow-purple-500/20">
                 <Image
-                  src="/car.png"
+                  src="/h12_hero.png"
                   alt="H12 Premium Car"
                   fill
                   priority
@@ -317,9 +318,9 @@ export default function VoiturePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-base sm:text-lg text-white/70 leading-relaxed mb-8"
+              className="text-base sm:text-lg text-white/50 leading-relaxed mb-6 max-w-md mx-auto"
             >
-              Des berlines élégantes aux SUV puissants, découvrez des véhicules premium pour chaque occasion.
+              Des berlines élégantes aux SUV puissants, explorez notre collection de véhicules premium.
             </motion.p>
 
             {/* Stats - Mobile */}
@@ -327,40 +328,38 @@ export default function VoiturePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="grid grid-cols-3 gap-4 mb-8"
+              className="flex items-center justify-center gap-3 mb-8"
             >
               {[
-                { value: '10+', label: 'Modèles' },
-                { value: '100%', label: 'Assurés' },
-                { value: '4.9★', label: 'Note' }
+                { value: '10', suffix: '+', label: 'Modèles' },
+                { value: '100', suffix: '%', label: 'Assurés' },
+                { value: '4.9', label: 'Note', hasStar: true }
               ].map((stat, idx) => (
-                <div key={idx} className="text-center">
-                  <div className="text-2xl sm:text-3xl font-black bg-gradient-to-r from-purple-400 to-fuchsia-400 bg-clip-text text-transparent">
-                    {stat.value}
+                <div key={idx} className="px-4 py-2 rounded-xl bg-white/[0.03] border border-white/[0.06] text-center">
+                  <div className="flex items-center justify-center gap-0.5">
+                    <span className="text-xl sm:text-2xl font-black text-white">{stat.value}</span>
+                    {stat.suffix && <span className="text-sm font-bold text-purple-400">{stat.suffix}</span>}
+                    {stat.hasStar && <Star className="w-3 h-3 text-purple-400 fill-purple-400 ml-0.5" />}
                   </div>
-                  <div className="text-xs text-white/50">{stat.label}</div>
+                  <div className="text-[10px] text-white/40 mt-0.5">{stat.label}</div>
                 </div>
               ))}
             </motion.div>
 
             {/* CTA Button - Mobile */}
-            <motion.div
+            <motion.button
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5 }}
-              className="flex flex-col gap-3"
+              onClick={() => {
+                document.getElementById('cars-grid')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              }}
+              whileTap={{ scale: 0.98 }}
+              className="mx-auto px-7 py-3.5 rounded-full bg-white text-black text-sm font-semibold shadow-lg flex items-center gap-2 hover:bg-white/90 transition-all"
             >
-              <motion.button
-                onClick={() => {
-                  document.getElementById('cars-grid')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }}
-                whileTap={{ scale: 0.98 }}
-                className="w-full px-6 py-3.5 rounded-full bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white font-bold text-center shadow-lg shadow-purple-500/30 transition-all duration-300 flex items-center justify-center gap-2"
-              >
-                Voir notre Flotte
-                <ArrowRight className="w-4 h-4" />
-              </motion.button>
-            </motion.div>
+              Voir notre Flotte
+              <ArrowRight className="w-4 h-4" />
+            </motion.button>
           </div>
 
           {/* Desktop Layout - Apple Style Two Column */}
@@ -462,7 +461,7 @@ export default function VoiturePage() {
               <div className="relative max-w-[466px] w-full">
                 <div className="relative aspect-square rounded-3xl overflow-hidden border border-white/[0.08]">
                   <Image
-                    src="/car.png"
+                    src="/h12_hero.png"
                     alt="H12 Premium Vehicle"
                     fill
                     priority
@@ -529,7 +528,7 @@ export default function VoiturePage() {
       {/* Cars Grid */}
       <section id="cars-grid" className="py-8">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-16">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
             {filteredCars.map((car, index) => {
               const isExpanded = expandedCarId === car.id;
 
@@ -557,7 +556,7 @@ export default function VoiturePage() {
                   >
                     {/* Collapsed Card View */}
                     {!isExpanded && (
-                      <div className="relative h-[320px] sm:h-[380px] lg:h-[420px]">
+                      <div className="relative h-[360px] sm:h-[380px] lg:h-[420px]">
                         {/* Car Image - Full Bleed */}
                         <Image
                           src={car.image}
@@ -597,46 +596,46 @@ export default function VoiturePage() {
                         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-10 sm:w-12 h-1 bg-purple-500 rounded-b-full" />
 
                         {/* Content Card - Bottom */}
-                        <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4">
-                          <div className="bg-white/10 backdrop-blur-xl rounded-xl sm:rounded-2xl p-3.5 sm:p-4 border border-white/10 group-hover:bg-white/15 group-hover:border-white/20 transition-all duration-500">
+                        <div className="absolute bottom-0 left-0 right-0 p-2.5 sm:p-3 md:p-4">
+                          <div className="bg-white/10 backdrop-blur-xl rounded-xl sm:rounded-2xl p-3 sm:p-3.5 md:p-4 border border-white/10 group-hover:bg-white/15 group-hover:border-white/20 transition-all duration-500">
                             {/* Header: Name + Price */}
                             <div className="flex items-start justify-between mb-2">
-                              <h3 className="text-[15px] sm:text-[17px] font-bold text-white leading-tight pr-2">
+                              <h3 className="text-sm sm:text-[15px] md:text-[17px] font-bold text-white leading-tight pr-2">
                                 {car.name}
                               </h3>
                               <div className="flex-shrink-0 text-right">
-                                <span className="text-[14px] sm:text-[16px] font-black text-purple-400">{car.price}</span>
-                                <span className="text-[10px] sm:text-[11px] text-white/50 ml-0.5">MAD/{car.period}</span>
+                                <span className="text-sm sm:text-[14px] md:text-[16px] font-black text-purple-400">{car.price}</span>
+                                <span className="text-[9px] sm:text-[10px] md:text-[11px] text-white/50 ml-0.5">MAD/{car.period}</span>
                               </div>
                             </div>
 
                             {/* Features Row */}
-                            <div className="flex items-center gap-3 sm:gap-4 mb-3">
-                              <div className="flex items-center gap-1.5">
-                                <Users className="w-3.5 h-3.5 text-purple-400" />
-                                <span className="text-[11px] sm:text-[12px] text-white/70">{car.seats}pl</span>
+                            <div className="flex items-center gap-2.5 sm:gap-3 md:gap-4 mb-2.5">
+                              <div className="flex items-center gap-1">
+                                <Users className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-purple-400" />
+                                <span className="text-[10px] sm:text-[11px] md:text-[12px] text-white/70">{car.seats}pl</span>
                               </div>
-                              <div className="flex items-center gap-1.5">
-                                <Fuel className="w-3.5 h-3.5 text-purple-400" />
-                                <span className="text-[11px] sm:text-[12px] text-white/70">{car.fuel}</span>
+                              <div className="flex items-center gap-1">
+                                <Fuel className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-purple-400" />
+                                <span className="text-[10px] sm:text-[11px] md:text-[12px] text-white/70">{car.fuel}</span>
                               </div>
-                              <div className="flex items-center gap-1.5">
-                                <Settings className="w-3.5 h-3.5 text-purple-400" />
-                                <span className="text-[11px] sm:text-[12px] text-white/70">{car.transmission}</span>
+                              <div className="flex items-center gap-1">
+                                <Settings className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-purple-400" />
+                                <span className="text-[10px] sm:text-[11px] md:text-[12px] text-white/70">{car.transmission}</span>
                               </div>
                             </div>
 
                             {/* Footer: Rating + CTA */}
                             <div className="flex items-center justify-between">
-                              <div className="flex items-center gap-1.5">
-                                <Star className="w-3.5 h-3.5 text-yellow-400 fill-current" />
-                                <span className="text-[12px] sm:text-[13px] font-semibold text-white">{car.rating}</span>
-                                <span className="text-[10px] sm:text-[11px] text-white/40">({car.reviews})</span>
+                              <div className="flex items-center gap-1">
+                                <Star className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-yellow-400 fill-current" />
+                                <span className="text-[11px] sm:text-[12px] md:text-[13px] font-semibold text-white">{car.rating}</span>
+                                <span className="text-[9px] sm:text-[10px] md:text-[11px] text-white/40">({car.reviews})</span>
                               </div>
-                              <div className="flex items-center gap-1.5 text-purple-400">
-                                <span className="text-[11px] sm:text-[12px] font-semibold tracking-wide">Détails</span>
+                              <div className="flex items-center gap-1 sm:gap-1.5 text-purple-400">
+                                <span className="text-[10px] sm:text-[11px] md:text-[12px] font-semibold tracking-wide">Détails</span>
                                 <div className="w-6 h-6 sm:w-7 sm:h-7 bg-purple-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                  <ArrowRight size={12} className="sm:w-[14px] sm:h-[14px] text-white" />
+                                  <ArrowRight className="w-3 h-3 sm:w-[14px] sm:h-[14px] text-white" />
                                 </div>
                               </div>
                             </div>
@@ -654,7 +653,7 @@ export default function VoiturePage() {
                         className="grid md:grid-cols-[45%_55%] gap-0"
                       >
                         {/* Left - Large Image */}
-                        <div className="relative h-[240px] sm:h-[280px] md:h-[420px]">
+                        <div className="relative h-[200px] sm:h-[240px] md:h-[420px]">
                           <Image
                             src={car.image}
                             alt={car.name}
@@ -670,9 +669,9 @@ export default function VoiturePage() {
                               e.stopPropagation();
                               setExpandedCarId(null);
                             }}
-                            className="absolute top-4 right-4 sm:top-6 sm:right-6 z-20 w-10 h-10 bg-white/10 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center hover:bg-white/20 transition-all duration-300"
+                            className="absolute top-4 right-4 sm:top-6 sm:right-6 z-20 w-11 h-11 sm:w-10 sm:h-10 bg-white/10 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center hover:bg-white/20 transition-all duration-300"
                           >
-                            <X className="w-5 h-5 text-white" />
+                            <X className="w-5 h-5 sm:w-5 sm:h-5 text-white" />
                           </button>
 
                           {/* Category Badge */}
@@ -687,44 +686,44 @@ export default function VoiturePage() {
                         </div>
 
                         {/* Right - Details */}
-                        <div className="relative bg-gradient-to-br from-black via-[#0a0a0a] to-black p-5 sm:p-6 md:p-7 flex flex-col">
+                        <div className="relative bg-gradient-to-br from-black via-[#0a0a0a] to-black p-4 sm:p-5 md:p-7 flex flex-col">
                           {/* Header */}
-                          <div className="mb-4">
-                            <div className="flex items-center gap-2 mb-1.5">
+                          <div className="mb-3 sm:mb-4">
+                            <div className="flex items-center gap-2 mb-1">
                               <Star className="w-3.5 h-3.5 text-yellow-400 fill-current" />
                               <span className="text-sm font-semibold text-white">{car.rating}</span>
                               <span className="text-xs text-white/40">({car.reviews} avis)</span>
                             </div>
-                            <h2 className="text-xl sm:text-2xl font-bold text-white mb-1.5">{car.name}</h2>
+                            <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-1">{car.name}</h2>
                             <p className="text-white/50 text-xs sm:text-sm">{car.description}</p>
                           </div>
 
                           {/* Price */}
-                          <div className="bg-white/5 rounded-xl p-3.5 sm:p-4 mb-4 border border-white/10">
+                          <div className="bg-white/5 rounded-xl p-3 sm:p-3.5 md:p-4 mb-3 sm:mb-4 border border-white/10">
                             <div className="flex items-end justify-between">
                               <div>
                                 <p className="text-[10px] text-white/40 uppercase tracking-wider mb-0.5">Prix par jour</p>
                                 <div className="flex items-baseline gap-1">
-                                  <span className="text-2xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-fuchsia-400">{car.price}</span>
+                                  <span className="text-xl sm:text-2xl md:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-fuchsia-400">{car.price}</span>
                                   <span className="text-white/50 text-xs">MAD</span>
                                 </div>
                               </div>
                               <div className="text-right">
                                 <p className="text-[10px] text-white/40 mb-0.5">Année</p>
-                                <p className="text-base font-bold text-white">{car.year}</p>
+                                <p className="text-sm sm:text-base font-bold text-white">{car.year}</p>
                               </div>
                             </div>
                           </div>
 
                           {/* Specs Grid */}
-                          <div className="grid grid-cols-2 gap-2.5 mb-4">
+                          <div className="grid grid-cols-2 gap-2 sm:gap-2.5 mb-3 sm:mb-4">
                             {[
                               { icon: Users, label: 'Places', value: car.seats },
                               { icon: Fuel, label: 'Carburant', value: car.fuel },
                               { icon: Settings, label: 'Boîte', value: car.transmission },
                               { icon: Car, label: 'Puissance', value: car.power },
                             ].map((spec, idx) => (
-                              <div key={idx} className="bg-white/5 rounded-lg p-2.5 text-center border border-white/5">
+                              <div key={idx} className="bg-white/5 rounded-lg p-2 sm:p-2.5 text-center border border-white/5">
                                 <spec.icon className="w-3.5 h-3.5 text-purple-400 mx-auto mb-1" />
                                 <p className="text-[9px] text-white/40 uppercase tracking-wider mb-0.5">{spec.label}</p>
                                 <p className="text-xs font-semibold text-white">{spec.value}</p>
@@ -733,16 +732,16 @@ export default function VoiturePage() {
                           </div>
 
                           {/* Insurance & Features */}
-                          <div className="bg-gradient-to-r from-purple-500/10 to-fuchsia-500/10 rounded-xl p-3.5 mb-4 border border-purple-500/20">
-                            <div className="flex items-center gap-2 mb-2.5">
-                              <Shield className="w-4 h-4 text-purple-400" />
-                              <p className="text-xs font-semibold text-white">Assurance tous risques incluse</p>
+                          <div className="bg-gradient-to-r from-purple-500/10 to-fuchsia-500/10 rounded-xl p-3 sm:p-3.5 mb-3 sm:mb-4 border border-purple-500/20">
+                            <div className="flex items-center gap-2 mb-2">
+                              <Shield className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-400" />
+                              <p className="text-[11px] sm:text-xs font-semibold text-white">Assurance tous risques incluse</p>
                             </div>
                             <div className="grid grid-cols-2 gap-1.5">
                               {car.features.map((feature, idx) => (
                                 <div key={idx} className="flex items-center gap-1.5">
                                   <CheckCircle className="w-3 h-3 text-green-400 flex-shrink-0" />
-                                  <span className="text-[11px] text-white/70">{feature}</span>
+                                  <span className="text-[10px] sm:text-[11px] text-white/70">{feature}</span>
                                 </div>
                               ))}
                             </div>
@@ -756,7 +755,7 @@ export default function VoiturePage() {
                             }}
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
-                            className="w-full py-3.5 bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white text-sm font-bold rounded-full shadow-lg shadow-purple-500/30 flex items-center justify-center gap-2 hover:shadow-xl hover:shadow-purple-500/40 transition-all duration-300 mt-auto"
+                            className="w-full py-3 sm:py-3.5 bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white text-sm font-bold rounded-full shadow-lg shadow-purple-500/30 flex items-center justify-center gap-2 hover:shadow-xl hover:shadow-purple-500/40 transition-all duration-300 mt-auto"
                           >
                             Réserver ce véhicule
                             <ArrowRight className="w-4 h-4" />

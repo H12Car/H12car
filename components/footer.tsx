@@ -69,9 +69,9 @@ export default function Footer() {
 
         <div className="relative max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-16">
           {/* Main Footer Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-12 py-16 lg:py-20">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-12 py-12 sm:py-16 lg:py-20">
             {/* Brand Widget */}
-            <div className="col-span-2 md:col-span-3 lg:col-span-2 space-y-6">
+            <div className="col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-2 space-y-6 text-center sm:text-left">
               <Link href="/" className="inline-block">
                 <motion.div
                   whileHover={{ scale: 1.02 }}
@@ -94,12 +94,12 @@ export default function Footer() {
                 </motion.div>
               </Link>
 
-              <p className="text-white/50 text-sm leading-relaxed max-w-xs">
+              <p className="text-white/50 text-sm leading-relaxed max-w-xs mx-auto sm:mx-0">
                 Location de véhicules premium et expériences exclusives à Marrakech.
               </p>
 
               {/* Social Links */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center justify-center sm:justify-start gap-2">
                 {socialLinks.map((social, idx) => (
                   <motion.a
                     key={idx}
@@ -167,7 +167,7 @@ export default function Footer() {
               </div>
 
               {/* Newsletter */}
-              <div className="pt-2">
+              <div className="pt-2 max-w-xs mx-auto sm:mx-0">
                 <form onSubmit={handleNewsletterSubmit} className="relative">
                   <input
                     type="email"
@@ -175,13 +175,13 @@ export default function Footer() {
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Newsletter"
                     required
-                    className="w-full px-3 py-2 pr-9 rounded-lg bg-white/5 border border-white/10 text-white text-xs placeholder-white/30 focus:outline-none focus:ring-1 focus:ring-purple-500/50 focus:border-purple-500/30 transition-all"
+                    className="w-full px-3 py-2.5 pr-10 rounded-lg bg-white/5 border border-white/10 text-white text-sm placeholder-white/30 focus:outline-none focus:ring-1 focus:ring-purple-500/50 focus:border-purple-500/30 transition-all"
                   />
                   <button
                     type="submit"
-                    className="absolute right-1 top-1/2 -translate-y-1/2 p-1.5 rounded-md bg-purple-600/80 hover:bg-purple-600 transition-all"
+                    className="absolute right-1.5 top-1/2 -translate-y-1/2 p-1.5 rounded-md bg-purple-600/80 hover:bg-purple-600 transition-all"
                   >
-                    <ArrowRight className="w-3 h-3 text-white" />
+                    <ArrowRight className="w-3.5 h-3.5 text-white" />
                   </button>
                 </form>
               </div>

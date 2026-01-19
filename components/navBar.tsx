@@ -73,14 +73,14 @@ export default function Navbar() {
       >
         {/* Main Header Container - Glassmorphic with Purple theme */}
         <div
-          className={`relative rounded-2xl transition-all duration-500 ${
+          className={`relative rounded-[24px] transition-all duration-500 ${
             scrolled
               ? "bg-slate-950/70 backdrop-blur-xl shadow-[0_8px_32px_rgba(147,51,234,0.3)] border border-purple-500/20"
               : "bg-gradient-to-b from-purple-900/10 to-slate-950/5 backdrop-blur-md border border-purple-500/10"
           }`}
         >
           {/* Top highlight line - Purple glow */}
-          <div className="absolute inset-x-0 top-0 h-[1px] rounded-t-2xl bg-gradient-to-r from-transparent via-purple-400/60 to-transparent" />
+          <div className="absolute inset-x-0 top-0 h-[1px] rounded-t-[24px] bg-gradient-to-r from-transparent via-purple-400/60 to-transparent" />
 
           <div className="px-4 sm:px-5 py-4">
             <div className="flex items-center justify-between">
@@ -91,22 +91,16 @@ export default function Navbar() {
                   whileTap={{ scale: 0.98 }}
                   className="flex items-center gap-3"
                 >
-                  {/* Logo Container */}
-                  <div className="relative w-14 h-11 flex items-center justify-center">
-                    {/* Glass effect background */}
-                    <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-white/[0.12] to-white/[0.04] backdrop-blur-xl border border-white/10" />
-
-                    {/* Logo Image */}
-                    <div className="relative w-full h-full flex items-center justify-center p-1.5">
-                      <Image
-                        src="/logo_h12.png"
-                        alt="H12 Logo"
-                        width={70}
-                        height={35}
-                        className="object-contain w-full h-full"
-                        priority
-                      />
-                    </div>
+                  {/* Logo Image - No Frame */}
+                  <div className="relative w-16 h-12 flex items-center justify-center rounded-[16px] overflow-hidden">
+                    <Image
+                      src="/logo_h12.png"
+                      alt="H12 Logo"
+                      width={80}
+                      height={48}
+                      className="object-contain w-full h-full"
+                      priority
+                    />
                   </div>
                 </motion.div>
               </Link>
@@ -156,7 +150,7 @@ export default function Navbar() {
                                 animate={{ opacity: 1, y: 0, scale: 1 }}
                                 exit={{ opacity: 0, y: -10, scale: 0.95 }}
                                 transition={{ duration: 0.2, ease: "easeOut" }}
-                                className="absolute top-full left-0 mt-2 min-w-[200px] rounded-2xl overflow-hidden bg-slate-950/90 backdrop-blur-xl border border-purple-500/20 shadow-[0_20px_60px_-15px_rgba(147,51,234,0.4)] z-50"
+                                className="absolute top-full left-0 mt-2 min-w-[200px] rounded-[20px] overflow-hidden bg-slate-950/90 backdrop-blur-xl border border-purple-500/20 shadow-[0_20px_60px_-15px_rgba(147,51,234,0.4)] z-50"
                               >
                                 {/* Dropdown highlight */}
                                 <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-purple-400/60 to-transparent" />
@@ -284,10 +278,10 @@ export default function Navbar() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -20, scale: 0.95 }}
               transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="lg:hidden mt-2 overflow-hidden rounded-2xl bg-slate-950/90 backdrop-blur-xl border border-purple-500/20 shadow-[0_20px_60px_-15px_rgba(147,51,234,0.4)]"
+              className="lg:hidden mt-2 overflow-hidden rounded-[24px] bg-slate-950/90 backdrop-blur-xl border border-purple-500/20 shadow-[0_20px_60px_-15px_rgba(147,51,234,0.4)]"
             >
               {/* Top highlight */}
-              <div className="absolute inset-x-0 top-0 h-[1px] rounded-t-2xl bg-gradient-to-r from-transparent via-purple-400/60 to-transparent" />
+              <div className="absolute inset-x-0 top-0 h-[1px] rounded-t-[24px] bg-gradient-to-r from-transparent via-purple-400/60 to-transparent" />
 
               <div className="p-4 flex flex-col gap-2">
                 {navLinks.map((link, index) => (
