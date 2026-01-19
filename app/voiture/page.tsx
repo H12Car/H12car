@@ -13,7 +13,7 @@ const cars = [
     category: "Luxe",
     price: "4500",
     period: "jour",
-    image: "/car.png",
+    image: "/h12_mercedes.png",
     description: "Le summum du luxe automobile avec toutes les options premium",
     features: ["7 Places", "Automatique", "Diesel", "Full Options"],
     rating: 4.9,
@@ -31,7 +31,7 @@ const cars = [
     category: "SUV Luxury",
     price: "3800",
     period: "jour",
-    image: "/car.png",
+    image: "/h12_x7.png",
     description: "SUV spacieux et élégant pour toute la famille",
     features: ["7 Places", "Automatique", "Essence", "Toit Panoramique"],
     rating: 4.8,
@@ -49,7 +49,7 @@ const cars = [
     category: "SUV Premium",
     price: "4200",
     period: "jour",
-    image: "/car.png",
+    image: "/h12_range.png",
     description: "Performance et luxe dans un SUV tout-terrain",
     features: ["5 Places", "Automatique", "Diesel", "4x4"],
     rating: 4.7,
@@ -544,7 +544,7 @@ export default function VoiturePage() {
                     delay: index * 0.08,
                     layout: { duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }
                   }}
-                  className={`group cursor-pointer ${isExpanded ? 'md:col-span-2 lg:col-span-3' : ''}`}
+                  className={`group cursor-pointer ${isExpanded ? 'md:col-span-2' : ''}`}
                   onClick={() => !isExpanded && handleCardClick(car.id)}
                 >
                   <motion.div
@@ -651,18 +651,18 @@ export default function VoiturePage() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.3, delay: 0.1 }}
-                        className="grid lg:grid-cols-2 gap-0"
+                        className="grid md:grid-cols-[45%_55%] gap-0"
                       >
                         {/* Left - Large Image */}
-                        <div className="relative h-[280px] sm:h-[350px] lg:h-[480px]">
+                        <div className="relative h-[240px] sm:h-[280px] md:h-[420px]">
                           <Image
                             src={car.image}
                             alt={car.name}
                             fill
-                            className="object-cover"
+                            className="object-cover object-left"
                           />
-                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-black/80 hidden lg:block" />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent lg:hidden" />
+                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-black/80 hidden md:block" />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent md:hidden" />
 
                           {/* Close Button */}
                           <button
@@ -687,62 +687,62 @@ export default function VoiturePage() {
                         </div>
 
                         {/* Right - Details */}
-                        <div className="relative bg-gradient-to-br from-black via-[#0a0a0a] to-black p-6 sm:p-8 lg:p-10 flex flex-col">
+                        <div className="relative bg-gradient-to-br from-black via-[#0a0a0a] to-black p-5 sm:p-6 md:p-7 flex flex-col">
                           {/* Header */}
-                          <div className="mb-6">
-                            <div className="flex items-center gap-2 mb-2">
-                              <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                          <div className="mb-4">
+                            <div className="flex items-center gap-2 mb-1.5">
+                              <Star className="w-3.5 h-3.5 text-yellow-400 fill-current" />
                               <span className="text-sm font-semibold text-white">{car.rating}</span>
                               <span className="text-xs text-white/40">({car.reviews} avis)</span>
                             </div>
-                            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2">{car.name}</h2>
-                            <p className="text-white/50 text-sm sm:text-base">{car.description}</p>
+                            <h2 className="text-xl sm:text-2xl font-bold text-white mb-1.5">{car.name}</h2>
+                            <p className="text-white/50 text-xs sm:text-sm">{car.description}</p>
                           </div>
 
                           {/* Price */}
-                          <div className="bg-white/5 rounded-2xl p-4 sm:p-5 mb-6 border border-white/10">
+                          <div className="bg-white/5 rounded-xl p-3.5 sm:p-4 mb-4 border border-white/10">
                             <div className="flex items-end justify-between">
                               <div>
-                                <p className="text-xs text-white/40 uppercase tracking-wider mb-1">Prix par jour</p>
+                                <p className="text-[10px] text-white/40 uppercase tracking-wider mb-0.5">Prix par jour</p>
                                 <div className="flex items-baseline gap-1">
-                                  <span className="text-3xl sm:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-fuchsia-400">{car.price}</span>
-                                  <span className="text-white/50 text-sm">MAD</span>
+                                  <span className="text-2xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-fuchsia-400">{car.price}</span>
+                                  <span className="text-white/50 text-xs">MAD</span>
                                 </div>
                               </div>
                               <div className="text-right">
-                                <p className="text-xs text-white/40 mb-1">Année</p>
-                                <p className="text-lg font-bold text-white">{car.year}</p>
+                                <p className="text-[10px] text-white/40 mb-0.5">Année</p>
+                                <p className="text-base font-bold text-white">{car.year}</p>
                               </div>
                             </div>
                           </div>
 
                           {/* Specs Grid */}
-                          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+                          <div className="grid grid-cols-2 gap-2.5 mb-4">
                             {[
                               { icon: Users, label: 'Places', value: car.seats },
                               { icon: Fuel, label: 'Carburant', value: car.fuel },
                               { icon: Settings, label: 'Boîte', value: car.transmission },
                               { icon: Car, label: 'Puissance', value: car.power },
                             ].map((spec, idx) => (
-                              <div key={idx} className="bg-white/5 rounded-xl p-3 text-center border border-white/5">
-                                <spec.icon className="w-4 h-4 text-purple-400 mx-auto mb-1.5" />
-                                <p className="text-[10px] text-white/40 uppercase tracking-wider mb-0.5">{spec.label}</p>
-                                <p className="text-sm font-semibold text-white">{spec.value}</p>
+                              <div key={idx} className="bg-white/5 rounded-lg p-2.5 text-center border border-white/5">
+                                <spec.icon className="w-3.5 h-3.5 text-purple-400 mx-auto mb-1" />
+                                <p className="text-[9px] text-white/40 uppercase tracking-wider mb-0.5">{spec.label}</p>
+                                <p className="text-xs font-semibold text-white">{spec.value}</p>
                               </div>
                             ))}
                           </div>
 
                           {/* Insurance & Features */}
-                          <div className="bg-gradient-to-r from-purple-500/10 to-fuchsia-500/10 rounded-2xl p-4 sm:p-5 mb-6 border border-purple-500/20">
-                            <div className="flex items-center gap-2 mb-3">
-                              <Shield className="w-5 h-5 text-purple-400" />
-                              <p className="text-sm font-semibold text-white">Assurance tous risques incluse</p>
+                          <div className="bg-gradient-to-r from-purple-500/10 to-fuchsia-500/10 rounded-xl p-3.5 mb-4 border border-purple-500/20">
+                            <div className="flex items-center gap-2 mb-2.5">
+                              <Shield className="w-4 h-4 text-purple-400" />
+                              <p className="text-xs font-semibold text-white">Assurance tous risques incluse</p>
                             </div>
-                            <div className="grid grid-cols-2 gap-2">
+                            <div className="grid grid-cols-2 gap-1.5">
                               {car.features.map((feature, idx) => (
-                                <div key={idx} className="flex items-center gap-2">
-                                  <CheckCircle className="w-3.5 h-3.5 text-green-400" />
-                                  <span className="text-xs text-white/70">{feature}</span>
+                                <div key={idx} className="flex items-center gap-1.5">
+                                  <CheckCircle className="w-3 h-3 text-green-400 flex-shrink-0" />
+                                  <span className="text-[11px] text-white/70">{feature}</span>
                                 </div>
                               ))}
                             </div>
@@ -756,10 +756,10 @@ export default function VoiturePage() {
                             }}
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
-                            className="w-full py-4 bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white text-base font-bold rounded-full shadow-lg shadow-purple-500/30 flex items-center justify-center gap-2 hover:shadow-xl hover:shadow-purple-500/40 transition-all duration-300 mt-auto"
+                            className="w-full py-3.5 bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white text-sm font-bold rounded-full shadow-lg shadow-purple-500/30 flex items-center justify-center gap-2 hover:shadow-xl hover:shadow-purple-500/40 transition-all duration-300 mt-auto"
                           >
                             Réserver ce véhicule
-                            <ArrowRight className="w-5 h-5" />
+                            <ArrowRight className="w-4 h-4" />
                           </motion.button>
                         </div>
                       </motion.div>

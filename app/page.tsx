@@ -106,7 +106,7 @@ export default function HomePage() {
             </motion.div>
 
             {/* Image Card - Mobile */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.2 }}
@@ -114,7 +114,7 @@ export default function HomePage() {
             >
               <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl shadow-purple-500/20">
                 <Image
-                  src="/car.png"
+                  src="/h12_mercedes.png"
                   alt="H12 Premium Car"
                   fill
                   priority
@@ -285,7 +285,7 @@ export default function HomePage() {
               <div className="relative max-w-[466px] w-full">
                 <div className="relative aspect-square rounded-3xl overflow-hidden border border-white/[0.08]">
                   <Image
-                    src="/car.png"
+                    src="/h12_mercedes.png"
                     alt="H12 Premium Vehicle"
                     fill
                     priority
@@ -384,12 +384,13 @@ export default function HomePage() {
               motorbike: 'Louer une Moto',
               excursion: 'Trouver une Excursion'
             };
+            const cardImages = ['/h12_mercedes.png', '/h12_x7.png', '/h12_range.png'];
 
             const CardContent = (
               <div className="relative bg-black rounded-[20px] sm:rounded-[24px] overflow-hidden h-[300px] sm:h-[350px] lg:h-[400px] hover:scale-[1.02] hover:shadow-2xl transition-all duration-500">
                 {/* Image */}
                 <Image
-                  src="/car.png"
+                  src={cardImages[index]}
                   alt={service.title}
                   fill
                   className="object-cover opacity-70 group-hover:opacity-90 group-hover:scale-105 transition-all duration-700"
