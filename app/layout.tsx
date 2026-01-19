@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/navBar";
 import Footer from "@/components/footer";
+import WhatsAppButton from "@/components/WhatsAppButton";
 import { ModalProvider } from "@/context/modalContext";
 
 
@@ -36,6 +37,7 @@ export default function RootLayout({
           <Navbar />
           <main>{children}</main>
           <Footer />
+          <WhatsAppButton />
         </ModalProvider>
       </body>
     </html>
