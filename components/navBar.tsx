@@ -438,8 +438,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { ChevronDown, Car, Bike } from "lucide-react";
-import { useModal } from "@/context/modalContext";
-import DevModal from "@/components/DevModal";
 
 const navLinks = [
   { href: "/", label: "Accueil" },
@@ -450,8 +448,8 @@ const navLinks = [
       { href: "/moto", label: "Moto", icon: Bike },
     ]
   },
-  { href: "/excursion", label: "Excursion", isDevFeature: true },
-  { href: "/about", label: "À Propos", isDevFeature: true },
+  { href: "/excursion", label: "Excursion" },
+  { href: "/about", label: "À Propos" },
 ];
 
 
@@ -463,8 +461,6 @@ export default function Navbar() {
   const pathname = usePathname();
   const [activeLink, setActiveLink] = useState("/");
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const { setIsDevisModalOpen } = useModal();
-  const [isDevModalOpen, setIsDevModalOpen] = useState(false);
 
 
   useEffect(() => {
@@ -492,16 +488,6 @@ export default function Navbar() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
-  // Handle nav link click - check if it's a dev feature
-  const handleNavClick = (e: React.MouseEvent, link: any) => {
-    if (link.isDevFeature) {
-      e.preventDefault();
-      setIsDevModalOpen(true);
-    } else {
-      setActiveLink(link.href);
-    }
-  };
 
   return (
     <>
@@ -636,7 +622,7 @@ export default function Navbar() {
                         ) : (
                           <Link
                             href={link.href}
-                            onClick={(e) => handleNavClick(e, link)}
+                            onClick={() => setActiveLink(link.href)}
                             className="relative px-4 py-2.5 rounded-full text-[13px] font-medium transition-all duration-300 group/nav"
                           >
                             <span
@@ -667,23 +653,24 @@ export default function Navbar() {
 
                 {/* CTA Button - Right side */}
                 <div className="hidden lg:flex items-center gap-4 relative z-10">
-                  <motion.button
-                    onClick={() => setIsDevisModalOpen(true)}
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.97 }}
-                    className="group relative px-5 py-2.5 rounded-full overflow-hidden"
-                  >
-                    {/* Gradient background */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-600 bg-[length:200%_100%] animate-gradient-x" />
+                  <Link href="/contact">
+                    <motion.button
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
+                      className="group relative px-5 py-2.5 rounded-full overflow-hidden"
+                    >
+                      {/* Gradient background */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-600 bg-[length:200%_100%] animate-gradient-x" />
 
-                    {/* Subtle glow */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-fuchsia-600 blur-lg opacity-40 group-hover:opacity-60 transition-opacity duration-300" />
+                      {/* Subtle glow */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-fuchsia-600 blur-lg opacity-40 group-hover:opacity-60 transition-opacity duration-300" />
 
-                    {/* Text */}
-                    <span className="relative z-10 text-white font-semibold text-[13px] tracking-wide">
-                      Nous Contacter
-                    </span>
-                  </motion.button>
+                      {/* Text */}
+                      <span className="relative z-10 text-white font-semibold text-[13px] tracking-wide">
+                        Nous Contacter
+                      </span>
+                    </motion.button>
+                  </Link>
                 </div>
 
                 {/* Mobile Menu Button */}
@@ -801,15 +788,9 @@ export default function Navbar() {
                         >
                           <Link
                             href={link.href}
-                            onClick={(e) => {
-                              if (link.isDevFeature) {
-                                e.preventDefault();
-                                setIsOpen(false);
-                                setIsDevModalOpen(true);
-                              } else {
-                                setIsOpen(false);
-                                setActiveLink(link.href);
-                              }
+                            onClick={() => {
+                              setIsOpen(false);
+                              setActiveLink(link.href);
                             }}
                             className={`block px-5 py-3.5 rounded-xl transition-all duration-300 ${
                               activeLink === link.href
@@ -826,34 +807,35 @@ export default function Navbar() {
 
                   {/* Mobile CTA */}
                   <motion.div
-                    onClick={() => setIsDevisModalOpen(true)}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: navLinks.length * 0.1, ease: [0.22, 1, 0.36, 1] }}
                     className="mt-2 pt-2 border-t border-purple-500/10"
                   >
-                    <motion.button
-                      onClick={() => {
-                        setIsOpen(false);
-                      }}
-                      whileTap={{ scale: 0.98 }}
-                      className="w-full relative py-3.5 rounded-xl overflow-hidden group"
+                    <Link
+                      href="/contact"
+                      onClick={() => setIsOpen(false)}
+                      className="block"
                     >
-                      {/* Animated gradient background */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-600 bg-[length:200%_100%] animate-gradient-x" />
-                      
-                      {/* Glow effect */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-fuchsia-600 blur-lg opacity-50 group-hover:opacity-75 transition-opacity duration-300" />
-                      
-                      {/* Top highlight */}
-                      <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent" />
-                      
-                      {/* Text */}
-                      <span className="relative z-10 text-white font-bold tracking-wide flex items-center justify-center gap-2">
-                        Nous Contacter
-                        
-                      </span>
-                    </motion.button>
+                      <motion.button
+                        whileTap={{ scale: 0.98 }}
+                        className="w-full relative py-3.5 rounded-xl overflow-hidden group"
+                      >
+                        {/* Animated gradient background */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-600 bg-[length:200%_100%] animate-gradient-x" />
+
+                        {/* Glow effect */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-fuchsia-600 blur-lg opacity-50 group-hover:opacity-75 transition-opacity duration-300" />
+
+                        {/* Top highlight */}
+                        <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent" />
+
+                        {/* Text */}
+                        <span className="relative z-10 text-white font-bold tracking-wide flex items-center justify-center gap-2">
+                          Nous Contacter
+                        </span>
+                      </motion.button>
+                    </Link>
                   </motion.div>
                 </div>
               </motion.div>
@@ -877,9 +859,6 @@ export default function Navbar() {
           }
         `}</style>
       </motion.nav>
-
-      {/* Dev Modal */}
-      <DevModal isOpen={isDevModalOpen} onClose={() => setIsDevModalOpen(false)} />
     </>
   );
 }

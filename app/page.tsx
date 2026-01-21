@@ -1,76 +1,52 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { ArrowRight, Star, Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import DevModal from "@/components/DevModal";
 import { services } from "@/types/home_service";
 
+// Animation variants moved outside component for better performance
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15
+    }
+  }
+};
+
+const cardVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.4,
+      ease: "easeOut"
+    }
+  }
+};
+
 export default function HomePage() {
-  const [isDevModalOpen, setIsDevModalOpen] = useState(false);
-
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2
-      }
-    }
-  };
-
-  const cardVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut" as const
-      }
-    }
-  };
-
-  const handleLearnMore = () => {
-    setIsDevModalOpen(true);
-  };
 
   return (
     <div>
       {/* Hero Section */}
       <section className="relative pt-24 sm:pt-28 pb-12 lg:pt-40 lg:pb-20 overflow-hidden">
-        {/* Animated Background Elements */}
+        {/* Animated Background Elements - CSS animations for performance */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {/* Main gradient orb */}
-          <motion.div 
-            className="absolute top-1/4 -left-20 w-[500px] h-[500px] rounded-full bg-gradient-to-r from-purple-600/20 to-fuchsia-600/20 blur-3xl"
-            animate={{
-              scale: [1, 1.2, 1],
-              opacity: [0.2, 0.4, 0.2],
-            }}
-            transition={{
-              duration: 8,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
+          {/* Main gradient orb - uses CSS animation */}
+          <div
+            className="absolute top-1/4 -left-20 w-[500px] h-[500px] rounded-full bg-gradient-to-r from-purple-600/20 to-fuchsia-600/20 blur-3xl animate-pulse-slow"
+            style={{ willChange: 'transform, opacity' }}
           />
-          
-          {/* Secondary orb */}
-          <motion.div 
-            className="absolute bottom-1/4 -right-20 w-[400px] h-[400px] rounded-full bg-gradient-to-l from-fuchsia-600/15 to-purple-600/15 blur-3xl"
-            animate={{
-              scale: [1.2, 1, 1.2],
-              opacity: [0.15, 0.3, 0.15],
-            }}
-            transition={{
-              duration: 10,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 1
-            }}
+
+          {/* Secondary orb - uses CSS animation */}
+          <div
+            className="absolute bottom-1/4 -right-20 w-[400px] h-[400px] rounded-full bg-gradient-to-l from-fuchsia-600/15 to-purple-600/15 blur-3xl animate-pulse-slow-delayed"
+            style={{ willChange: 'transform, opacity' }}
           />
         </div>
 
@@ -119,6 +95,7 @@ export default function HomePage() {
                   alt="H12 Premium Car"
                   fill
                   priority
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent" />
@@ -159,17 +136,18 @@ export default function HomePage() {
             </motion.div>
 
             {/* CTA Button - Mobile */}
-            <motion.button
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-              onClick={() => setIsDevModalOpen(true)}
-              whileTap={{ scale: 0.98 }}
-              className="mx-auto px-7 py-3.5 rounded-full bg-white text-black text-sm font-semibold shadow-lg flex items-center gap-2 hover:bg-white/90 transition-all"
-            >
-              Réserver maintenant
-              <ArrowRight className="w-4 h-4" />
-            </motion.button>
+            <Link href="/voiture">
+              <motion.button
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.5 }}
+                whileTap={{ scale: 0.98 }}
+                className="mx-auto px-7 py-3.5 rounded-full bg-white text-black text-sm font-semibold shadow-lg flex items-center gap-2 hover:bg-white/90 transition-all"
+              >
+                Réserver maintenant
+                <ArrowRight className="w-4 h-4" />
+              </motion.button>
+            </Link>
           </div>
 
           {/* Desktop Layout - Apple Style Two Column */}
@@ -243,8 +221,8 @@ export default function HomePage() {
                 transition={{ duration: 0.8, delay: 0.4, ease: [0.25, 0.4, 0.25, 1] }}
                 className="flex items-center gap-4"
               >
+                <Link href="/voiture">
                 <motion.button
-                  onClick={() => setIsDevModalOpen(true)}
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.98 }}
                   className="group px-7 py-3.5 rounded-full bg-white text-black text-[15px] font-medium flex items-center gap-2 transition-colors hover:bg-white/90"
@@ -252,14 +230,17 @@ export default function HomePage() {
                   Réserver maintenant
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200" />
                 </motion.button>
+              </Link>
 
-                <motion.button
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="px-7 py-3.5 rounded-full bg-white/[0.06] border border-white/10 text-[15px] font-medium text-white transition-colors hover:bg-white/10"
-                >
-                  En savoir plus
-                </motion.button>
+                <Link href="/about">
+                  <motion.button
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="px-7 py-3.5 rounded-full bg-white/[0.06] border border-white/10 text-[15px] font-medium text-white transition-colors hover:bg-white/10"
+                  >
+                    En savoir plus
+                  </motion.button>
+                </Link>
               </motion.div>
             </div>
 
@@ -281,6 +262,7 @@ export default function HomePage() {
                     alt="H12 Premium Vehicle"
                     fill
                     priority
+                    sizes="(max-width: 1024px) 100vw, 466px"
                     className="object-cover"
                   />
                   {/* Subtle gradient overlay */}
@@ -316,19 +298,11 @@ export default function HomePage() {
 
       {/* Service section */}
       <section className="relative py-20 lg:pb-20 lg:pt-10 overflow-hidden">
-      {/* Background Elements */}
+      {/* Background Elements - CSS animation for performance */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <motion.div 
-          className="absolute top-1/2 left-1/4 w-[400px] h-[400px] rounded-full bg-gradient-to-r from-purple-600/10 to-fuchsia-600/10 blur-3xl"
-          animate={{
-            scale: [1, 1.1, 1],
-            opacity: [0.1, 0.2, 0.1],
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
+        <div
+          className="absolute top-1/2 left-1/4 w-[400px] h-[400px] rounded-full bg-gradient-to-r from-purple-600/10 to-fuchsia-600/10 blur-3xl animate-pulse-slow"
+          style={{ willChange: 'transform, opacity' }}
         />
       </div>
 
@@ -423,21 +397,18 @@ export default function HomePage() {
               </div>
             );
 
-            // Only "Location de voitures" (car) links to its page
-            return service.serviceType === 'car' ? (
+            // Link each service card to its respective page
+            const serviceLinks: Record<string, string> = {
+              car: '/voiture',
+              motorbike: '/moto',
+              excursion: '/excursion'
+            };
+
+            return (
               <motion.div key={index} variants={cardVariants} className="group">
-                <Link href="/voiture" className="block">
+                <Link href={serviceLinks[service.serviceType]} className="block">
                   {CardContent}
                 </Link>
-              </motion.div>
-            ) : (
-              <motion.div
-                key={index}
-                variants={cardVariants}
-                onClick={() => handleLearnMore()}
-                className="group cursor-pointer"
-              >
-                {CardContent}
               </motion.div>
             );
           })}
@@ -447,17 +418,15 @@ export default function HomePage() {
 
       {/* Reviews Section */}
       <section className="relative py-20 lg:pb-20 lg:pt-10 overflow-hidden">
-        {/* Background Gradient Orbs */}
+        {/* Background Gradient Orbs - CSS animation for performance */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <motion.div
-            className="absolute top-1/3 -left-20 w-[400px] h-[400px] rounded-full bg-gradient-to-r from-purple-600/10 to-fuchsia-600/10 blur-3xl"
-            animate={{ scale: [1, 1.1, 1], opacity: [0.1, 0.2, 0.1] }}
-            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          <div
+            className="absolute top-1/3 -left-20 w-[400px] h-[400px] rounded-full bg-gradient-to-r from-purple-600/10 to-fuchsia-600/10 blur-3xl animate-pulse-slow"
+            style={{ willChange: 'transform, opacity' }}
           />
-          <motion.div
-            className="absolute bottom-1/4 -right-16 w-[500px] h-[500px] rounded-full bg-gradient-to-l from-fuchsia-600/10 to-purple-600/10 blur-3xl"
-            animate={{ scale: [1.1, 1, 1.1], opacity: [0.1, 0.2, 0.1] }}
-            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          <div
+            className="absolute bottom-1/4 -right-16 w-[500px] h-[500px] rounded-full bg-gradient-to-l from-fuchsia-600/10 to-purple-600/10 blur-3xl animate-pulse-slow-delayed"
+            style={{ willChange: 'transform, opacity' }}
           />
         </div>
 
@@ -664,15 +633,16 @@ export default function HomePage() {
               </motion.button>
             </Link>
 
-            <motion.button
-              onClick={() => handleLearnMore()}
-              whileHover={{ scale: 1.03, y: -2 }}
-              whileTap={{ scale: 0.98 }}
-              className="group relative px-8 py-4 rounded-full bg-white/[0.03] backdrop-blur-sm border border-purple-500/30 text-[15px] font-semibold text-white flex items-center gap-2 hover:border-purple-500/50 hover:bg-purple-500/10 transition-all duration-300"
-            >
-              Louer une Moto
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
-            </motion.button>
+            <Link href="/moto">
+              <motion.button
+                whileHover={{ scale: 1.03, y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                className="group relative px-8 py-4 rounded-full bg-white/[0.03] backdrop-blur-sm border border-purple-500/30 text-[15px] font-semibold text-white flex items-center gap-2 hover:border-purple-500/50 hover:bg-purple-500/10 transition-all duration-300"
+              >
+                Louer une Moto
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+              </motion.button>
+            </Link>
           </motion.div>
         </div>
         
@@ -723,22 +693,19 @@ export default function HomePage() {
               </motion.button>
 
               {/* Contact Button */}
-              <motion.button
-                onClick={() => setIsDevModalOpen(true)}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
-                className="px-8 py-4 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white font-semibold hover:bg-white/15 transition-all duration-300"
-              >
-                Nous Contacter
-              </motion.button>
+              <Link href="/contact">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="px-8 py-4 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white font-semibold hover:bg-white/15 transition-all duration-300"
+                >
+                  Nous Contacter
+                </motion.button>
+              </Link>
             </div>
           </motion.div>
         </div>
       </section>
-
-
-      {/* DevModal */}
-      <DevModal isOpen={isDevModalOpen} onClose={() => setIsDevModalOpen(false)} />
     </div>
   );
 }

@@ -861,7 +861,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Star, Fuel, Users, Settings, Car, ArrowRight, Heart, Shield, X, CheckCircle } from "lucide-react";
 import Image from "next/image";
-import DevModal from "@/components/DevModal";
+import { useBooking } from "@/context/bookingContext";
 
 const cars = [
   {
@@ -1044,6 +1044,42 @@ const cars = [
     power: "420 ch",
     favorite: true
   },
+  {
+    id: 11,
+    name: "Mercedes V-Class",
+    category: "Transport Touristique",
+    price: "2500",
+    period: "jour",
+    image: "/car.png",
+    description: "Van de luxe idéal pour les groupes et transferts aéroport",
+    features: ["8 Places", "Automatique", "Diesel", "Climatisation zone"],
+    rating: 4.9,
+    reviews: 156,
+    fuel: "Diesel",
+    seats: 8,
+    transmission: "Automatique",
+    year: 2024,
+    power: "190 ch",
+    favorite: false
+  },
+  {
+    id: 12,
+    name: "Toyota Hiace",
+    category: "Transport Touristique",
+    price: "1800",
+    period: "jour",
+    image: "/car.png",
+    description: "Minibus confortable pour excursions et circuits touristiques",
+    features: ["14 Places", "Manuelle", "Diesel", "Grand coffre"],
+    rating: 4.7,
+    reviews: 203,
+    fuel: "Diesel",
+    seats: 14,
+    transmission: "Manuelle",
+    year: 2023,
+    power: "150 ch",
+    favorite: false
+  },
 ];
 
 const categories = [
@@ -1052,20 +1088,22 @@ const categories = [
   "SUV",
   "Électrique",
   "Sport",
-  "Familial"
+  "Transport Touristique"
 ];
 
 export default function VoiturePage() {
   const [selectedCategory, setSelectedCategory] = useState("Tous");
-  const [isDevModalOpen, setIsDevModalOpen] = useState(false);
   const [expandedCarId, setExpandedCarId] = useState<number | null>(null);
   const [favorites, setFavorites] = useState<number[]>([1, 3, 6, 10]);
+  const { openWizard } = useBooking();
 
   const filteredCars = selectedCategory === "Tous"
     ? cars
     : cars.filter(car =>
         selectedCategory === "SUV"
           ? car.category.includes("SUV")
+          : selectedCategory === "Transport Touristique"
+          ? car.category === "Transport Touristique"
           : car.category.includes(selectedCategory)
       );
 
@@ -1078,50 +1116,34 @@ export default function VoiturePage() {
   };
 
   const handleCardClick = (carId: number) => {
-    // Only allow expansion for first 3 cars (IDs 1, 2, 3)
-    if (carId <= 3) {
-      setExpandedCarId(expandedCarId === carId ? null : carId);
-    } else {
-      // Show dev modal for cars 4-10
-      setIsDevModalOpen(true);
-    }
+    setExpandedCarId(expandedCarId === carId ? null : carId);
   };
 
-  const handleReserve = () => {
+  const handleReserve = (car: typeof cars[0]) => {
     setExpandedCarId(null);
-    setIsDevModalOpen(true);
+    openWizard("car", {
+      id: car.id,
+      name: car.name,
+      price: car.price,
+      period: car.period,
+      image: car.image,
+      category: car.category,
+    });
   };
 
   return (
     <div className="min-h-screen">
       {/* Hero Section - Apple Style */}
       <section className="relative pt-24 sm:pt-28 pb-12 lg:pt-40 lg:pb-20 overflow-hidden">
-        {/* Animated Background Elements */}
+        {/* Background Elements - CSS animations for GPU acceleration */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <motion.div
-            className="absolute top-1/4 -left-20 w-[500px] h-[500px] rounded-full bg-gradient-to-r from-purple-600/20 to-fuchsia-600/20 blur-3xl"
-            animate={{
-              scale: [1, 1.2, 1],
-              opacity: [0.2, 0.4, 0.2],
-            }}
-            transition={{
-              duration: 8,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
+          <div
+            className="absolute top-1/4 -left-20 w-[500px] h-[500px] rounded-full bg-gradient-to-r from-purple-600/20 to-fuchsia-600/20 blur-3xl animate-pulse-slow"
+            style={{ willChange: 'transform, opacity' }}
           />
-          <motion.div
-            className="absolute bottom-1/4 -right-20 w-[400px] h-[400px] rounded-full bg-gradient-to-l from-fuchsia-600/15 to-purple-600/15 blur-3xl"
-            animate={{
-              scale: [1.2, 1, 1.2],
-              opacity: [0.15, 0.3, 0.15],
-            }}
-            transition={{
-              duration: 10,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 1
-            }}
+          <div
+            className="absolute bottom-1/4 -right-20 w-[400px] h-[400px] rounded-full bg-gradient-to-l from-fuchsia-600/15 to-purple-600/15 blur-3xl animate-pulse-slow-delayed"
+            style={{ willChange: 'transform, opacity' }}
           />
         </div>
 
@@ -1170,6 +1192,7 @@ export default function VoiturePage() {
                   alt="H12 Premium Car"
                   fill
                   priority
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent" />
@@ -1328,6 +1351,7 @@ export default function VoiturePage() {
                     alt="H12 Premium Vehicle"
                     fill
                     priority
+                    sizes="(max-width: 1024px) 100vw, 466px"
                     className="object-cover"
                   />
                   {/* Subtle gradient overlay */}
@@ -1394,7 +1418,6 @@ export default function VoiturePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
             {filteredCars.map((car, index) => {
               const isExpanded = expandedCarId === car.id;
-              const canExpand = car.id <= 3; // Only first 3 cars can expand
 
               return (
                 <motion.div
@@ -1508,8 +1531,8 @@ export default function VoiturePage() {
                       </div>
                     )}
 
-                    {/* Expanded Card View - Only for first 3 cars */}
-                    {isExpanded && canExpand && (
+                    {/* Expanded Card View */}
+                    {isExpanded && (
                       <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -1615,7 +1638,7 @@ export default function VoiturePage() {
                           <motion.button
                             onClick={(e) => {
                               e.stopPropagation();
-                              handleReserve();
+                              handleReserve(car);
                             }}
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
@@ -1655,19 +1678,11 @@ export default function VoiturePage() {
 
       {/* Moto CTA Section */}
       <section className="relative py-20 lg:py-28 overflow-hidden">
-        {/* Background Gradient */}
+        {/* Background Gradient - CSS animation */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <motion.div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-gradient-to-r from-fuchsia-600/10 to-purple-600/10 blur-3xl"
-            animate={{
-              scale: [1, 1.1, 1],
-              opacity: [0.1, 0.2, 0.1],
-            }}
-            transition={{
-              duration: 8,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
+          <div
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-gradient-to-r from-fuchsia-600/10 to-purple-600/10 blur-3xl animate-pulse-slow"
+            style={{ willChange: 'transform, opacity' }}
           />
         </div>
 
@@ -1698,22 +1713,18 @@ export default function VoiturePage() {
             </p>
 
             {/* CTA Button */}
-            <motion.button
-              onClick={() => setIsDevModalOpen(true)}
+            <motion.a
+              href="/moto"
               whileHover={{ scale: 1.03, y: -2 }}
               whileTap={{ scale: 0.98 }}
               className="group px-8 py-4 rounded-full bg-white text-black text-[15px] font-medium inline-flex items-center gap-2 transition-colors hover:bg-white/90"
             >
               Découvrir les motos
               <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200" />
-            </motion.button>
+            </motion.a>
           </motion.div>
         </div>
       </section>
-
-
-      {/* Dev Modal */}
-      <DevModal isOpen={isDevModalOpen} onClose={() => setIsDevModalOpen(false)} />
     </div>
   );
 }

@@ -19,7 +19,6 @@ import {
   Bike,
   ChevronUp
 } from "lucide-react";
-import DevModal from "@/components/DevModal";
 
 const quickLinks = [
   { href: "/", label: "Accueil" },
@@ -50,12 +49,14 @@ const socialLinks = [
 
 export default function Footer() {
   const [email, setEmail] = useState("");
-  const [isDevModalOpen, setIsDevModalOpen] = useState(false);
+  const [subscribed, setSubscribed] = useState(false);
 
   const handleNewsletterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsDevModalOpen(true);
+    setSubscribed(true);
     setEmail("");
+    // Reset the subscribed state after 3 seconds
+    setTimeout(() => setSubscribed(false), 3000);
   };
 
   return (
@@ -168,22 +169,28 @@ export default function Footer() {
 
               {/* Newsletter */}
               <div className="pt-2 max-w-xs mx-auto sm:mx-0">
-                <form onSubmit={handleNewsletterSubmit} className="relative">
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Newsletter"
-                    required
-                    className="w-full px-3 py-2.5 pr-10 rounded-lg bg-white/5 border border-white/10 text-white text-sm placeholder-white/30 focus:outline-none focus:ring-1 focus:ring-purple-500/50 focus:border-purple-500/30 transition-all"
-                  />
-                  <button
-                    type="submit"
-                    className="absolute right-1.5 top-1/2 -translate-y-1/2 p-1.5 rounded-md bg-purple-600/80 hover:bg-purple-600 transition-all"
-                  >
-                    <ArrowRight className="w-3.5 h-3.5 text-white" />
-                  </button>
-                </form>
+                {subscribed ? (
+                  <div className="px-3 py-2.5 rounded-lg bg-green-500/20 border border-green-500/30 text-green-400 text-sm text-center">
+                    Merci pour votre inscription!
+                  </div>
+                ) : (
+                  <form onSubmit={handleNewsletterSubmit} className="relative">
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="Newsletter"
+                      required
+                      className="w-full px-3 py-2.5 pr-10 rounded-lg bg-white/5 border border-white/10 text-white text-sm placeholder-white/30 focus:outline-none focus:ring-1 focus:ring-purple-500/50 focus:border-purple-500/30 transition-all"
+                    />
+                    <button
+                      type="submit"
+                      className="absolute right-1.5 top-1/2 -translate-y-1/2 p-1.5 rounded-md bg-purple-600/80 hover:bg-purple-600 transition-all"
+                    >
+                      <ArrowRight className="w-3.5 h-3.5 text-white" />
+                    </button>
+                  </form>
+                )}
               </div>
             </div>
           </div>
@@ -202,9 +209,6 @@ export default function Footer() {
         </div>
 
       </footer>
-
-      {/* DevModal */}
-      <DevModal isOpen={isDevModalOpen} onClose={() => setIsDevModalOpen(false)} />
     </>
   );
 }

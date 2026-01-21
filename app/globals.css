@@ -12,10 +12,121 @@
   --font-mono: var(--font-geist-mono);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 html,
 body {
   background: #0a0a0a;
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
   min-height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* GPU acceleration for animations */
+.gpu-accelerate {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Smooth transitions for interactive elements */
+a, button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Optimize blur effects */
+.blur-3xl {
+  will-change: transform, opacity;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Smooth scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(147, 51, 234, 0.3);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(147, 51, 234, 0.5);
+}
+
+/* Optimize images */
+img {
+  content-visibility: auto;
+}
+
+/* Hardware acceleration hints for animated backgrounds */
+[class*="bg-gradient"] {
+  transform: translateZ(0);
+}
+
+/* Smooth pulsing animations for background orbs */
+@keyframes pulse-slow {
+  0%, 100% {
+    transform: scale(1) translateZ(0);
+    opacity: 0.2;
+  }
+  50% {
+    transform: scale(1.15) translateZ(0);
+    opacity: 0.35;
+  }
+}
+
+@keyframes pulse-slow-delayed {
+  0%, 100% {
+    transform: scale(1.1) translateZ(0);
+    opacity: 0.15;
+  }
+  50% {
+    transform: scale(1) translateZ(0);
+    opacity: 0.25;
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 8s ease-in-out infinite;
+}
+
+.animate-pulse-slow-delayed {
+  animation: pulse-slow-delayed 10s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
+/* Gradient animation for buttons */
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-gradient {
+  animation: gradient-shift 3s ease infinite;
+  background-size: 200% 100%;
 }

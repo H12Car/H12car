@@ -4,7 +4,8 @@ import "./globals.css";
 import Navbar from "@/components/navBar";
 import Footer from "@/components/footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import { ModalProvider } from "@/context/modalContext";
+import BookingWizard from "@/components/BookingWizard";
+import { BookingProvider } from "@/context/bookingContext";
 
 
 const geistSans = Geist({
@@ -33,12 +34,13 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#0a0a0a] text-white min-h-screen`}
         suppressHydrationWarning
       >
-        <ModalProvider>
+        <BookingProvider>
           <Navbar />
           <main>{children}</main>
           <Footer />
           <WhatsAppButton />
-        </ModalProvider>
+          <BookingWizard />
+        </BookingProvider>
       </body>
     </html>
   );
