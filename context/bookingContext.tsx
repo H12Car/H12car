@@ -25,6 +25,8 @@ export interface BookingDetails {
   pickupDate: string;
   returnDate: string;
   pickupLocation: string;
+  pickupZone: string;
+  dropoffLocation: string;
   numberOfPeople: number;
 }
 
@@ -81,6 +83,8 @@ const defaultBookingDetails: BookingDetails = {
   pickupDate: "",
   returnDate: "",
   pickupLocation: "",
+  pickupZone: "",
+  dropoffLocation: "",
   numberOfPeople: 1,
 };
 

@@ -32,20 +32,17 @@ const cardVariants: Variants = {
 export default function HomePage() {
 
   return (
-    <div>
+    <div className="bg-white min-h-screen">
       {/* Hero Section */}
-      <section className="relative pt-24 sm:pt-28 pb-12 lg:pt-40 lg:pb-20 overflow-hidden">
-        {/* Animated Background Elements - CSS animations for performance */}
+      <section className="relative pt-24 sm:pt-28 pb-12 lg:pt-40 lg:pb-20 overflow-hidden bg-gradient-to-b from-gray-50 to-white">
+        {/* Subtle Background Elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {/* Main gradient orb - uses CSS animation */}
           <div
-            className="absolute top-1/4 -left-20 w-[500px] h-[500px] rounded-full bg-gradient-to-r from-purple-600/20 to-fuchsia-600/20 blur-3xl animate-pulse-slow"
+            className="absolute top-1/4 -left-20 w-[500px] h-[500px] rounded-full bg-blue-100/50 blur-3xl"
             style={{ willChange: 'transform, opacity' }}
           />
-
-          {/* Secondary orb - uses CSS animation */}
           <div
-            className="absolute bottom-1/4 -right-20 w-[400px] h-[400px] rounded-full bg-gradient-to-l from-fuchsia-600/15 to-purple-600/15 blur-3xl animate-pulse-slow-delayed"
+            className="absolute bottom-1/4 -right-20 w-[400px] h-[400px] rounded-full bg-sky-100/40 blur-3xl"
             style={{ willChange: 'transform, opacity' }}
           />
         </div>
@@ -60,9 +57,9 @@ export default function HomePage() {
               transition={{ duration: 0.6 }}
               className="flex items-center justify-center gap-3 mb-4"
             >
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20">
-                <Sparkles className="w-4 h-4 text-purple-400" />
-                <span className="text-sm font-semibold text-purple-400">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100">
+                <Sparkles className="w-4 h-4 text-blue-500" />
+                <span className="text-sm font-semibold text-blue-600">
                   Premium Rental
                 </span>
               </div>
@@ -73,11 +70,11 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-4xl sm:text-5xl font-black text-white mb-4 leading-tight tracking-tight"
+              className="text-4xl sm:text-5xl font-black text-gray-900 mb-4 leading-tight tracking-tight"
             >
               Votre voyage.
               <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-fuchsia-400">
+              <span className="text-blue-500">
                 Notre Passion.
               </span>
             </motion.h1>
@@ -89,7 +86,7 @@ export default function HomePage() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="relative mb-6"
             >
-              <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl shadow-purple-500/20">
+              <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl shadow-gray-300/50">
                 <Image
                   src="/h12_hero.png"
                   alt="H12 Premium Car"
@@ -98,7 +95,7 @@ export default function HomePage() {
                   sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
               </div>
             </motion.div>
 
@@ -107,7 +104,7 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-base sm:text-lg text-white/50 leading-relaxed mb-6 max-w-md mx-auto"
+              className="text-base sm:text-lg text-gray-500 leading-relaxed mb-6 max-w-md mx-auto"
             >
               Découvrez la liberté de la route avec H12. Kilométrage illimité, service multilingue, expérience sans compromis.
             </motion.p>
@@ -124,13 +121,13 @@ export default function HomePage() {
                 { value: '40', suffix: '+', label: 'Véhicules' },
                 { value: '4.9', label: 'Note', hasStar: true }
               ].map((stat, idx) => (
-                <div key={idx} className="px-4 py-2 rounded-xl bg-white/[0.03] border border-white/[0.06] text-center">
+                <div key={idx} className="px-4 py-2 rounded-xl bg-white border border-gray-100 shadow-sm text-center">
                   <div className="flex items-center justify-center gap-0.5">
-                    <span className="text-xl sm:text-2xl font-black text-white">{stat.value}</span>
-                    {stat.suffix && <span className="text-sm font-bold text-purple-400">{stat.suffix}</span>}
-                    {stat.hasStar && <Star className="w-3 h-3 text-purple-400 fill-purple-400 ml-0.5" />}
+                    <span className="text-xl sm:text-2xl font-black text-gray-900">{stat.value}</span>
+                    {stat.suffix && <span className="text-sm font-bold text-blue-500">{stat.suffix}</span>}
+                    {stat.hasStar && <Star className="w-3 h-3 text-blue-500 fill-blue-500 ml-0.5" />}
                   </div>
-                  <div className="text-[10px] text-white/40 mt-0.5">{stat.label}</div>
+                  <div className="text-[10px] text-gray-400 mt-0.5">{stat.label}</div>
                 </div>
               ))}
             </motion.div>
@@ -142,7 +139,7 @@ export default function HomePage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.5 }}
                 whileTap={{ scale: 0.98 }}
-                className="mx-auto px-7 py-3.5 rounded-full bg-white text-black text-sm font-semibold shadow-lg flex items-center gap-2 hover:bg-white/90 transition-all"
+                className="mx-auto px-7 py-3.5 rounded-full bg-blue-500 text-white text-sm font-semibold shadow-lg shadow-blue-500/25 flex items-center gap-2 hover:bg-blue-600 transition-all"
               >
                 Réserver maintenant
                 <ArrowRight className="w-4 h-4" />
@@ -159,7 +156,7 @@ export default function HomePage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, ease: [0.25, 0.4, 0.25, 1] }}
-                className="text-purple-400/80 text-sm font-medium tracking-[0.15em] uppercase mb-5"
+                className="text-blue-500 text-sm font-medium tracking-[0.15em] uppercase mb-5"
               >
                 Location Premium à Marrakech
               </motion.p>
@@ -169,11 +166,11 @@ export default function HomePage() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.1, ease: [0.25, 0.4, 0.25, 1] }}
-                className="text-5xl xl:text-6xl font-bold text-white leading-[1.1] tracking-[-0.02em] mb-6"
+                className="text-5xl xl:text-6xl font-bold text-gray-900 leading-[1.1] tracking-[-0.02em] mb-6"
               >
                 Votre voyage.
                 <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-fuchsia-400 to-purple-400">
+                <span className="text-blue-500">
                   Notre Passion.
                 </span>
               </motion.h1>
@@ -183,7 +180,7 @@ export default function HomePage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.4, 0.25, 1] }}
-                className="text-lg xl:text-xl text-white/50 leading-relaxed mb-10 max-w-[520px]"
+                className="text-lg xl:text-xl text-gray-500 leading-relaxed mb-10 max-w-[520px]"
               >
                 Découvrez la liberté de la route avec H12. Kilométrage illimité,
                 service multilingue, expérience sans compromis.
@@ -201,15 +198,15 @@ export default function HomePage() {
                   { value: '40', suffix: '+', label: 'Véhicules' },
                   { value: '4.9', label: 'Note', hasStar: true }
                 ].map((stat, idx) => (
-                  <div key={idx} className="px-5 py-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06] text-center">
+                  <div key={idx} className="px-5 py-2.5 rounded-xl bg-white border border-gray-100 shadow-sm text-center">
                     <div className="flex items-center justify-center gap-1">
-                      <span className="text-3xl font-black text-white tracking-tighter">{stat.value}</span>
-                      {stat.suffix && <span className="text-xl font-bold text-purple-400">{stat.suffix}</span>}
+                      <span className="text-3xl font-black text-gray-900 tracking-tighter">{stat.value}</span>
+                      {stat.suffix && <span className="text-xl font-bold text-blue-500">{stat.suffix}</span>}
                       {stat.hasStar && (
-                        <Star className="w-4 h-4 text-purple-400 fill-purple-400 ml-0.5" />
+                        <Star className="w-4 h-4 text-blue-500 fill-blue-500 ml-0.5" />
                       )}
                     </div>
-                    <div className="text-xs text-white/40 mt-1">{stat.label}</div>
+                    <div className="text-xs text-gray-400 mt-1">{stat.label}</div>
                   </div>
                 ))}
               </motion.div>
@@ -225,7 +222,7 @@ export default function HomePage() {
                 <motion.button
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.98 }}
-                  className="group px-7 py-3.5 rounded-full bg-white text-black text-[15px] font-medium flex items-center gap-2 transition-colors hover:bg-white/90"
+                  className="group px-7 py-3.5 rounded-full bg-blue-500 text-white text-[15px] font-medium flex items-center gap-2 transition-all hover:bg-blue-600 shadow-lg shadow-blue-500/20"
                 >
                   Réserver maintenant
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200" />
@@ -236,7 +233,7 @@ export default function HomePage() {
                   <motion.button
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.98 }}
-                    className="px-7 py-3.5 rounded-full bg-white/[0.06] border border-white/10 text-[15px] font-medium text-white transition-colors hover:bg-white/10"
+                    className="px-7 py-3.5 rounded-full bg-gray-100 border border-gray-200 text-[15px] font-medium text-gray-700 transition-colors hover:bg-gray-200"
                   >
                     En savoir plus
                   </motion.button>
@@ -251,12 +248,12 @@ export default function HomePage() {
               transition={{ duration: 1, delay: 0.3, ease: [0.25, 0.4, 0.25, 1] }}
               className="relative flex justify-center"
             >
-              {/* Ambient Glow */}
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-600/25 via-fuchsia-600/15 to-purple-600/25 blur-[80px] rounded-full" />
+              {/* Ambient Glow - subtle blue */}
+              <div className="absolute inset-0 bg-blue-200/30 blur-[80px] rounded-full" />
 
               {/* Image Container */}
               <div className="relative max-w-[466px] w-full">
-                <div className="relative aspect-square rounded-3xl overflow-hidden border border-white/[0.08]">
+                <div className="relative aspect-square rounded-3xl overflow-hidden border border-gray-100 shadow-2xl shadow-gray-300/50">
                   <Image
                     src="/h12_hero.png"
                     alt="H12 Premium Vehicle"
@@ -266,7 +263,7 @@ export default function HomePage() {
                     className="object-cover"
                   />
                   {/* Subtle gradient overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
                 </div>
 
                 {/* Floating Icon Pills */}
@@ -274,21 +271,21 @@ export default function HomePage() {
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.5, delay: 0.7, ease: [0.25, 0.4, 0.25, 1] }}
-                  className="absolute -top-4 -right-4 px-4 py-2.5 rounded-full bg-white flex items-center gap-2 shadow-lg"
+                  className="absolute -top-4 -right-4 px-4 py-2.5 rounded-full bg-white flex items-center gap-2 shadow-lg border border-gray-100"
                 >
-                  <div className="w-6 h-6 rounded-full bg-black flex items-center justify-center">
+                  <div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center">
                     <Star className="w-3.5 h-3.5 text-white fill-white" />
                   </div>
-                  <span className="text-sm font-medium text-black">4.9</span>
+                  <span className="text-sm font-medium text-gray-900">4.9</span>
                 </motion.div>
 
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.5, delay: 0.9, ease: [0.25, 0.4, 0.25, 1] }}
-                  className="absolute -bottom-3 -left-3 w-10 h-10 rounded-full bg-black flex items-center justify-center shadow-lg"
+                  className="absolute -bottom-3 -left-3 w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center shadow-lg"
                 >
-                  <span className="text-white font-bold text-lg">I</span>
+                  <span className="text-white font-bold text-lg">H</span>
                 </motion.div>
               </div>
             </motion.div>
@@ -297,11 +294,11 @@ export default function HomePage() {
       </section>
 
       {/* Service section */}
-      <section className="relative py-20 lg:pb-20 lg:pt-10 overflow-hidden">
-      {/* Background Elements - CSS animation for performance */}
+      <section className="relative py-20 lg:pb-20 lg:pt-10 overflow-hidden bg-gray-50">
+      {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div
-          className="absolute top-1/2 left-1/4 w-[400px] h-[400px] rounded-full bg-gradient-to-r from-purple-600/10 to-fuchsia-600/10 blur-3xl animate-pulse-slow"
+          className="absolute top-1/2 left-1/4 w-[400px] h-[400px] rounded-full bg-blue-100/30 blur-3xl"
           style={{ willChange: 'transform, opacity' }}
         />
       </div>
@@ -315,27 +312,27 @@ export default function HomePage() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16 lg:mb-20"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20 mb-6">
-            <Star className="w-4 h-4 text-purple-400" />
-            <span className="text-sm font-semibold text-purple-400 uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100 mb-6">
+            <Star className="w-4 h-4 text-blue-500" />
+            <span className="text-sm font-semibold text-blue-600 uppercase tracking-wider">
               Nos Services
             </span>
           </div>
-          
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight">
+
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-gray-900 mb-6 leading-tight">
             L&apos;Excellence dans chaque
             <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-fuchsia-400">
+            <span className="text-blue-500">
               Détail
             </span>
           </h2>
-          
-          <p className="text-lg sm:text-xl text-white/60 max-w-2xl mx-auto">
-            Des expériences sur mesure conçues avec la même précision que les produits Apple
+
+          <p className="text-lg sm:text-xl text-gray-500 max-w-2xl mx-auto">
+            Des expériences sur mesure conçues avec précision et élégance
           </p>
         </motion.div>
 
-        {/* Services Grid - Tobkal Style Cards */}
+        {/* Services Grid - Clean Cards */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -350,10 +347,10 @@ export default function HomePage() {
               motorbike: 'Louer une Moto',
               excursion: 'Trouver une Excursion'
             };
-            const cardImages = ['/h12_mercedes.png', '/h12_x7.png', '/h12_range.png'];
+            const cardImages = ['/voiture_h12/h12_tucson.png', '/moto_h12/h12_africatwin1100.png', '/excursions/h12_quad.png'];
 
             const CardContent = (
-              <div className="relative bg-black rounded-[20px] sm:rounded-[24px] overflow-hidden h-[300px] sm:h-[350px] lg:h-[400px] hover:scale-[1.02] hover:shadow-2xl transition-all duration-500">
+              <div className="relative bg-gray-900 rounded-[20px] sm:rounded-[24px] overflow-hidden h-[300px] sm:h-[350px] lg:h-[400px] hover:scale-[1.02] hover:shadow-2xl transition-all duration-500 shadow-xl">
                 {/* Image */}
                 <Image
                   src={cardImages[index]}
@@ -372,10 +369,10 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                {/* Accent line at top */}
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-10 sm:w-12 h-1 bg-purple-500 rounded-b-full" />
+                {/* Accent line at top - blue */}
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-10 sm:w-12 h-1 bg-blue-500 rounded-b-full" />
 
-                {/* Content Card - Bottom - Fixed Height */}
+                {/* Content Card - Bottom */}
                 <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4">
                   <div className="bg-white/10 backdrop-blur-xl rounded-xl sm:rounded-2xl p-3.5 sm:p-4 border border-white/10 group-hover:bg-white/15 group-hover:border-white/20 transition-all duration-500 h-[160px] sm:h-[180px] flex flex-col">
                     <h3 className="text-[16px] sm:text-[18px] font-bold text-white mb-1.5 sm:mb-2">
@@ -385,10 +382,10 @@ export default function HomePage() {
                       {service.description}
                     </p>
                     <div className="flex items-center justify-between mt-3">
-                      <span className="text-[11px] sm:text-[12px] font-semibold text-purple-400 tracking-wide">
+                      <span className="text-[11px] sm:text-[12px] font-semibold text-blue-400 tracking-wide">
                         {ctaLabels[service.serviceType]}
                       </span>
-                      <div className="w-7 h-7 sm:w-8 sm:h-8 bg-purple-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                      <div className="w-7 h-7 sm:w-8 sm:h-8 bg-blue-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                         <ArrowRight size={12} className="sm:w-[14px] sm:h-[14px] text-white" />
                       </div>
                     </div>
@@ -417,15 +414,15 @@ export default function HomePage() {
     </section>
 
       {/* Reviews Section */}
-      <section className="relative py-20 lg:pb-20 lg:pt-10 overflow-hidden">
-        {/* Background Gradient Orbs - CSS animation for performance */}
+      <section className="relative py-20 lg:pb-20 lg:pt-10 overflow-hidden bg-gray-50/80">
+        {/* Background Gradient Orbs */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div
-            className="absolute top-1/3 -left-20 w-[400px] h-[400px] rounded-full bg-gradient-to-r from-purple-600/10 to-fuchsia-600/10 blur-3xl animate-pulse-slow"
+            className="absolute top-1/3 -left-20 w-[400px] h-[400px] rounded-full bg-blue-50/50 blur-3xl"
             style={{ willChange: 'transform, opacity' }}
           />
           <div
-            className="absolute bottom-1/4 -right-16 w-[500px] h-[500px] rounded-full bg-gradient-to-l from-fuchsia-600/10 to-purple-600/10 blur-3xl animate-pulse-slow-delayed"
+            className="absolute bottom-1/4 -right-16 w-[500px] h-[500px] rounded-full bg-sky-50/50 blur-3xl"
             style={{ willChange: 'transform, opacity' }}
           />
         </div>
@@ -439,21 +436,21 @@ export default function HomePage() {
             transition={{ duration: 0.6 }}
             className="text-center mb-16 lg:mb-20"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20 mb-6">
-              <Star className="w-4 h-4 text-purple-400" />
-              <span className="text-sm font-semibold text-purple-400 uppercase tracking-wider">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100 mb-6">
+              <Star className="w-4 h-4 text-blue-500" />
+              <span className="text-sm font-semibold text-blue-600 uppercase tracking-wider">
                 Avis Clients
               </span>
             </div>
 
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight">
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-gray-900 mb-6 leading-tight">
               Ce Que Disent <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-fuchsia-400">
-                Nos Clients Heureux
+              <span className="text-blue-500">
+                Nos Clients
               </span>
             </h2>
 
-            <p className="text-lg sm:text-xl text-white/60 max-w-2xl mx-auto">
+            <p className="text-lg sm:text-xl text-gray-500 max-w-2xl mx-auto">
               Expériences réelles de clients qui ont voyagé avec H12. Qualité, confort et aventure garantis.
             </p>
           </motion.div>
@@ -461,14 +458,14 @@ export default function HomePage() {
           {/* Scrolling Reviews Container */}
           <div className="relative overflow-hidden">
             {/* Gradient fade edges */}
-            <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-slate-950 to-transparent z-10 pointer-events-none" />
-            <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-slate-950 to-transparent z-10 pointer-events-none" />
+            <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-gray-50 to-transparent z-10 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-gray-50 to-transparent z-10 pointer-events-none" />
 
             {/* Scrolling Wrapper */}
             <motion.div
               className="flex gap-6 lg:gap-8"
               animate={{
-                x: [0, -1032], // Adjust based on total width of duplicated content
+                x: [0, -1032],
               }}
               transition={{
                 x: {
@@ -556,35 +553,35 @@ export default function HomePage() {
                       viewport={{ once: true }}
                       transition={{ duration: 0.5, delay: idx * 0.1 }}
                       whileHover={{ y: -8, scale: 1.02 }}
-                      className="group relative flex-shrink-0 w-[320px] lg:w-[400px] rounded-3xl bg-gradient-to-b from-white/[0.05] to-white/[0.02] backdrop-blur-xl border border-white/10 p-6 hover:border-white/20 transition-all duration-500 hover:shadow-2xl hover:shadow-purple-500/10"
+                      className="group relative flex-shrink-0 w-[320px] lg:w-[400px] rounded-3xl bg-white border border-gray-200 p-6 hover:border-blue-200 transition-all duration-500 hover:shadow-xl shadow-md"
                     >
                       {/* Glow effect on hover */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-purple-600/0 via-purple-600/5 to-fuchsia-600/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl -z-10" />
+                      <div className="absolute inset-0 bg-blue-50 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl -z-10" />
 
                       {/* Top section with avatar and info */}
                       <div className="flex items-start justify-between ">
                         <div className="flex items-center gap-4">
                           {/* Avatar with initials */}
                           <div className="relative">
-                            <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-600 to-fuchsia-600 rounded-full blur opacity-30 group-hover:opacity-70 transition-opacity duration-500" />
-                            <div className="relative w-14 h-14 rounded-full bg-gradient-to-br from-purple-600/30 to-fuchsia-600/30 border-2 border-white/10 flex items-center justify-center">
-                              <span className="text-white font-bold text-lg">
+                            <div className="absolute -inset-0.5 bg-blue-500 rounded-full blur opacity-20 group-hover:opacity-40 transition-opacity duration-500" />
+                            <div className="relative w-14 h-14 rounded-full bg-blue-50 border-2 border-blue-100 flex items-center justify-center">
+                              <span className="text-blue-600 font-bold text-lg">
                                 {client.initials}
                               </span>
                             </div>
                           </div>
                           <div>
-                            <h4 className="text-white font-bold text-lg">{client.name}</h4>
-                            <p className="text-white/50 text-sm">{client.role}</p>
+                            <h4 className="text-gray-900 font-bold text-lg">{client.name}</h4>
+                            <p className="text-gray-400 text-sm">{client.role}</p>
                           </div>
                         </div>
-                        
+
                         {/* Date */}
-                        <span className="text-white/30 text-sm">{client.date}</span>
+                        <span className="text-gray-300 text-sm">{client.date}</span>
                       </div>
 
                       {/* Review Text */}
-                      <p className="text-white/70 text-sm leading-relaxed mb-6 line-clamp-3">
+                      <p className="text-gray-600 text-sm leading-relaxed mb-6 line-clamp-3">
                         {client.review}
                       </p>
 
@@ -594,15 +591,15 @@ export default function HomePage() {
                           {[...Array(5)].map((_, i) => (
                             <Star
                               key={i}
-                              className={`w-4 h-4 fill-current ${i < client.rating ? "text-purple-400" : "text-white/30"}`}
+                              className={`w-4 h-4 fill-current ${i < client.rating ? "text-blue-500" : "text-gray-200"}`}
                             />
                           ))}
                         </div>
-                        
+
                         {/* Verified badge */}
-                        <div className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-purple-500/10 border border-purple-500/20">
-                          <Sparkles className="w-3 h-3 text-purple-400" />
-                          <span className="text-xs text-purple-400">Vérifié</span>
+                        <div className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-blue-50 border border-blue-100">
+                          <Sparkles className="w-3 h-3 text-blue-500" />
+                          <span className="text-xs text-blue-600">Vérifié</span>
                         </div>
                       </div>
 
@@ -625,11 +622,10 @@ export default function HomePage() {
               <motion.button
                 whileHover={{ scale: 1.03, y: -2 }}
                 whileTap={{ scale: 0.98 }}
-                className="group relative px-8 py-4 rounded-full bg-gradient-to-r from-purple-600 via-fuchsia-500 to-purple-600 bg-[length:200%_100%] text-white text-[15px] font-semibold flex items-center gap-2 shadow-lg shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/40 transition-all duration-500 hover:bg-right"
+                className="group relative px-8 py-4 rounded-full bg-blue-500 text-white text-[15px] font-semibold flex items-center gap-2 shadow-lg shadow-blue-500/20 hover:bg-blue-600 transition-all duration-300"
               >
                 <span className="relative z-10">Louer une Voiture</span>
                 <ArrowRight className="w-4 h-4 relative z-10 group-hover:translate-x-1 transition-transform duration-300" />
-                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-600 via-fuchsia-500 to-purple-600 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500" />
               </motion.button>
             </Link>
 
@@ -637,7 +633,7 @@ export default function HomePage() {
               <motion.button
                 whileHover={{ scale: 1.03, y: -2 }}
                 whileTap={{ scale: 0.98 }}
-                className="group relative px-8 py-4 rounded-full bg-white/[0.03] backdrop-blur-sm border border-purple-500/30 text-[15px] font-semibold text-white flex items-center gap-2 hover:border-purple-500/50 hover:bg-purple-500/10 transition-all duration-300"
+                className="group relative px-8 py-4 rounded-full bg-gray-100 border border-gray-200 text-[15px] font-semibold text-gray-700 flex items-center gap-2 hover:border-gray-300 hover:bg-gray-200 transition-all duration-300"
               >
                 Louer une Moto
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
@@ -645,14 +641,14 @@ export default function HomePage() {
             </Link>
           </motion.div>
         </div>
-        
+
       </section>
 
       {/* Simple CTA Section */}
-      <section className="relative py-20 lg:pb-20 lg:pt-10 overflow-hidden">
+      <section className="relative py-20 lg:pb-20 lg:pt-10 overflow-hidden bg-white">
         {/* Subtle Background */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-900/5 to-transparent" />
-        
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-50/30 to-transparent" />
+
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -663,15 +659,15 @@ export default function HomePage() {
           >
             {/* Title */}
             <div>
-              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight">
+              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-gray-900 mb-6 leading-tight">
                 Prêt à
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-fuchsia-400 ml-3">
+                <span className="text-blue-500 ml-3">
                   Découvrir ?
                 </span>
               </h2>
-              
+
               {/* Description */}
-              <p className="text-xl text-white/70 max-w-2xl mx-auto leading-relaxed">
+              <p className="text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed">
                 Votre prochaine aventure vous attend. Choisissez votre expérience idéale.
               </p>
             </div>
@@ -681,12 +677,11 @@ export default function HomePage() {
               {/* Services Button */}
               <motion.button
                 onClick={() => {
-                  // Scroll to services section or navigate to services page
                   document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' });
                 }}
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.98 }}
-                className="group px-8 py-4 rounded-full bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white font-bold shadow-lg shadow-purple-500/30 transition-all duration-300 flex items-center gap-3"
+                className="group px-8 py-4 rounded-full bg-blue-500 text-white font-bold shadow-lg shadow-blue-500/20 transition-all duration-300 flex items-center gap-3 hover:bg-blue-600"
               >
                 <span>Voir nos Services</span>
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -697,7 +692,7 @@ export default function HomePage() {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.98 }}
-                  className="px-8 py-4 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white font-semibold hover:bg-white/15 transition-all duration-300"
+                  className="px-8 py-4 rounded-full bg-white border border-gray-200 text-gray-700 font-semibold hover:bg-gray-50 hover:border-gray-300 transition-all duration-300 shadow-sm"
                 >
                   Nous Contacter
                 </motion.button>

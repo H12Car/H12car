@@ -25,6 +25,16 @@ import { useBooking, Excursion, Car as CarType } from "@/context/bookingContext"
 import { useState } from "react";
 import Image from "next/image";
 
+// Delivery zones with pricing info
+const deliveryZones = [
+  { value: "aeroport", label: "Aéroport Menara", free: true },
+  { value: "medina", label: "Médina", free: true },
+  { value: "gueliz", label: "Gueliz", free: true },
+  { value: "hivernage", label: "Hivernage", free: true },
+  { value: "palmeraie", label: "Palmeraie", free: false },
+  { value: "autre", label: "Autre", free: false },
+];
+
 // Available excursions for add-ons
 const availableExcursions: Excursion[] = [
   {
@@ -126,12 +136,18 @@ export default function BookingWizard() {
 
   const canProceed = () => {
     switch (currentStep) {
-      case 1:
-        return (
-          bookingDetails.pickupDate &&
-          bookingDetails.pickupLocation &&
-          bookingDetails.numberOfPeople > 0
-        );
+      case 1: {
+        const hasDate = !!bookingDetails.pickupDate;
+        const hasPeople = bookingDetails.numberOfPeople > 0;
+        // Transport: need origin + destination
+        if (selectedCar?.period === "trajet") {
+          return hasDate && !!bookingDetails.pickupLocation && !!bookingDetails.dropoffLocation && hasPeople;
+        }
+        // Car/Moto: need zone, and if "autre" also need address
+        const hasZone = !!bookingDetails.pickupZone;
+        const hasAddress = bookingDetails.pickupZone === "autre" ? !!bookingDetails.pickupLocation : true;
+        return hasDate && hasZone && hasAddress && hasPeople;
+      }
       case 2:
         return selectedCar || selectedExcursions.length > 0;
       case 3:
@@ -165,7 +181,16 @@ export default function BookingWizard() {
     if (bookingDetails.returnDate) {
       message += `- Retour: ${bookingDetails.returnDate}\n`;
     }
-    message += `- Lieu: ${bookingDetails.pickupLocation}\n`;
+    if (selectedCar?.period === "trajet") {
+      message += `- Départ: ${bookingDetails.pickupLocation}\n`;
+      message += `- Destination: ${bookingDetails.dropoffLocation}\n`;
+    } else {
+      const zoneName = deliveryZones.find(z => z.value === bookingDetails.pickupZone)?.label || bookingDetails.pickupZone;
+      message += `- Zone: ${zoneName}\n`;
+      if (bookingDetails.pickupZone === "autre" && bookingDetails.pickupLocation) {
+        message += `- Adresse: ${bookingDetails.pickupLocation}\n`;
+      }
+    }
     message += `- Personnes: ${bookingDetails.numberOfPeople}\n\n`;
 
     message += `*Contact:*\n`;
@@ -231,7 +256,7 @@ export default function BookingWizard() {
                                   transition-all duration-300
                                   ${
                                     currentStep >= step.number
-                                      ? "bg-amber-500 text-black"
+                                      ? "bg-blue-500 text-white"
                                       : "bg-white/10 text-white/40"
                                   }`}
                     >
@@ -246,7 +271,7 @@ export default function BookingWizard() {
                         className={`w-8 sm:w-12 h-0.5 mx-1 transition-all duration-300
                                     ${
                                       currentStep > step.number
-                                        ? "bg-amber-500"
+                                        ? "bg-blue-500"
                                         : "bg-white/10"
                                     }`}
                       />
@@ -301,13 +326,13 @@ export default function BookingWizard() {
                             updateBookingDetails({ pickupDate: e.target.value })
                           }
                           className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/5 border border-white/10
-                                     text-white placeholder:text-white/30 focus:outline-none focus:border-amber-500/50"
+                                     text-white placeholder:text-white/30 focus:outline-none focus:border-blue-500/50"
                         />
                       </div>
                     </div>
 
-                    {/* Return Date (for cars and motos) */}
-                    {(serviceType === "car" || serviceType === "moto") && (
+                    {/* Return Date (for cars and motos, not transport) */}
+                    {(serviceType === "car" || serviceType === "moto") && selectedCar?.period !== "trajet" && (
                       <div>
                         <label className="text-sm text-white/60 mb-1.5 block">
                           Date de retour
@@ -321,31 +346,125 @@ export default function BookingWizard() {
                               updateBookingDetails({ returnDate: e.target.value })
                             }
                             className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/5 border border-white/10
-                                       text-white placeholder:text-white/30 focus:outline-none focus:border-amber-500/50"
+                                       text-white placeholder:text-white/30 focus:outline-none focus:border-blue-500/50"
                           />
                         </div>
                       </div>
                     )}
 
-                    {/* Pickup Location */}
-                    <div>
-                      <label className="text-sm text-white/60 mb-1.5 block">
-                        Lieu de prise en charge *
-                      </label>
-                      <div className="relative">
-                        <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
-                        <input
-                          type="text"
-                          value={bookingDetails.pickupLocation}
-                          onChange={(e) =>
-                            updateBookingDetails({ pickupLocation: e.target.value })
-                          }
-                          placeholder="Aéroport, Hôtel, Adresse..."
-                          className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/5 border border-white/10
-                                     text-white placeholder:text-white/30 focus:outline-none focus:border-amber-500/50"
-                        />
-                      </div>
-                    </div>
+                    {/* Pickup Location - Transport vs Car/Moto */}
+                    {selectedCar?.period === "trajet" ? (
+                      <>
+                        {/* Transport: Origin */}
+                        <div>
+                          <label className="text-sm text-white/60 mb-1.5 block">
+                            Lieu de départ *
+                          </label>
+                          <div className="relative">
+                            <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
+                            <input
+                              type="text"
+                              value={bookingDetails.pickupLocation}
+                              onChange={(e) =>
+                                updateBookingDetails({ pickupLocation: e.target.value })
+                              }
+                              placeholder="Aéroport Menara, Hôtel, Adresse..."
+                              className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/5 border border-white/10
+                                         text-white placeholder:text-white/30 focus:outline-none focus:border-blue-500/50"
+                            />
+                          </div>
+                        </div>
+                        {/* Transport: Destination */}
+                        <div>
+                          <label className="text-sm text-white/60 mb-1.5 block">
+                            Destination *
+                          </label>
+                          <div className="relative">
+                            <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
+                            <input
+                              type="text"
+                              value={bookingDetails.dropoffLocation}
+                              onChange={(e) =>
+                                updateBookingDetails({ dropoffLocation: e.target.value })
+                              }
+                              placeholder="Hôtel, Riad, Adresse..."
+                              className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/5 border border-white/10
+                                         text-white placeholder:text-white/30 focus:outline-none focus:border-blue-500/50"
+                            />
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        {/* Car/Moto: Zone Dropdown */}
+                        <div>
+                          <label className="text-sm text-white/60 mb-1.5 block">
+                            Zone de livraison *
+                          </label>
+                          <div className="relative">
+                            <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
+                            <select
+                              value={bookingDetails.pickupZone}
+                              onChange={(e) => {
+                                const zone = e.target.value;
+                                updateBookingDetails({
+                                  pickupZone: zone,
+                                  pickupLocation: zone !== "autre"
+                                    ? deliveryZones.find(z => z.value === zone)?.label || ""
+                                    : bookingDetails.pickupLocation,
+                                });
+                              }}
+                              className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/5 border border-white/10
+                                         text-white focus:outline-none focus:border-blue-500/50 appearance-none"
+                            >
+                              <option value="" className="bg-zinc-900">Sélectionnez une zone</option>
+                              {deliveryZones.map((zone) => (
+                                <option key={zone.value} value={zone.value} className="bg-zinc-900">
+                                  {zone.label}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                          {/* Delivery Badge */}
+                          {bookingDetails.pickupZone && (
+                            <div className="mt-2">
+                              {deliveryZones.find(z => z.value === bookingDetails.pickupZone)?.free ? (
+                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-xs font-medium text-green-400">
+                                  <Check className="w-3 h-3" />
+                                  Livraison gratuite
+                                </span>
+                              ) : (
+                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-xs font-medium text-amber-400">
+                                  Supplément à confirmer
+                                </span>
+                              )}
+                            </div>
+                          )}
+                        </div>
+
+                        {/* "Autre" zone: show address text input */}
+                        {bookingDetails.pickupZone === "autre" && (
+                          <div>
+                            <label className="text-sm text-white/60 mb-1.5 block">
+                              Précisez l&apos;adresse *
+                            </label>
+                            <div className="relative">
+                              <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
+                              <input
+                                type="text"
+                                value={bookingDetails.pickupLocation}
+                                onChange={(e) =>
+                                  updateBookingDetails({ pickupLocation: e.target.value })
+                                }
+                                placeholder="Votre adresse exacte..."
+                                className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/5 border border-white/10
+                                           text-white placeholder:text-white/30 focus:outline-none focus:border-blue-500/50"
+                              />
+                            </div>
+                          </div>
+                        )}
+                      </>
+                    )}
 
                     {/* Number of People */}
                     <div>
@@ -365,7 +484,7 @@ export default function BookingWizard() {
                           <Minus className="w-5 h-5 text-white" />
                         </button>
                         <div className="flex items-center gap-2">
-                          <Users className="w-5 h-5 text-amber-500" />
+                          <Users className="w-5 h-5 text-blue-400" />
                           <span className="text-2xl font-bold text-white">
                             {bookingDetails.numberOfPeople}
                           </span>
@@ -403,11 +522,11 @@ export default function BookingWizard() {
                     {selectedCar && (
                       <div className="p-4 rounded-xl bg-white/5 border border-white/10">
                         <div className="flex items-center gap-3">
-                          <div className="w-12 h-12 rounded-lg bg-amber-500/20 flex items-center justify-center">
+                          <div className="w-12 h-12 rounded-lg bg-blue-500/20 flex items-center justify-center">
                             {serviceType === "moto" ? (
-                              <Bike className="w-6 h-6 text-amber-500" />
+                              <Bike className="w-6 h-6 text-blue-400" />
                             ) : (
-                              <Car className="w-6 h-6 text-amber-500" />
+                              <Car className="w-6 h-6 text-blue-400" />
                             )}
                           </div>
                           <div className="flex-1">
@@ -432,8 +551,8 @@ export default function BookingWizard() {
                             className="p-4 rounded-xl bg-white/5 border border-white/10"
                           >
                             <div className="flex items-center gap-3">
-                              <div className="w-12 h-12 rounded-lg bg-amber-500/20 flex items-center justify-center">
-                                <Mountain className="w-6 h-6 text-amber-500" />
+                              <div className="w-12 h-12 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                                <Mountain className="w-6 h-6 text-blue-400" />
                               </div>
                               <div className="flex-1">
                                 <h4 className="font-semibold text-white">
@@ -451,8 +570,8 @@ export default function BookingWizard() {
                     )}
 
                     {/* Booking Summary */}
-                    <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20">
-                      <h4 className="text-sm font-semibold text-amber-500 mb-2">
+                    <div className="p-4 rounded-xl bg-blue-500/10 border border-blue-500/20">
+                      <h4 className="text-sm font-semibold text-blue-400 mb-2">
                         Récapitulatif
                       </h4>
                       <div className="space-y-1 text-sm">
@@ -466,10 +585,30 @@ export default function BookingWizard() {
                             <span>{bookingDetails.returnDate}</span>
                           </div>
                         )}
-                        <div className="flex justify-between text-white/60">
-                          <span>Lieu</span>
-                          <span>{bookingDetails.pickupLocation || "-"}</span>
-                        </div>
+                        {selectedCar?.period === "trajet" ? (
+                          <>
+                            <div className="flex justify-between text-white/60">
+                              <span>Départ</span>
+                              <span>{bookingDetails.pickupLocation || "-"}</span>
+                            </div>
+                            <div className="flex justify-between text-white/60">
+                              <span>Destination</span>
+                              <span>{bookingDetails.dropoffLocation || "-"}</span>
+                            </div>
+                          </>
+                        ) : (
+                          <div className="flex justify-between text-white/60">
+                            <span>Zone</span>
+                            <span className="flex items-center gap-2">
+                              {deliveryZones.find(z => z.value === bookingDetails.pickupZone)?.label || "-"}
+                              {bookingDetails.pickupZone && (
+                                deliveryZones.find(z => z.value === bookingDetails.pickupZone)?.free
+                                  ? <span className="text-[10px] text-green-400">(Gratuit)</span>
+                                  : <span className="text-[10px] text-amber-400">(Supp.)</span>
+                              )}
+                            </span>
+                          </div>
+                        )}
                         <div className="flex justify-between text-white/60">
                           <span>Personnes</span>
                           <span>{bookingDetails.numberOfPeople}</span>
@@ -521,7 +660,7 @@ export default function BookingWizard() {
                                     setCarSelectionMode('dates');
                                   }}
                                   className="w-full p-3 rounded-xl bg-white/5 border border-white/10
-                                             hover:border-purple-500/50 hover:bg-white/10 transition-all text-left
+                                             hover:border-blue-500/50 hover:bg-white/10 transition-all text-left
                                              flex items-center gap-3"
                                 >
                                   <div className="w-16 h-12 rounded-lg bg-white/10 overflow-hidden flex-shrink-0 relative">
@@ -539,7 +678,7 @@ export default function BookingWizard() {
                                     <p className="text-xs text-white/50">{car.category}</p>
                                   </div>
                                   <div className="text-right flex-shrink-0">
-                                    <p className="font-bold text-purple-400 text-sm">
+                                    <p className="font-bold text-blue-400 text-sm">
                                       {car.price} DH
                                     </p>
                                     <p className="text-[10px] text-white/40">/{car.period}</p>
@@ -567,7 +706,7 @@ export default function BookingWizard() {
                             </button>
 
                             {/* Selected Car Preview */}
-                            <div className="p-4 rounded-xl bg-purple-500/10 border border-purple-500/30 mb-4">
+                            <div className="p-4 rounded-xl bg-blue-500/10 border border-blue-500/30 mb-4">
                               <div className="flex items-center gap-3">
                                 <div className="w-16 h-12 rounded-lg bg-white/10 overflow-hidden flex-shrink-0 relative">
                                   <Image
@@ -579,7 +718,7 @@ export default function BookingWizard() {
                                 </div>
                                 <div className="flex-1">
                                   <h4 className="font-semibold text-white">{pendingCar.name}</h4>
-                                  <p className="text-sm text-purple-400">{pendingCar.price} DH/{pendingCar.period}</p>
+                                  <p className="text-sm text-blue-400">{pendingCar.price} DH/{pendingCar.period}</p>
                                 </div>
                               </div>
                             </div>
@@ -600,7 +739,7 @@ export default function BookingWizard() {
                                   value={carRentalDates.pickupDate}
                                   onChange={(e) => setCarRentalDates(prev => ({ ...prev, pickupDate: e.target.value }))}
                                   className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/5 border border-white/10
-                                             text-white placeholder:text-white/30 focus:outline-none focus:border-purple-500/50"
+                                             text-white placeholder:text-white/30 focus:outline-none focus:border-blue-500/50"
                                 />
                               </div>
                             </div>
@@ -617,7 +756,7 @@ export default function BookingWizard() {
                                   value={carRentalDates.returnDate}
                                   onChange={(e) => setCarRentalDates(prev => ({ ...prev, returnDate: e.target.value }))}
                                   className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/5 border border-white/10
-                                             text-white placeholder:text-white/30 focus:outline-none focus:border-purple-500/50"
+                                             text-white placeholder:text-white/30 focus:outline-none focus:border-blue-500/50"
                                 />
                               </div>
                             </div>
@@ -635,10 +774,10 @@ export default function BookingWizard() {
                                 }
                               }}
                               disabled={!carRentalDates.pickupDate || !carRentalDates.returnDate}
-                              className="w-full py-3 rounded-xl bg-gradient-to-r from-purple-600 to-fuchsia-600
+                              className="w-full py-3 rounded-xl bg-blue-500
                                          text-white font-semibold flex items-center justify-center gap-2
                                          disabled:opacity-50 disabled:cursor-not-allowed
-                                         hover:from-purple-500 hover:to-fuchsia-500 transition"
+                                         hover:bg-blue-600 transition"
                             >
                               <Check className="w-4 h-4" />
                               Ajouter ce véhicule
@@ -667,14 +806,14 @@ export default function BookingWizard() {
                           <div className="mb-4">
                             <button
                               onClick={() => setCarSelectionMode('list')}
-                              className="w-full p-4 rounded-xl border-2 border-dashed border-purple-500/30
-                                         bg-purple-500/5 hover:bg-purple-500/10 hover:border-purple-500/50
+                              className="w-full p-4 rounded-xl border-2 border-dashed border-blue-500/30
+                                         bg-blue-500/5 hover:bg-blue-500/10 hover:border-blue-500/50
                                          transition-all text-left group"
                             >
                               <div className="flex items-center gap-3">
-                                <div className="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center
-                                                group-hover:bg-purple-500/30 transition">
-                                  <Car className="w-6 h-6 text-purple-400" />
+                                <div className="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center
+                                                group-hover:bg-blue-500/30 transition">
+                                  <Car className="w-6 h-6 text-blue-400" />
                                 </div>
                                 <div className="flex-1">
                                   <h4 className="font-semibold text-white">
@@ -684,7 +823,7 @@ export default function BookingWizard() {
                                     Louez une voiture pour vos déplacements
                                   </p>
                                 </div>
-                                <ChevronRight className="w-5 h-5 text-purple-400 group-hover:translate-x-1 transition" />
+                                <ChevronRight className="w-5 h-5 text-blue-400 group-hover:translate-x-1 transition" />
                               </div>
                             </button>
                           </div>
@@ -692,14 +831,14 @@ export default function BookingWizard() {
 
                         {/* Show selected car if added via cross-sell */}
                         {serviceType === "excursion" && selectedCar && (
-                          <div className="mb-4 p-4 rounded-xl bg-purple-500/10 border border-purple-500/30">
+                          <div className="mb-4 p-4 rounded-xl bg-blue-500/10 border border-blue-500/30">
                             <div className="flex items-center gap-3">
-                              <div className="w-12 h-12 rounded-lg bg-purple-500/20 flex items-center justify-center">
-                                <Car className="w-6 h-6 text-purple-400" />
+                              <div className="w-12 h-12 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                                <Car className="w-6 h-6 text-blue-400" />
                               </div>
                               <div className="flex-1">
                                 <h4 className="font-semibold text-white">{selectedCar.name}</h4>
-                                <p className="text-sm text-purple-400">{selectedCar.price} DH/{selectedCar.period}</p>
+                                <p className="text-sm text-blue-400">{selectedCar.price} DH/{selectedCar.period}</p>
                               </div>
                               <Check className="w-5 h-5 text-green-500" />
                             </div>
@@ -717,7 +856,7 @@ export default function BookingWizard() {
                                 className={`w-full p-4 rounded-xl border transition-all text-left
                                             ${
                                               isSelected
-                                                ? "bg-amber-500/10 border-amber-500/50"
+                                                ? "bg-blue-500/10 border-blue-500/50"
                                                 : "bg-white/5 border-white/10 hover:border-white/20"
                                             }`}
                               >
@@ -726,7 +865,7 @@ export default function BookingWizard() {
                                     className={`w-10 h-10 rounded-lg flex items-center justify-center
                                                 ${
                                                   isSelected
-                                                    ? "bg-amber-500 text-black"
+                                                    ? "bg-blue-500 text-white"
                                                     : "bg-white/10 text-white"
                                                 }`}
                                   >
@@ -745,7 +884,7 @@ export default function BookingWizard() {
                                     </p>
                                   </div>
                                   <div className="text-right">
-                                    <p className="font-bold text-amber-500">
+                                    <p className="font-bold text-blue-400">
                                       {excursion.price} DH
                                     </p>
                                     <p className="text-xs text-white/40">
@@ -790,7 +929,7 @@ export default function BookingWizard() {
                           }
                           placeholder="Votre nom"
                           className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/5 border border-white/10
-                                     text-white placeholder:text-white/30 focus:outline-none focus:border-amber-500/50"
+                                     text-white placeholder:text-white/30 focus:outline-none focus:border-blue-500/50"
                         />
                       </div>
                     </div>
@@ -810,7 +949,7 @@ export default function BookingWizard() {
                           }
                           placeholder="+212 6XX XXX XXX"
                           className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/5 border border-white/10
-                                     text-white placeholder:text-white/30 focus:outline-none focus:border-amber-500/50"
+                                     text-white placeholder:text-white/30 focus:outline-none focus:border-blue-500/50"
                         />
                       </div>
                     </div>
@@ -830,7 +969,7 @@ export default function BookingWizard() {
                           }
                           placeholder="votre@email.com"
                           className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/5 border border-white/10
-                                     text-white placeholder:text-white/30 focus:outline-none focus:border-amber-500/50"
+                                     text-white placeholder:text-white/30 focus:outline-none focus:border-blue-500/50"
                         />
                       </div>
                     </div>
@@ -850,17 +989,17 @@ export default function BookingWizard() {
                           placeholder="Informations supplémentaires..."
                           rows={3}
                           className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/5 border border-white/10
-                                     text-white placeholder:text-white/30 focus:outline-none focus:border-amber-500/50
+                                     text-white placeholder:text-white/30 focus:outline-none focus:border-blue-500/50
                                      resize-none"
                         />
                       </div>
                     </div>
 
                     {/* Total */}
-                    <div className="p-4 rounded-xl bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/30">
+                    <div className="p-4 rounded-xl bg-blue-500/20 border border-blue-500/30">
                       <div className="flex items-center justify-between">
                         <span className="text-white/80">Total estimé</span>
-                        <span className="text-2xl font-bold text-amber-500">
+                        <span className="text-2xl font-bold text-blue-400">
                           {getTotalPrice()} DH
                         </span>
                       </div>
@@ -910,8 +1049,8 @@ export default function BookingWizard() {
                     <button
                       onClick={nextStep}
                       disabled={!canProceed()}
-                      className="flex-1 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500
-                                 text-black font-semibold hover:from-amber-400 hover:to-orange-400
+                      className="flex-1 py-3 rounded-xl bg-blue-500
+                                 text-white font-semibold hover:bg-blue-600
                                  transition flex items-center justify-center gap-2
                                  disabled:opacity-50 disabled:cursor-not-allowed"
                     >

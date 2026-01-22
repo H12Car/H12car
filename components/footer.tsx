@@ -61,11 +61,11 @@ export default function Footer() {
 
   return (
     <>
-      <footer className="relative overflow-hidden bg-[#0a0a0a] border-t border-white/[0.08]">
+      <footer className="relative overflow-hidden bg-gray-50 border-t border-gray-200">
         {/* Subtle Background Gradient */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-purple-600/5 rounded-full blur-3xl" />
-          <div className="absolute top-0 right-1/4 w-80 h-80 bg-fuchsia-600/5 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl" />
+          <div className="absolute top-0 right-1/4 w-80 h-80 bg-blue-400/5 rounded-full blur-3xl" />
         </div>
 
         <div className="relative max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-16">
@@ -78,16 +78,16 @@ export default function Footer() {
                   whileHover={{ scale: 1.02 }}
                   className="flex items-center gap-3"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-fuchsia-600 p-[2px]">
-                    <div className="w-full h-full rounded-xl bg-black flex items-center justify-center">
-                      <span className="text-lg font-black text-white">H</span>
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 p-[2px]">
+                    <div className="w-full h-full rounded-xl bg-white flex items-center justify-center">
+                      <span className="text-lg font-black text-gray-900">H</span>
                     </div>
                   </div>
                   <div>
-                    <span className="text-2xl font-black text-white">H12</span>
+                    <span className="text-2xl font-black text-gray-900">H12</span>
                     <div className="flex items-center gap-1">
-                      <Sparkles className="w-2.5 h-2.5 text-purple-400" />
-                      <span className="text-[9px] text-purple-400 font-semibold uppercase tracking-wider">
+                      <Sparkles className="w-2.5 h-2.5 text-blue-500" />
+                      <span className="text-[9px] text-blue-500 font-semibold uppercase tracking-wider">
                         Premium Travel
                       </span>
                     </div>
@@ -95,7 +95,7 @@ export default function Footer() {
                 </motion.div>
               </Link>
 
-              <p className="text-white/50 text-sm leading-relaxed max-w-xs mx-auto sm:mx-0">
+              <p className="text-gray-500 text-sm leading-relaxed max-w-xs mx-auto sm:mx-0">
                 Location de véhicules premium et expériences exclusives à Marrakech.
               </p>
 
@@ -109,10 +109,10 @@ export default function Footer() {
                     rel="noopener noreferrer"
                     whileHover={{ scale: 1.1, y: -2 }}
                     whileTap={{ scale: 0.95 }}
-                    className="w-9 h-9 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 flex items-center justify-center transition-all group"
+                    className="w-9 h-9 rounded-lg bg-gray-100 hover:bg-gray-200 border border-gray-200 hover:border-gray-300 flex items-center justify-center transition-all group"
                     aria-label={social.label}
                   >
-                    <social.icon className="w-4 h-4 text-white/60 group-hover:text-purple-400 transition-colors" />
+                    <social.icon className="w-4 h-4 text-gray-500 group-hover:text-blue-500 transition-colors" />
                   </motion.a>
                 ))}
               </div>
@@ -120,13 +120,13 @@ export default function Footer() {
 
             {/* Quick Links Widget */}
             <div className="space-y-4">
-              <h3 className="text-white/90 font-semibold text-sm">Navigation</h3>
+              <h3 className="text-gray-900 font-semibold text-sm">Navigation</h3>
               <div className="space-y-2">
                 {quickLinks.map((link) => (
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="block text-white/50 hover:text-white text-sm transition-colors"
+                    className="block text-gray-500 hover:text-blue-500 text-sm transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -136,15 +136,15 @@ export default function Footer() {
 
             {/* Services Widget */}
             <div className="space-y-4">
-              <h3 className="text-white/90 font-semibold text-sm">Services</h3>
+              <h3 className="text-gray-900 font-semibold text-sm">Services</h3>
               <div className="space-y-2">
                 {services.map((service) => (
                   <Link
                     key={service.name}
                     href={service.href}
-                    className="flex items-center gap-2 text-white/50 hover:text-white text-sm transition-colors group"
+                    className="flex items-center gap-2 text-gray-500 hover:text-blue-500 text-sm transition-colors group"
                   >
-                    <service.icon className="w-3.5 h-3.5 text-purple-400/60 group-hover:text-purple-400 transition-colors" />
+                    <service.icon className="w-3.5 h-3.5 text-blue-400/60 group-hover:text-blue-500 transition-colors" />
                     {service.name}
                   </Link>
                 ))}
@@ -153,15 +153,15 @@ export default function Footer() {
 
             {/* Contact Widget */}
             <div className="space-y-4">
-              <h3 className="text-white/90 font-semibold text-sm">Contact</h3>
+              <h3 className="text-gray-900 font-semibold text-sm">Contact</h3>
               <div className="space-y-3">
                 {contactInfo.map((info, idx) => (
                   <a
                     key={idx}
                     href={info.href}
-                    className="flex items-start gap-2 text-white/50 hover:text-white text-sm transition-colors group"
+                    className="flex items-start gap-2 text-gray-500 hover:text-blue-500 text-sm transition-colors group"
                   >
-                    <info.icon className="w-3.5 h-3.5 text-purple-400/60 group-hover:text-purple-400 transition-colors flex-shrink-0 mt-0.5" />
+                    <info.icon className="w-3.5 h-3.5 text-blue-400/60 group-hover:text-blue-500 transition-colors flex-shrink-0 mt-0.5" />
                     <span className="text-xs">{info.text}</span>
                   </a>
                 ))}
@@ -170,7 +170,7 @@ export default function Footer() {
               {/* Newsletter */}
               <div className="pt-2 max-w-xs mx-auto sm:mx-0">
                 {subscribed ? (
-                  <div className="px-3 py-2.5 rounded-lg bg-green-500/20 border border-green-500/30 text-green-400 text-sm text-center">
+                  <div className="px-3 py-2.5 rounded-lg bg-green-50 border border-green-200 text-green-600 text-sm text-center">
                     Merci pour votre inscription!
                   </div>
                 ) : (
@@ -181,11 +181,11 @@ export default function Footer() {
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="Newsletter"
                       required
-                      className="w-full px-3 py-2.5 pr-10 rounded-lg bg-white/5 border border-white/10 text-white text-sm placeholder-white/30 focus:outline-none focus:ring-1 focus:ring-purple-500/50 focus:border-purple-500/30 transition-all"
+                      className="w-full px-3 py-2.5 pr-10 rounded-lg bg-white border border-gray-200 text-gray-900 text-sm placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500/50 focus:border-blue-500/30 transition-all"
                     />
                     <button
                       type="submit"
-                      className="absolute right-1.5 top-1/2 -translate-y-1/2 p-1.5 rounded-md bg-purple-600/80 hover:bg-purple-600 transition-all"
+                      className="absolute right-1.5 top-1/2 -translate-y-1/2 p-1.5 rounded-md bg-blue-500 hover:bg-blue-600 transition-all"
                     >
                       <ArrowRight className="w-3.5 h-3.5 text-white" />
                     </button>
@@ -196,14 +196,14 @@ export default function Footer() {
           </div>
 
           {/* Bottom Bar */}
-          <div className="border-t border-white/[0.06] py-6">
+          <div className="border-t border-gray-200 py-6">
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 text-center">
-              <div className="flex items-center gap-2 text-white/40 text-xs">
-                <Star className="w-3 h-3 text-purple-400/60 fill-purple-400/60" />
+              <div className="flex items-center gap-2 text-gray-400 text-xs">
+                <Star className="w-3 h-3 text-blue-400/60 fill-blue-400/60" />
                 <span>&copy; {new Date().getFullYear()} H12. Tous droits réservés.</span>
               </div>
-              <span className="hidden sm:block text-white/20">•</span>
-              <span className="text-white/30 text-xs">Développé par DigitalMaroc</span>
+              <span className="hidden sm:block text-gray-300">•</span>
+              <span className="text-gray-400 text-xs">Développé par DigitalMaroc</span>
             </div>
           </div>
         </div>

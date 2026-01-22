@@ -29,9 +29,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark bg-[#0a0a0a]" suppressHydrationWarning>
+    <html lang="en" className="bg-white" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#0a0a0a] text-white min-h-screen`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-gray-900 min-h-screen`}
         suppressHydrationWarning
       >
         <BookingProvider>

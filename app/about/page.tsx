@@ -55,36 +55,13 @@ const services = [
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="relative pt-24 sm:pt-28 pb-16 lg:pt-40 lg:pb-24 overflow-hidden">
-        {/* Animated Background */}
+      <section className="relative pt-24 sm:pt-28 pb-16 lg:pt-40 lg:pb-24 overflow-hidden bg-gradient-to-b from-gray-50 to-white">
+        {/* Subtle Background */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <motion.div
-            className="absolute top-1/4 -left-20 w-[500px] h-[500px] rounded-full bg-gradient-to-r from-purple-600/20 to-fuchsia-600/20 blur-3xl"
-            animate={{
-              scale: [1, 1.2, 1],
-              opacity: [0.2, 0.4, 0.2],
-            }}
-            transition={{
-              duration: 8,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-          />
-          <motion.div
-            className="absolute bottom-1/4 -right-20 w-[400px] h-[400px] rounded-full bg-gradient-to-l from-fuchsia-600/15 to-purple-600/15 blur-3xl"
-            animate={{
-              scale: [1.2, 1, 1.2],
-              opacity: [0.15, 0.3, 0.15],
-            }}
-            transition={{
-              duration: 10,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 1
-            }}
-          />
+          <div className="absolute top-1/4 -left-20 w-[500px] h-[500px] rounded-full bg-blue-500/5 blur-3xl" />
+          <div className="absolute bottom-1/4 -right-20 w-[400px] h-[400px] rounded-full bg-blue-400/5 blur-3xl" />
         </div>
 
         <div className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-16 xl:px-24 relative z-10">
@@ -94,10 +71,10 @@ export default function AboutPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20 mb-6"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100 mb-6"
             >
-              <Sparkles className="w-4 h-4 text-purple-400" />
-              <span className="text-sm font-semibold text-purple-400">
+              <Sparkles className="w-4 h-4 text-blue-500" />
+              <span className="text-sm font-semibold text-blue-600">
                 A Propos de H12
               </span>
             </motion.div>
@@ -107,10 +84,10 @@ export default function AboutPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-4xl sm:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight tracking-tight"
+              className="text-4xl sm:text-5xl lg:text-6xl font-black text-gray-900 mb-6 leading-tight tracking-tight"
             >
               Votre Route{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-fuchsia-400">
+              <span className="text-blue-500">
                 Commence Ici
               </span>
             </motion.h1>
@@ -120,7 +97,7 @@ export default function AboutPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-lg text-white/60 leading-relaxed mb-8"
+              className="text-lg text-gray-500 leading-relaxed mb-8"
             >
               Notre mission est simple : vous offrir un service de location fiable,
               transparent et flexible, adapte aussi bien aux touristes qu&apos;aux residents.
@@ -136,14 +113,14 @@ export default function AboutPage() {
               className="flex flex-wrap items-center justify-center gap-4 sm:gap-6"
             >
               {stats.map((stat, idx) => (
-                <div key={idx} className="px-5 py-3 rounded-xl bg-white/[0.03] border border-white/[0.06] text-center">
+                <div key={idx} className="px-5 py-3 rounded-xl bg-white border border-gray-100 shadow-sm text-center">
                   <div className="flex items-center justify-center gap-1">
-                    <span className="text-2xl sm:text-3xl font-black text-white tracking-tighter">{stat.value}</span>
+                    <span className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tighter">{stat.value}</span>
                     {stat.hasStar && (
-                      <Star className="w-4 h-4 text-purple-400 fill-purple-400 ml-0.5" />
+                      <Star className="w-4 h-4 text-blue-500 fill-blue-500 ml-0.5" />
                     )}
                   </div>
-                  <div className="text-xs text-white/40 mt-1">{stat.label}</div>
+                  <div className="text-xs text-gray-400 mt-1">{stat.label}</div>
                 </div>
               ))}
             </motion.div>
@@ -152,7 +129,7 @@ export default function AboutPage() {
       </section>
 
       {/* Mission Section */}
-      <section className="py-16 lg:py-24">
+      <section className="py-16 lg:py-24 bg-white">
         <div className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-16 xl:px-24">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             {/* Image */}
@@ -163,8 +140,8 @@ export default function AboutPage() {
               transition={{ duration: 0.8 }}
               className="relative"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-600/20 via-fuchsia-600/10 to-purple-600/20 blur-[60px] rounded-full" />
-              <div className="relative aspect-[4/3] rounded-3xl overflow-hidden border border-white/10">
+              <div className="absolute inset-0 bg-blue-500/10 blur-[60px] rounded-full" />
+              <div className="relative aspect-[4/3] rounded-3xl overflow-hidden border border-gray-200 shadow-lg">
                 <Image
                   src="/h12_hero.png"
                   alt="H12 Premium Fleet"
@@ -182,21 +159,21 @@ export default function AboutPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
             >
-              <p className="text-purple-400/80 text-sm font-medium tracking-[0.15em] uppercase mb-4">
+              <p className="text-blue-500 text-sm font-medium tracking-[0.15em] uppercase mb-4">
                 Notre Engagement
               </p>
-              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
+              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
                 Une Entreprise Locale,{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-fuchsia-400">
+                <span className="text-blue-500">
                   Dynamique et de Confiance
                 </span>
               </h2>
-              <p className="text-white/60 leading-relaxed mb-6">
+              <p className="text-gray-500 leading-relaxed mb-6">
                 Nous proposons une flotte de vehicules economiques et confortables,
                 livres gratuitement a l&apos;aeroport ou en centre-ville, avec assurance
                 incluse et possibilite de location sans caution (sous conditions).
               </p>
-              <p className="text-white/60 leading-relaxed mb-8">
+              <p className="text-gray-500 leading-relaxed mb-8">
                 Nous organisons egalement des excursions sur devis pour vous faire
                 decouvrir les merveilles du Maroc. Faites le choix de la tranquillite
                 pour vos deplacements et aventures a Marrakech.
@@ -206,10 +183,10 @@ export default function AboutPage() {
               <div className="space-y-3">
                 {["Reservation simple par WhatsApp ou en ligne", "Aucun frais cache", "Service personnalise"].map((item, idx) => (
                   <div key={idx} className="flex items-center gap-3">
-                    <div className="w-6 h-6 rounded-full bg-purple-500/20 flex items-center justify-center">
-                      <CheckCircle className="w-4 h-4 text-purple-400" />
+                    <div className="w-6 h-6 rounded-full bg-blue-50 flex items-center justify-center">
+                      <CheckCircle className="w-4 h-4 text-blue-500" />
                     </div>
-                    <span className="text-white/80">{item}</span>
+                    <span className="text-gray-700">{item}</span>
                   </div>
                 ))}
               </div>
@@ -219,7 +196,7 @@ export default function AboutPage() {
       </section>
 
       {/* Services Section */}
-      <section className="py-16 lg:py-24 bg-white/[0.02]">
+      <section className="py-16 lg:py-24 bg-gray-50">
         <div className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-16 xl:px-24">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -228,12 +205,12 @@ export default function AboutPage() {
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <p className="text-purple-400/80 text-sm font-medium tracking-[0.15em] uppercase mb-4">
+            <p className="text-blue-500 text-sm font-medium tracking-[0.15em] uppercase mb-4">
               Nos Services
             </p>
-            <h2 className="text-3xl sm:text-4xl font-bold text-white">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
               Tout Pour Vos{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-fuchsia-400">
+              <span className="text-blue-500">
                 Deplacements
               </span>
             </h2>
@@ -247,13 +224,13 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: idx * 0.1 }}
-                className="p-6 rounded-2xl bg-white/[0.03] border border-white/10 hover:border-purple-500/30 transition-all group"
+                className="p-6 rounded-2xl bg-white border border-gray-100 shadow-sm hover:border-blue-200 hover:shadow-md transition-all group"
               >
-                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-purple-600 to-fuchsia-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <div className="w-14 h-14 rounded-xl bg-blue-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                   <service.icon className="w-7 h-7 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-2">{service.title}</h3>
-                <p className="text-white/60">{service.description}</p>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">{service.title}</h3>
+                <p className="text-gray-500">{service.description}</p>
               </motion.div>
             ))}
           </div>
@@ -261,7 +238,7 @@ export default function AboutPage() {
       </section>
 
       {/* Why Choose Us Section */}
-      <section className="py-16 lg:py-24">
+      <section className="py-16 lg:py-24 bg-white">
         <div className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-16 xl:px-24">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -270,12 +247,12 @@ export default function AboutPage() {
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <p className="text-purple-400/80 text-sm font-medium tracking-[0.15em] uppercase mb-4">
+            <p className="text-blue-500 text-sm font-medium tracking-[0.15em] uppercase mb-4">
               Pourquoi Nous Choisir
             </p>
-            <h2 className="text-3xl sm:text-4xl font-bold text-white">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
               L&apos;Excellence{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-fuchsia-400">
+              <span className="text-blue-500">
                 a Votre Service
               </span>
             </h2>
@@ -289,13 +266,13 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: idx * 0.1 }}
-                className="text-center p-6 rounded-2xl bg-gradient-to-b from-white/[0.05] to-transparent border border-white/10"
+                className="text-center p-6 rounded-2xl bg-gray-50 border border-gray-100"
               >
-                <div className="w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center mx-auto mb-4">
-                  <feature.icon className="w-6 h-6 text-purple-400" />
+                <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center mx-auto mb-4">
+                  <feature.icon className="w-6 h-6 text-blue-500" />
                 </div>
-                <h3 className="text-lg font-bold text-white mb-2">{feature.title}</h3>
-                <p className="text-sm text-white/60">{feature.description}</p>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">{feature.title}</h3>
+                <p className="text-sm text-gray-500">{feature.description}</p>
               </motion.div>
             ))}
           </div>
@@ -303,7 +280,7 @@ export default function AboutPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 lg:py-24">
+      <section className="py-16 lg:py-24 bg-gray-50">
         <div className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-16 xl:px-24">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -313,30 +290,29 @@ export default function AboutPage() {
             className="relative rounded-3xl overflow-hidden"
           >
             {/* Background */}
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 via-fuchsia-600/20 to-purple-600/20" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#0a0a0a_100%)]" />
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-blue-600" />
 
             <div className="relative p-8 sm:p-12 lg:p-16 text-center">
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
                 Pret a{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-fuchsia-400">
+                <span className="text-white/90">
                   Commencer ?
                 </span>
               </h2>
-              <p className="text-lg text-white/60 max-w-xl mx-auto mb-8">
+              <p className="text-lg text-white/70 max-w-xl mx-auto mb-8">
                 Contactez-nous des maintenant et decouvrez pourquoi H12 est le choix prefere des voyageurs a Marrakech.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Link
                   href="/voiture"
-                  className="px-8 py-4 rounded-full bg-white text-black font-semibold flex items-center gap-2 hover:bg-white/90 transition"
+                  className="px-8 py-4 rounded-full bg-white text-gray-900 font-semibold flex items-center gap-2 hover:bg-gray-50 transition shadow-lg"
                 >
                   Voir nos vehicules
                   <ArrowRight className="w-4 h-4" />
                 </Link>
                 <Link
                   href="/contact"
-                  className="px-8 py-4 rounded-full bg-white/10 border border-white/20 text-white font-semibold flex items-center gap-2 hover:bg-white/20 transition"
+                  className="px-8 py-4 rounded-full bg-white/20 border border-white/30 text-white font-semibold flex items-center gap-2 hover:bg-white/30 transition"
                 >
                   Nous contacter
                 </Link>
