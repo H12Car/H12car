@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Star, Car, Bike, MapPin, Shield, Clock, Phone, CheckCircle, Users, Heart, Sparkles, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import MousePushCard from "@/components/MousePushCard";
 
 const features = [
   {
@@ -224,13 +225,14 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: idx * 0.1 }}
-                className="p-6 rounded-2xl bg-white border border-gray-100 shadow-sm hover:border-blue-200 hover:shadow-md transition-all group"
               >
-                <div className="w-14 h-14 rounded-xl bg-blue-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <service.icon className="w-7 h-7 text-white" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{service.title}</h3>
-                <p className="text-gray-500">{service.description}</p>
+                <MousePushCard maxTilt={8} smoothing={0.05} className="p-6 rounded-2xl bg-white border border-gray-100 shadow-sm hover:border-blue-200 hover:shadow-md transition-all group h-full">
+                  <div className="w-14 h-14 rounded-xl bg-blue-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <service.icon className="w-7 h-7 text-white" />
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">{service.title}</h3>
+                  <p className="text-gray-500">{service.description}</p>
+                </MousePushCard>
               </motion.div>
             ))}
           </div>
@@ -266,13 +268,14 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: idx * 0.1 }}
-                className="text-center p-6 rounded-2xl bg-gray-50 border border-gray-100"
               >
-                <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center mx-auto mb-4">
-                  <feature.icon className="w-6 h-6 text-blue-500" />
-                </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2">{feature.title}</h3>
-                <p className="text-sm text-gray-500">{feature.description}</p>
+                <MousePushCard maxTilt={8} smoothing={0.05} className="text-center p-6 rounded-2xl bg-gray-50 border border-gray-100 h-full">
+                  <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center mx-auto mb-4">
+                    <feature.icon className="w-6 h-6 text-blue-500" />
+                  </div>
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">{feature.title}</h3>
+                  <p className="text-sm text-gray-500">{feature.description}</p>
+                </MousePushCard>
               </motion.div>
             ))}
           </div>

@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Star, Fuel, Users, Settings, Bike, ArrowRight, Heart, Shield, X, MapPin } from "lucide-react";
 import Image from "next/image";
 import { useBooking } from "@/context/bookingContext";
+import MousePushCard from "@/components/MousePushCard";
 
 const motos = [
   // PREMIUM ADVENTURE
@@ -473,12 +474,12 @@ export default function MotoPage() {
             >
               <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl shadow-gray-300/50">
                 <Image
-                  src="/car.png"
+                  src="/moto_h12/h12_moto_new.webp"
                   alt="H12 Premium Moto"
                   fill
                   priority
                   sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover"
+                  className="object-cover scale-[1.12]"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent" />
               </div>
@@ -639,15 +640,15 @@ export default function MotoPage() {
               <div className="absolute inset-0 bg-blue-100/50 blur-[80px] rounded-full" />
 
               {/* Image Container */}
-              <div className="relative max-w-[466px] w-full">
+              <MousePushCard maxTilt={10} smoothing={0.06} className="relative max-w-[466px] w-full">
                 <div className="relative aspect-square rounded-3xl overflow-hidden border border-gray-100 shadow-2xl shadow-gray-300/50">
                   <Image
-                    src="/car.png"
+                    src="/moto_h12/h12_moto_new.webp"
                     alt="H12 Premium Moto"
                     fill
                     priority
                     sizes="(max-width: 1024px) 100vw, 466px"
-                    className="object-cover"
+                    className="object-cover scale-[1.12]"
                   />
                   {/* Subtle gradient overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
@@ -674,7 +675,7 @@ export default function MotoPage() {
                 >
                   <Bike className="w-5 h-5 text-white" />
                 </motion.div>
-              </div>
+              </MousePushCard>
             </motion.div>
           </div>
         </div>
@@ -723,8 +724,9 @@ export default function MotoPage() {
                   className="group cursor-pointer"
                   onClick={() => handleCardClick(moto.id)}
                 >
+                  <MousePushCard maxTilt={8} smoothing={0.05}>
                   <div
-                    className={`relative bg-black overflow-hidden rounded-[20px] sm:rounded-[24px] h-[380px] sm:h-[400px] lg:h-[440px] transition-all duration-500 ${!isExpanded ? 'hover:scale-[1.02] hover:shadow-2xl' : 'shadow-2xl ring-2 ring-blue-500/30'}`}
+                    className={`relative bg-black overflow-hidden rounded-[20px] sm:rounded-[24px] h-[380px] sm:h-[400px] lg:h-[440px] transition-all duration-500 ${!isExpanded ? 'hover:shadow-2xl' : 'shadow-2xl ring-2 ring-blue-500/30'}`}
                   >
                     {/* Moto Image - Always full size */}
                     <Image
@@ -732,7 +734,7 @@ export default function MotoPage() {
                       alt={moto.name}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className={`object-cover object-center transition-all duration-700 ${isExpanded ? 'scale-110' : 'group-hover:scale-105'}`}
+                      className={`object-cover object-center transition-all duration-700 ${isExpanded ? 'scale-[1.15]' : 'scale-[1.1] group-hover:scale-[1.12]'}`}
                     />
 
                     {/* Gradient Overlay - stronger when expanded */}
@@ -913,6 +915,7 @@ export default function MotoPage() {
                       )}
                     </AnimatePresence>
                   </div>
+                  </MousePushCard>
                 </motion.div>
               );
             })}

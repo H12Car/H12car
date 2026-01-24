@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Star, Clock, Users, MapPin, ArrowRight, Heart, Calendar, CheckCircle, Compass, X } from "lucide-react";
 import Image from "next/image";
 import { useBooking } from "@/context/bookingContext";
+import MousePushCard from "@/components/MousePushCard";
 
 const excursions = [
   {
@@ -167,12 +168,12 @@ export default function ExcursionPage() {
             >
               <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl shadow-gray-300/50">
                 <Image
-                  src="/h12_hero.png"
+                  src="/excursions/h12_excursion_new.webp"
                   alt="H12 Excursions"
                   fill
                   priority
                   sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover"
+                  className="object-cover scale-[1.12]"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent" />
               </div>
@@ -333,15 +334,15 @@ export default function ExcursionPage() {
               <div className="absolute inset-0 bg-blue-100/40 blur-[80px] rounded-full" />
 
               {/* Image Container */}
-              <div className="relative max-w-[466px] w-full">
+              <MousePushCard maxTilt={10} smoothing={0.06} className="relative max-w-[466px] w-full">
                 <div className="relative aspect-square rounded-3xl overflow-hidden border border-gray-100">
                   <Image
-                    src="/h12_hero.png"
+                    src="/excursions/h12_excursion_new.webp"
                     alt="H12 Excursions"
                     fill
                     priority
                     sizes="(max-width: 1024px) 100vw, 466px"
-                    className="object-cover"
+                    className="object-cover scale-[1.12]"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
                 </div>
@@ -367,7 +368,7 @@ export default function ExcursionPage() {
                 >
                   <Compass className="w-5 h-5 text-white" />
                 </motion.div>
-              </div>
+              </MousePushCard>
             </motion.div>
           </div>
         </div>
@@ -393,86 +394,85 @@ export default function ExcursionPage() {
       {/* Excursions Grid */}
       <section id="excursions-grid" className="py-8">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-16">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
             {excursions.map((excursion, index) => {
               const isExpanded = expandedExcursionId === excursion.id;
 
               return (
                 <motion.div
                   key={excursion.id}
-                  layout
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{
-                    duration: 0.5,
-                    delay: index * 0.08,
-                    layout: { duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }
-                  }}
+                  transition={{ duration: 0.5, delay: index * 0.08 }}
                   className="group cursor-pointer"
                   onClick={() => handleCardClick(excursion.id)}
                 >
-                  <motion.div
-                    layout
-                    className={`relative bg-black overflow-hidden transition-all duration-500 rounded-[20px] sm:rounded-[24px] ${!isExpanded ? 'hover:scale-[1.02] hover:shadow-2xl' : 'shadow-2xl ring-2 ring-blue-500/30'}`}
+                  <MousePushCard maxTilt={8} smoothing={0.05}>
+                  <div
+                    className={`relative bg-black overflow-hidden rounded-[20px] sm:rounded-[24px] h-[380px] sm:h-[400px] lg:h-[440px] transition-all duration-500 ${!isExpanded ? 'hover:shadow-2xl' : 'shadow-2xl ring-2 ring-blue-500/30'}`}
                   >
-                    {/* Image Section */}
-                    <motion.div layout className={`relative overflow-hidden ${isExpanded ? 'h-[220px] sm:h-[260px]' : 'h-[360px] sm:h-[380px] lg:h-[420px]'}`}>
-                      {/* Excursion Image */}
-                      <Image
-                        src={excursion.image}
-                        alt={excursion.name}
-                        fill
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                        className={`object-cover object-top transition-all duration-700 ${isExpanded ? 'scale-105' : 'group-hover:scale-105'}`}
+                    {/* Excursion Image */}
+                    <Image
+                      src={excursion.image}
+                      alt={excursion.name}
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className={`object-cover object-top transition-all duration-700 ${isExpanded ? 'scale-[1.15]' : 'scale-[1.1] group-hover:scale-[1.12]'}`}
+                    />
+
+                    {/* Gradient Overlay */}
+                    <div className={`absolute inset-0 transition-all duration-500 ${isExpanded ? 'bg-gradient-to-t from-black/90 via-black/50 to-black/20' : 'bg-gradient-to-t from-black/70 via-black/20 to-transparent'}`} />
+
+                    {/* Favorite Button */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleFavorite(excursion.id);
+                      }}
+                      className="absolute top-4 right-4 sm:top-5 sm:right-5 z-20 w-8 h-8 sm:w-9 sm:h-9 bg-white/10 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center hover:bg-white/20 transition-all duration-300"
+                    >
+                      <Heart
+                        className={`w-4 h-4 sm:w-[18px] sm:h-[18px] transition-all duration-300 ${
+                          favorites.includes(excursion.id)
+                            ? "fill-red-500 text-red-500"
+                            : "text-white/80 hover:text-red-400"
+                        }`}
                       />
+                    </button>
 
-                      {/* Gradient Overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+                    {/* Top Left - Close Button (expanded) or Category Badge */}
+                    <div className="absolute top-4 left-4 sm:top-5 sm:left-5 z-20">
+                      {isExpanded ? (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setExpandedExcursionId(null);
+                          }}
+                          className="w-8 h-8 sm:w-9 sm:h-9 bg-white/10 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center hover:bg-white/20 transition-all duration-300"
+                        >
+                          <X className="w-4 h-4 text-white" />
+                        </button>
+                      ) : (
+                        <div className="px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20">
+                          <span className="text-[10px] sm:text-[11px] font-bold text-white/90 uppercase tracking-wide">{excursion.category}</span>
+                        </div>
+                      )}
+                    </div>
 
-                      {/* Favorite Button */}
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleFavorite(excursion.id);
-                        }}
-                        className="absolute top-4 right-4 sm:top-5 sm:right-5 z-20 w-8 h-8 sm:w-9 sm:h-9 bg-white/10 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center hover:bg-white/20 transition-all duration-300"
-                      >
-                        <Heart
-                          className={`w-4 h-4 sm:w-[18px] sm:h-[18px] transition-all duration-300 ${
-                            favorites.includes(excursion.id)
-                              ? "fill-red-500 text-red-500"
-                              : "text-white/80 hover:text-red-400"
-                          }`}
-                        />
-                      </button>
+                    {/* Accent line */}
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-10 sm:w-12 h-1 bg-blue-500 rounded-b-full z-10" />
 
-                      {/* Top Left - Close Button (expanded) or Category Badge */}
-                      <div className="absolute top-4 left-4 sm:top-5 sm:left-5 z-20">
-                        {isExpanded ? (
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setExpandedExcursionId(null);
-                            }}
-                            className="w-8 h-8 sm:w-9 sm:h-9 bg-white/10 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center hover:bg-white/20 transition-all duration-300"
-                          >
-                            <X className="w-4 h-4 text-white" />
-                          </button>
-                        ) : (
-                          <div className="px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20">
-                            <span className="text-[10px] sm:text-[11px] font-bold text-white/90 uppercase tracking-wide">{excursion.category}</span>
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Accent line */}
-                      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-10 sm:w-12 h-1 bg-blue-500 rounded-b-full" />
-
-                      {/* Content Card - Bottom (only when not expanded) */}
+                    {/* Collapsed: Info Card at Bottom */}
+                    <AnimatePresence>
                       {!isExpanded && (
-                        <div className="absolute bottom-0 left-0 right-0 p-2.5 sm:p-3 md:p-4">
+                        <motion.div
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 20 }}
+                          transition={{ duration: 0.3 }}
+                          className="absolute bottom-0 left-0 right-0 p-2.5 sm:p-3 md:p-4"
+                        >
                           <div className="bg-white/10 backdrop-blur-xl rounded-xl sm:rounded-2xl p-3 sm:p-3.5 md:p-4 border border-white/10 group-hover:bg-white/15 group-hover:border-white/20 transition-all duration-500">
-                            {/* Header: Name + Price */}
                             <div className="flex items-start justify-between mb-2">
                               <h3 className="text-sm sm:text-[15px] md:text-[17px] font-bold text-white leading-tight pr-2">
                                 {excursion.name}
@@ -482,8 +482,6 @@ export default function ExcursionPage() {
                                 <span className="text-[9px] sm:text-[10px] md:text-[11px] text-white/50 ml-0.5">MAD/{excursion.period}</span>
                               </div>
                             </div>
-
-                            {/* Features Row */}
                             <div className="flex items-center gap-2.5 sm:gap-3 md:gap-4 mb-2.5">
                               <div className="flex items-center gap-1">
                                 <Clock className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-blue-400" />
@@ -498,8 +496,6 @@ export default function ExcursionPage() {
                                 <span className="text-[10px] sm:text-[11px] md:text-[12px] text-white/70">{excursion.difficulty}</span>
                               </div>
                             </div>
-
-                            {/* Footer: Rating + CTA */}
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-1">
                                 <Star className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-yellow-400 fill-current" />
@@ -514,80 +510,75 @@ export default function ExcursionPage() {
                               </div>
                             </div>
                           </div>
-                        </div>
+                        </motion.div>
                       )}
-                    </motion.div>
+                    </AnimatePresence>
 
-                    {/* Expanded Details Section */}
+                    {/* Expanded: Frosted Glass Overlay Sheet */}
                     <AnimatePresence>
                       {isExpanded && (
                         <motion.div
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: "auto" }}
-                          exit={{ opacity: 0, height: 0 }}
+                          initial={{ opacity: 0, y: 60 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 60 }}
                           transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-                          className="overflow-hidden"
+                          className="absolute bottom-0 left-0 right-0 z-10"
                           onClick={(e) => e.stopPropagation()}
                         >
-                          <div className="p-4 sm:p-5 space-y-3">
-                            {/* Header */}
-                            <div>
-                              <div className="flex items-center gap-2 mb-1">
-                                <Star className="w-3.5 h-3.5 text-yellow-400 fill-current" />
-                                <span className="text-sm font-semibold text-white">{excursion.rating}</span>
-                                <span className="text-xs text-white/40">({excursion.reviews} avis)</span>
-                              </div>
-                              <h2 className="text-lg sm:text-xl font-bold text-white mb-1">{excursion.name}</h2>
-                              <p className="text-white/50 text-xs sm:text-sm">{excursion.description}</p>
-                            </div>
+                          <div className="bg-black/60 backdrop-blur-2xl rounded-t-[20px] border-t border-white/10 p-4 sm:p-5">
+                            {/* Grab Handle */}
+                            <div className="w-8 h-1 bg-white/20 rounded-full mx-auto mb-3" />
 
-                            {/* Price */}
-                            <div className="bg-white/5 rounded-xl p-3 border border-white/10">
-                              <div className="flex items-end justify-between">
-                                <div>
-                                  <p className="text-[10px] text-white/40 uppercase tracking-wider mb-0.5">Prix par personne</p>
-                                  <div className="flex items-baseline gap-1">
-                                    <span className="text-xl sm:text-2xl font-black text-blue-500">{excursion.price}</span>
-                                    <span className="text-white/50 text-xs">MAD</span>
-                                  </div>
+                            {/* Name + Price Row */}
+                            <div className="flex items-start justify-between mb-3">
+                              <div>
+                                <h2 className="text-base sm:text-lg font-bold text-white leading-tight">{excursion.name}</h2>
+                                <div className="flex items-center gap-1.5 mt-1">
+                                  <Star className="w-3.5 h-3.5 text-yellow-400 fill-current" />
+                                  <span className="text-xs font-semibold text-white">{excursion.rating}</span>
+                                  <span className="text-[10px] text-white/40">({excursion.reviews})</span>
                                 </div>
-                                <div className="text-right">
-                                  <p className="text-[10px] text-white/40 mb-0.5">Départ</p>
-                                  <p className="text-sm font-bold text-white">{excursion.departure}</p>
-                                </div>
+                              </div>
+                              <div className="text-right">
+                                <span className="text-xl sm:text-2xl font-black text-blue-400">{excursion.price}</span>
+                                <p className="text-[10px] text-white/40">MAD/{excursion.period}</p>
                               </div>
                             </div>
 
-                            {/* Specs Grid */}
-                            <div className="grid grid-cols-4 gap-2">
+                            {/* Specs Row */}
+                            <div className="flex items-center gap-3 mb-3">
                               {[
-                                { icon: Clock, label: 'Durée', value: excursion.duration },
-                                { icon: Users, label: 'Groupe', value: excursion.groupSize },
-                                { icon: MapPin, label: 'Difficulté', value: excursion.difficulty },
-                                { icon: Calendar, label: 'Départ', value: excursion.departure },
+                                { icon: Clock, value: excursion.duration },
+                                { icon: Users, value: excursion.groupSize },
+                                { icon: MapPin, value: excursion.difficulty },
+                                { icon: Calendar, value: excursion.departure },
                               ].map((spec, idx) => (
-                                <div key={idx} className="bg-white/5 rounded-lg p-2 text-center border border-white/5">
-                                  <spec.icon className="w-3.5 h-3.5 text-blue-400 mx-auto mb-1" />
-                                  <p className="text-[8px] text-white/40 uppercase tracking-wider mb-0.5">{spec.label}</p>
-                                  <p className="text-[10px] font-semibold text-white">{spec.value}</p>
+                                <div key={idx} className="flex items-center gap-1">
+                                  <spec.icon className="w-3 h-3 text-blue-400" />
+                                  <span className="text-[10px] sm:text-[11px] text-white/70">{spec.value}</span>
                                 </div>
                               ))}
                             </div>
 
-                            {/* Highlights */}
-                            <div className="bg-blue-500/10 rounded-xl p-3 border border-blue-500/20">
-                              <div className="flex items-center gap-2 mb-2">
-                                <Compass className="w-3.5 h-3.5 text-blue-400" />
-                                <p className="text-[11px] font-semibold text-white">Ce qui est inclus</p>
+                            {/* Highlights as Pills */}
+                            <div className="flex flex-wrap gap-1.5 mb-3">
+                              <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-blue-500/15 border border-blue-500/20">
+                                <Compass className="w-3 h-3 text-blue-400" />
+                                <span className="text-[9px] sm:text-[10px] font-medium text-blue-300">Guidé</span>
                               </div>
-                              <div className="grid grid-cols-2 gap-1.5">
-                                {excursion.highlights.map((highlight, idx) => (
-                                  <div key={idx} className="flex items-center gap-1.5">
-                                    <CheckCircle className="w-3 h-3 text-green-400 flex-shrink-0" />
-                                    <span className="text-[10px] text-white/70">{highlight}</span>
-                                  </div>
-                                ))}
-                              </div>
+                              {excursion.highlights.slice(0, 3).map((highlight, idx) => (
+                                <div key={idx} className="px-2 py-1 rounded-full bg-white/5 border border-white/10">
+                                  <span className="text-[9px] sm:text-[10px] text-white/60">{highlight}</span>
+                                </div>
+                              ))}
+                            </div>
+
+                            {/* Departure info */}
+                            <div className="flex items-center gap-2 mb-3">
+                              <MapPin className="w-3 h-3 text-green-400 flex-shrink-0" />
+                              <span className="text-[10px] text-green-300/80">
+                                Départ: {excursion.departure}
+                              </span>
                             </div>
 
                             {/* CTA Button */}
@@ -595,7 +586,7 @@ export default function ExcursionPage() {
                               onClick={() => handleReserve(excursion)}
                               whileHover={{ scale: 1.02 }}
                               whileTap={{ scale: 0.98 }}
-                              className="w-full py-3 bg-blue-500 hover:bg-blue-600 text-white text-sm font-bold rounded-full shadow-lg shadow-blue-500/20 flex items-center justify-center gap-2 transition-all duration-300"
+                              className="w-full py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 text-white text-sm font-bold rounded-full shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2 transition-all duration-300"
                             >
                               Réserver cette activité
                               <ArrowRight className="w-4 h-4" />
@@ -604,7 +595,8 @@ export default function ExcursionPage() {
                         </motion.div>
                       )}
                     </AnimatePresence>
-                  </motion.div>
+                  </div>
+                  </MousePushCard>
                 </motion.div>
               );
             })}

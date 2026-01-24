@@ -5,6 +5,7 @@ import { ArrowRight, Star, Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { services } from "@/types/home_service";
+import MousePushCard from "@/components/MousePushCard";
 
 // Animation variants moved outside component for better performance
 const containerVariants: Variants = {
@@ -88,12 +89,12 @@ export default function HomePage() {
             >
               <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl shadow-gray-300/50">
                 <Image
-                  src="/h12_hero.png"
+                  src="/h12_hero_new.webp"
                   alt="H12 Premium Car"
                   fill
                   priority
                   sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover"
+                  className="object-cover scale-[1.12]"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
               </div>
@@ -252,15 +253,15 @@ export default function HomePage() {
               <div className="absolute inset-0 bg-blue-200/30 blur-[80px] rounded-full" />
 
               {/* Image Container */}
-              <div className="relative max-w-[466px] w-full">
+              <MousePushCard maxTilt={6} smoothing={0.04} className="relative max-w-[466px] w-full">
                 <div className="relative aspect-square rounded-3xl overflow-hidden border border-gray-100 shadow-2xl shadow-gray-300/50">
                   <Image
-                    src="/h12_hero.png"
+                    src="/h12_hero_new.webp"
                     alt="H12 Premium Vehicle"
                     fill
                     priority
                     sizes="(max-width: 1024px) 100vw, 466px"
-                    className="object-cover"
+                    className="object-cover scale-[1.12]"
                   />
                   {/* Subtle gradient overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
@@ -287,14 +288,14 @@ export default function HomePage() {
                 >
                   <span className="text-white font-bold text-lg">H</span>
                 </motion.div>
-              </div>
+              </MousePushCard>
             </motion.div>
           </div>
         </div>
       </section>
 
       {/* Service section */}
-      <section className="relative py-20 lg:pb-20 lg:pt-10 overflow-hidden bg-gray-50">
+      <section id="services" className="relative py-20 lg:pb-20 lg:pt-10 overflow-hidden bg-gray-50">
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div
@@ -347,7 +348,7 @@ export default function HomePage() {
               motorbike: 'Louer une Moto',
               excursion: 'Trouver une Excursion'
             };
-            const cardImages = ['/voiture_h12/h12_tucson.png', '/moto_h12/h12_africatwin1100.png', '/excursions/h12_quad.png'];
+            const cardImages = ['/voiture_h12/h12_car_new.webp', '/moto_h12/h12_moto_new.webp', '/excursions/h12_excursion_new.webp'];
 
             const CardContent = (
               <div className="relative bg-gray-900 rounded-[20px] sm:rounded-[24px] overflow-hidden h-[300px] sm:h-[350px] lg:h-[400px] hover:scale-[1.02] hover:shadow-2xl transition-all duration-500 shadow-xl">
@@ -356,7 +357,7 @@ export default function HomePage() {
                   src={cardImages[index]}
                   alt={service.title}
                   fill
-                  className="object-cover opacity-70 group-hover:opacity-90 group-hover:scale-105 transition-all duration-700"
+                  className="object-cover scale-[1.12] opacity-70 group-hover:opacity-90 group-hover:scale-[1.15] transition-all duration-700"
                 />
 
                 {/* Gradient Overlay */}
@@ -403,9 +404,9 @@ export default function HomePage() {
 
             return (
               <motion.div key={index} variants={cardVariants} className="group">
-                <Link href={serviceLinks[service.serviceType]} className="block">
+                <MousePushCard as="a" href={serviceLinks[service.serviceType]} maxTilt={10} smoothing={0.05}>
                   {CardContent}
-                </Link>
+                </MousePushCard>
               </motion.div>
             );
           })}

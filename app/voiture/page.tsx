@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Star, Fuel, Users, Settings, Car, ArrowRight, Heart, Shield, X, MapPin } from "lucide-react";
 import Image from "next/image";
 import { useBooking } from "@/context/bookingContext";
+import MousePushCard from "@/components/MousePushCard";
 
 const cars = [
   {
@@ -311,12 +312,12 @@ export default function VoiturePage() {
             >
               <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl shadow-gray-300/50">
                 <Image
-                  src="/h12_hero.png"
+                  src="/voiture_h12/h12_car_new.webp"
                   alt="H12 Premium Car"
                   fill
                   priority
                   sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover"
+                  className="object-cover scale-[1.12]"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent" />
               </div>
@@ -467,15 +468,15 @@ export default function VoiturePage() {
               <div className="absolute inset-0 bg-blue-100/50 blur-[80px] rounded-full" />
 
               {/* Image Container */}
-              <div className="relative max-w-[466px] w-full">
+              <MousePushCard maxTilt={10} smoothing={0.06} className="relative max-w-[466px] w-full">
                 <div className="relative aspect-square rounded-3xl overflow-hidden border border-gray-100">
                   <Image
-                    src="/h12_hero.png"
+                    src="/voiture_h12/h12_car_new.webp"
                     alt="H12 Premium Vehicle"
                     fill
                     priority
                     sizes="(max-width: 1024px) 100vw, 466px"
-                    className="object-cover"
+                    className="object-cover scale-[1.12]"
                   />
                   {/* Subtle gradient overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
@@ -502,7 +503,7 @@ export default function VoiturePage() {
                 >
                   <Car className="w-5 h-5 text-white" />
                 </motion.div>
-              </div>
+              </MousePushCard>
             </motion.div>
           </div>
         </div>
@@ -551,8 +552,9 @@ export default function VoiturePage() {
                   className="group cursor-pointer"
                   onClick={() => handleCardClick(car.id)}
                 >
+                  <MousePushCard maxTilt={8} smoothing={0.05}>
                   <div
-                    className={`relative bg-black overflow-hidden rounded-[20px] sm:rounded-[24px] h-[380px] sm:h-[400px] lg:h-[440px] transition-all duration-500 ${!isExpanded ? 'hover:scale-[1.02] hover:shadow-2xl' : 'shadow-2xl ring-2 ring-blue-500/30'}`}
+                    className={`relative bg-black overflow-hidden rounded-[20px] sm:rounded-[24px] h-[380px] sm:h-[400px] lg:h-[440px] transition-all duration-500 ${!isExpanded ? 'hover:shadow-2xl' : 'shadow-2xl ring-2 ring-blue-500/30'}`}
                   >
                     {/* Car Image - Always full size */}
                     <Image
@@ -560,7 +562,7 @@ export default function VoiturePage() {
                       alt={car.name}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className={`object-cover object-center transition-all duration-700 ${isExpanded ? 'scale-110' : 'group-hover:scale-105'}`}
+                      className={`object-cover object-center transition-all duration-700 ${isExpanded ? 'scale-[1.15]' : 'scale-[1.1] group-hover:scale-[1.12]'}`}
                     />
 
                     {/* Gradient Overlay - stronger when expanded */}
@@ -743,6 +745,7 @@ export default function VoiturePage() {
                       )}
                     </AnimatePresence>
                   </div>
+                  </MousePushCard>
                 </motion.div>
               );
             })}
