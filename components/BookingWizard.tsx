@@ -235,120 +235,32 @@ export default function BookingWizard() {
     });
   };
 
-  const generateWhatsAppMessage = () => {
-    const divider = "━━━━━━━━━━━━━━━━━━━━";
-    let message = `🚗 *DEMANDE DE RÉSERVATION H12*\n${divider}\n\n`;
+ const generateWhatsAppMessage = () => {
+    let message = `Bonjour H12! \n\n`;
+    message += `Nouvelle demande de réservation:\n\n`;
 
-    // Service Type Header
-    if (serviceType === "moto") {
-      message += `🏍️ *LOCATION MOTO*\n\n`;
-    } else if (serviceType === "car") {
-      message += `🚘 *LOCATION VÉHICULE*\n\n`;
-    } else if (serviceType === "excursion") {
-      message += `🏔️ *RÉSERVATION EXCURSION*\n\n`;
-    }
-
-    // Vehicle Details
-    if (selectedCar) {
-      message += `📌 *Véhicule sélectionné:*\n`;
-      message += `   • ${selectedCar.name}\n`;
-      if (selectedCar.period === "trajet") {
-        message += `   • ${selectedCar.price} DH par trajet\n\n`;
-      } else {
-        const days = getRentalDays();
-        message += `   • ${selectedCar.price} DH/jour × ${days} jour${days > 1 ? 's' : ''}\n`;
-        message += `   • Sous-total: ${parseInt(selectedCar.price) * days} DH\n\n`;
-      }
-    }
-
-    // Excursions Details
-    if (selectedExcursions.length > 0) {
-      message += `🎯 *Excursions sélectionnées:*\n`;
-      selectedExcursions.forEach((exc) => {
-        const excTotal = parseInt(exc.price) * bookingDetails.numberOfPeople;
-        message += `   • ${exc.name}\n`;
-        message += `     ${exc.price} DH × ${bookingDetails.numberOfPeople} pers = ${excTotal} DH\n`;
-      });
-      message += `\n`;
-    }
-
-    // Booking Details
-    message += `📅 *Détails de la réservation:*\n`;
-    message += `   • Date: ${formatDate(bookingDetails.pickupDate)}`;
-    if (bookingDetails.pickupTime) {
-      message += ` à ${bookingDetails.pickupTime}`;
-    }
-    message += `\n`;
-    if (bookingDetails.returnDate && selectedCar?.period !== "trajet") {
-      message += `   • Retour: ${formatDate(bookingDetails.returnDate)}\n`;
-      message += `   • Durée: ${getRentalDays()} jour${getRentalDays() > 1 ? 's' : ''}\n`;
-    }
-
-    if (selectedCar?.period === "trajet") {
-      message += `   • Départ: ${bookingDetails.pickupLocation}\n`;
-      message += `   • Destination: ${bookingDetails.dropoffLocation}\n`;
-    } else if (serviceType === "excursion" && !selectedCar) {
-      // Excursion-only: show pickup location (Marrakech)
-      message += `   • Lieu: ${bookingDetails.pickupLocation} (Marrakech)\n`;
-    } else {
-      // Car/Moto rental: show delivery location
-      if (bookingDetails.deliveryCity === "marrakech") {
-        const zone = marrakechZones.find(z => z.value === bookingDetails.pickupZone);
-        const zoneName = zone?.label || bookingDetails.pickupZone;
-        message += `   • Ville: Marrakech\n`;
-        message += `   • Zone: ${zoneName} ✅ (Livraison gratuite)\n`;
-        if (bookingDetails.pickupZone === "autre_marrakech" && bookingDetails.pickupLocation) {
-          message += `   • Adresse: ${bookingDetails.pickupLocation}\n`;
-        }
-      } else {
-        // Outside Marrakech
-        const city = moroccanCities.find(c => c.value === bookingDetails.deliveryCity);
-        const cityName = city?.label || bookingDetails.deliveryCity;
-        message += `   • Ville: ${cityName} 📍 (Frais de livraison)\n`;
-        if (bookingDetails.pickupLocation) {
-          message += `   • Adresse: ${bookingDetails.pickupLocation}\n`;
-        }
-      }
-
-      // Driver option
-      if (bookingDetails.wantsDriver) {
-        message += `   • 🚗 Avec chauffeur\n`;
-      }
-    }
-    message += `   • Personnes: ${bookingDetails.numberOfPeople}\n\n`;
-
-    // Contact Info
-    message += `👤 *Coordonnées client:*\n`;
-    message += `   • Nom: ${contactInfo.fullName}\n`;
-    message += `   • Tél: ${contactInfo.phone}\n`;
-    if (contactInfo.email) {
-      message += `   • Email: ${contactInfo.email}\n`;
-    }
-
-    // Special Notes
-    if (contactInfo.notes) {
-      message += `\n📝 *Notes:*\n   ${contactInfo.notes}\n`;
-    }
-
+    // Nom du client
+    message += `Nom: ${contactInfo.fullName}\n`;
+    
+    // Téléphone
+    message += `Numéro: ${contactInfo.phone}\n`;
+    
     // Total
-    message += `\n${divider}\n`;
-    message += `💰 *TOTAL ESTIMÉ: ${getTotalPrice()} DH*\n`;
-    message += `${divider}\n\n`;
-    message += `_Merci de confirmer la disponibilité._`;
+    message += `Total: ${getTotalPrice()} DH\n\n`;
+    
+    // Lien
+    message += `Voir les détails:\n`;
 
-    return encodeURIComponent(message);
+    return message;
   };
 
-  // Handle email submission
   const handleEmailSubmit = async () => {
     setIsSubmitting(true);
     setSubmissionMethod('email');
 
     try {
-      // Build email body
+      // Préparer les données
       const emailData = {
-        to: "contact@h12.ma", // Replace with actual email
-        subject: `Nouvelle réservation - ${contactInfo.fullName}`,
         serviceType,
         selectedCar: selectedCar ? {
           name: selectedCar.name,
@@ -366,30 +278,38 @@ export default function BookingWizard() {
           pickupTimeFormatted: bookingDetails.pickupTime || null,
           returnDateFormatted: bookingDetails.returnDate ? formatDate(bookingDetails.returnDate) : null,
           rentalDays: getRentalDays(),
-          zoneName: deliveryZones.find(z => z.value === bookingDetails.pickupZone)?.label || bookingDetails.pickupZone,
+          zoneName: bookingDetails.pickupZone === "autre_marrakech" || bookingDetails.pickupZone === "hors_marrakech"
+            ? bookingDetails.pickupLocation
+            : (marrakechZones.find(z => z.value === bookingDetails.pickupZone)?.label || bookingDetails.pickupZone),
         },
         contactInfo,
         totalPrice: getTotalPrice(),
       };
 
-      // Send to API
-      const response = await fetch('/api/booking', {
+      // Appel API
+      const response = await fetch('/api/email_reservation', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(emailData),
       });
 
-      if (!response.ok) throw new Error('Failed to send');
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to send email');
+      }
 
+      // Succès
       setIsSubmitted(true);
       setTimeout(() => {
         setIsSubmitted(false);
         setSubmissionMethod(null);
         closeWizard();
       }, 3000);
+
     } catch (error) {
       console.error('Email submission error:', error);
-      alert('Erreur lors de l\'envoi. Veuillez réessayer ou utiliser WhatsApp.');
+      alert('Erreur lors de l\'envoi de l\'email. Veuillez réessayer ou utiliser WhatsApp.');
+      setSubmissionMethod(null);
     } finally {
       setIsSubmitting(false);
     }
@@ -449,56 +369,61 @@ export default function BookingWizard() {
     return `${baseURL}?${params.toString()}`;
   };
 
-  // Handle WhatsApp submission - sends booking link DIRECTLY (no PDF, no share sheet)
-  const handleWhatsAppWithPDF = async () => {
-    setIsSubmitting(true);
-    setSubmissionMethod('whatsapp');
+const handleWhatsAppWithPDF = async () => {
+  setIsSubmitting(true);
+  setSubmissionMethod('whatsapp');
 
-    try {
-      // Build the booking URL
-      const bookingURL = buildBookingURL();
+  try {
+    // Build the booking URL
+    const bookingURL = buildBookingURL();
 
-      // Build WhatsApp message with the link
-      const message = encodeURIComponent(
-        `Bonjour H12! 👋\n\n` +
-        `Nouvelle demande de réservation:\n\n` +
-        `👤 *${contactInfo.fullName}*\n` +
-        `📞 ${contactInfo.phone}\n` +
-        `💰 Total: ${getTotalPrice()} DH\n\n` +
-        `📋 Voir les détails:\n${bookingURL}\n\n` +
-        `Merci de confirmer la disponibilité! 🙏`
-      );
+    // Message simplifié
+    const rawMessage = generateWhatsAppMessage();
 
-      // Show success state
-      setIsSubmitted(true);
-      setIsSubmitting(false);
+    // Ajouter le lien
+    const completeMessage = `${rawMessage}${bookingURL}\n\nMerci de confirmer la disponibilité!`;
 
-      // Open WhatsApp DIRECTLY (use location.href for better mobile support)
-      setTimeout(() => {
-        window.location.href = `https://wa.me/212614968594?text=${message}`;
-      }, 600);
+    // Encoder le message
+    const message = encodeURIComponent(completeMessage);
 
-      // Close wizard after user sees success
-      setTimeout(() => {
-        closeWizard();
-        setIsSubmitted(false);
-        setSubmissionMethod(null);
-      }, 3000);
+    // Show success state
+    setIsSubmitted(true);
+    setIsSubmitting(false);
 
-    } catch (error) {
-      console.error('Error building booking URL:', error);
-      // Fallback: just open WhatsApp with text message
-      window.location.href = `https://wa.me/212614968594?text=${generateWhatsAppMessage()}`;
-      setIsSubmitted(true);
-      setTimeout(() => {
-        closeWizard();
-        setIsSubmitted(false);
-        setSubmissionMethod(null);
-      }, 2000);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+    // Open WhatsApp
+    setTimeout(() => {
+      window.location.href = `https://wa.me/212614968594?text=${message}`;
+    }, 600);
+
+    // Close wizard
+    setTimeout(() => {
+      closeWizard();
+      setIsSubmitted(false);
+      setSubmissionMethod(null);
+    }, 3000);
+
+  } catch (error) {
+    console.error('Error building booking URL:', error);
+    // Fallback
+    const fallbackMessage = encodeURIComponent(
+      `Bonjour H12! \n\n` +
+      `Nouvelle demande de réservation:\n\n` +
+      `${contactInfo.fullName}\n` +
+      `${contactInfo.phone}\n` +
+      `Total: ${getTotalPrice()} DH\n\n` +
+      `Merci de confirmer!`
+    );
+    window.location.href = `https://wa.me/212614968594?text=${fallbackMessage}`;
+    setIsSubmitted(true);
+    setTimeout(() => {
+      closeWizard();
+      setIsSubmitted(false);
+      setSubmissionMethod(null);
+    }, 2000);
+  } finally {
+    setIsSubmitting(false);
+  }
+};
 
   return (
     <AnimatePresence>
@@ -1800,7 +1725,7 @@ export default function BookingWizard() {
                 )}
 
                 {/* Success State - Redirecting to WhatsApp */}
-                {isSubmitted && (
+                {/* {isSubmitted && (
                   <motion.div
                     key="success"
                     initial={{ opacity: 0, scale: 0.9 }}
@@ -1827,12 +1752,44 @@ export default function BookingWizard() {
                       <span className="font-medium">Envoyez le PDF dans la discussion</span>
                     </div>
                   </motion.div>
-                )}
+                )} */}
+                {isSubmitted && (
+  <motion.div
+    key="success"
+    initial={{ opacity: 0, scale: 0.9 }}
+    animate={{ opacity: 1, scale: 1 }}
+    className="py-12 text-center"
+  >
+    <motion.div
+      className="w-20 h-20 mx-auto mb-6 rounded-full bg-green-500/20 flex items-center justify-center"
+      animate={{ scale: [1, 1.1, 1] }}
+      transition={{ duration: 0.5 }}
+    >
+      <Check className="w-10 h-10 text-green-500" />
+    </motion.div>
+    <h3 className="text-2xl font-bold text-white mb-3">
+      {submissionMethod === 'email' ? 'Email envoyé !' : 'Parfait !'}
+    </h3>
+    <p className="text-white/60 mb-4">
+      {submissionMethod === 'email' 
+        ? 'Nous vous contacterons très bientôt.'
+        : 'Redirection vers WhatsApp...'}
+    </p>
+    {submissionMethod === 'whatsapp' && (
+      <div className="flex items-center justify-center gap-2 text-green-400">
+        <svg className="w-5 h-5 animate-pulse" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+        <span className="font-medium">Envoyez le PDF dans la discussion</span>
+      </div>
+    )}
+  </motion.div>
+)}
               </AnimatePresence>
             </div>
 
             {/* Footer Actions */}
-            {!isSubmitted && (
+            {/* {!isSubmitted && (
               <div className="px-6 pb-6 pt-2 border-t border-white/10">
                 <div className="flex items-center gap-3">
                   {currentStep > 1 && (
@@ -1885,7 +1842,86 @@ export default function BookingWizard() {
                   )}
                 </div>
               </div>
+            )} */}
+            {!isSubmitted && (
+  <div className="px-6 pb-6 pt-2 border-t border-white/10">
+    <div className="flex items-center gap-3">
+      {currentStep > 1 && (
+        <button
+          onClick={prevStep}
+          className="px-4 py-3 rounded-xl bg-white/5 border border-white/10
+                     text-white font-medium hover:bg-white/10 transition
+                     flex items-center gap-2"
+        >
+          <ChevronLeft className="w-4 h-4" />
+          Retour
+        </button>
+      )}
+
+      {currentStep < 4 ? (
+        <button
+          onClick={nextStep}
+          disabled={!canProceed()}
+          className="flex-1 py-3 rounded-xl bg-blue-500
+                     text-white font-semibold hover:bg-blue-600
+                     transition flex items-center justify-center gap-2
+                     disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Continuer
+          <ChevronRight className="w-4 h-4" />
+        </button>
+      ) : (
+        <div className="flex-1 flex gap-3">
+          {/* Bouton Email */}
+          <button
+            onClick={handleEmailSubmit}
+            disabled={!canProceed() || isSubmitting}
+            className="flex-1 py-4 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600
+                       text-white font-bold text-lg hover:from-blue-400 hover:to-blue-500
+                       transition flex items-center justify-center gap-3 shadow-lg shadow-blue-500/25
+                       disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isSubmitting && submissionMethod === 'email' ? (
+              <>
+                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                <span>Envoi...</span>
+              </>
+            ) : (
+              <>
+                <Send className="w-5 h-5" />
+                <span>Envoyer</span>
+              </>
             )}
+          </button>
+
+          {/* Bouton WhatsApp */}
+          <button
+            onClick={handleWhatsAppWithPDF}
+            disabled={!canProceed() || isSubmitting}
+            className="flex-1 py-4 rounded-xl bg-gradient-to-r from-green-500 to-green-600
+                       text-white font-bold text-lg hover:from-green-400 hover:to-green-500
+                       transition flex items-center justify-center gap-3 shadow-lg shadow-green-500/25
+                       disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isSubmitting && submissionMethod === 'whatsapp' ? (
+              <>
+                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                <span>Préparation...</span>
+              </>
+            ) : (
+              <>
+                <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                </svg>
+                <span>WhatsApp</span>
+              </>
+            )}
+          </button>
+        </div>
+      )}
+    </div>
+  </div>
+)}
           </motion.div>
         </motion.div>
       )}

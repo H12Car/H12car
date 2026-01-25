@@ -263,7 +263,7 @@ function BookingContent() {
       {/* Footer Brand */}
       <footer className="bg-gray-50 py-6 px-4 text-center border-t border-gray-100">
         <p className="text-sm text-gray-500">H12 Location - Marrakech</p>
-        <p className="text-sm text-gray-400">+212 614 968 594</p>
+        <p className="text-sm text-gray-400">+212 6 14 96 85 94</p>
       </footer>
     </div>
   );

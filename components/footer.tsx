@@ -3,6 +3,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import {
   Star,
@@ -17,7 +18,6 @@ import {
   Linkedin,
   Car,
   Bike,
-  ChevronUp
 } from "lucide-react";
 
 const quickLinks = [
@@ -78,12 +78,17 @@ export default function Footer() {
                   whileHover={{ scale: 1.02 }}
                   className="flex items-center gap-3"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 p-[2px]">
-                    <div className="w-full h-full rounded-xl bg-white flex items-center justify-center">
-                      <span className="text-lg font-black text-gray-900">H</span>
-                    </div>
+                  {/* Logo Image - Même que dans la navbar */}
+                  <div className="relative w-12 h-12 flex items-center justify-center rounded-full overflow-hidden">
+                    <Image
+                      src="/h12carlogo.png"
+                      alt="H12 Logo"
+                      width={48}
+                      height={48}
+                      className="object-cover w-full h-full"
+                    />
                   </div>
-                  <div>
+                  <div className="flex flex-col items-start">
                     <span className="text-2xl font-black text-gray-900">H12</span>
                     <div className="flex items-center gap-1">
                       <Sparkles className="w-2.5 h-2.5 text-blue-500" />
@@ -207,7 +212,6 @@ export default function Footer() {
             </div>
           </div>
         </div>
-
       </footer>
     </>
   );

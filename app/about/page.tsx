@@ -299,7 +299,7 @@ export default function AboutPage() {
               <div className="absolute inset-0 bg-blue-500/10 blur-[60px] rounded-full" />
               <div className="relative aspect-[4/3] rounded-3xl overflow-hidden border border-gray-200 shadow-lg">
                 <Image
-                  src="/h12_hero.png"
+                  src="/h12_hero_new.webp"
                   alt="H12 Premium Fleet"
                   fill
                   className="object-cover"
