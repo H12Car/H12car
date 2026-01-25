@@ -88,13 +88,13 @@ export default function Navbar() {
                     className="flex items-center gap-3"
                   >
                     {/* Logo Image */}
-                    <div className="relative w-16 h-12 flex items-center justify-center rounded-[16px] overflow-hidden">
+                    <div className="relative w-12 h-12 flex items-center justify-center rounded-full overflow-hidden">
                       <Image
-                        src="/logo_h12.png"
+                        src="/h12carlogo.png"
                         alt="H12 Logo"
-                        width={80}
+                        width={48}
                         height={48}
-                        className="object-contain w-full h-full"
+                        className="object-cover w-full h-full"
                         priority
                       />
                     </div>

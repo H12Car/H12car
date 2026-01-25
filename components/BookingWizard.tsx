@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   X,
   Calendar,
+  Clock,
   MapPin,
   Users,
   ChevronRight,
@@ -20,18 +21,54 @@ import {
   Send,
   ArrowLeft,
   Bike,
+  CircleUser,
+  Info,
+  ChevronDown,
 } from "lucide-react";
 import { useBooking, Excursion, Car as CarType } from "@/context/bookingContext";
 import { useState } from "react";
 import Image from "next/image";
+// Web link is used instead of PDF - see /app/demande/page.tsx
 
-// Delivery zones with pricing info
+// Get today's date in YYYY-MM-DD format for min date validation
+const getTodayString = () => {
+  const today = new Date();
+  return today.toISOString().split('T')[0];
+};
+
+// Delivery zones in Marrakech (free delivery)
+const marrakechZones = [
+  { value: "aeroport", label: "Aéroport Menara" },
+  { value: "medina", label: "Médina" },
+  { value: "gueliz", label: "Gueliz" },
+  { value: "hivernage", label: "Hivernage" },
+  { value: "palmeraie", label: "Palmeraie" },
+  { value: "targa", label: "Targa" },
+  { value: "amelkis", label: "Amelkis" },
+  { value: "agdal", label: "Agdal" },
+  { value: "autre_marrakech", label: "Autre quartier" },
+];
+
+// Other Moroccan cities (paid delivery)
+const moroccanCities = [
+  { value: "casablanca", label: "Casablanca" },
+  { value: "rabat", label: "Rabat" },
+  { value: "agadir", label: "Agadir" },
+  { value: "fes", label: "Fès" },
+  { value: "tangier", label: "Tanger" },
+  { value: "essaouira", label: "Essaouira" },
+  { value: "ouarzazate", label: "Ouarzazate" },
+  { value: "meknes", label: "Meknès" },
+  { value: "autre_ville", label: "Autre ville" },
+];
+
+// Legacy support for existing code
 const deliveryZones = [
   { value: "aeroport", label: "Aéroport Menara", free: true },
   { value: "medina", label: "Médina", free: true },
   { value: "gueliz", label: "Gueliz", free: true },
   { value: "hivernage", label: "Hivernage", free: true },
-  { value: "palmeraie", label: "Palmeraie", free: false },
+  { value: "palmeraie", label: "Palmeraie", free: true },
   { value: "autre", label: "Autre", free: false },
 ];
 
@@ -85,6 +122,16 @@ const availableCars: CarType[] = [
   { id: 10, name: "Cadillac Escalade", price: "4400", period: "jour", image: "/car.png", category: "SUV Prestige" },
 ];
 
+// Available motos for cross-selling
+const availableMotos: CarType[] = [
+  { id: 101, name: "BMW R 1250 GS", price: "1200", period: "jour", image: "/moto.png", category: "Adventure" },
+  { id: 102, name: "Harley-Davidson Street Glide", price: "1500", period: "jour", image: "/moto.png", category: "Touring" },
+  { id: 103, name: "Yamaha MT-09", price: "800", period: "jour", image: "/moto.png", category: "Naked" },
+  { id: 104, name: "Honda Africa Twin", price: "1000", period: "jour", image: "/moto.png", category: "Adventure" },
+  { id: 105, name: "Kawasaki Z900", price: "750", period: "jour", image: "/moto.png", category: "Naked" },
+  { id: 106, name: "Ducati Monster", price: "900", period: "jour", image: "/moto.png", category: "Naked" },
+];
+
 const steps = [
   { number: 1, title: "Détails", icon: Calendar },
   { number: 2, title: "Sélection", icon: Car },
@@ -109,44 +156,61 @@ export default function BookingWizard() {
     toggleExcursion,
     isExcursionSelected,
     getTotalPrice,
+    getRentalDays,
     selectCar,
   } = useBooking();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submissionMethod, setSubmissionMethod] = useState<'whatsapp' | 'email' | null>(null);
 
   // Cross-selling car selection state
   const [carSelectionMode, setCarSelectionMode] = useState<'hidden' | 'list' | 'dates'>('hidden');
   const [pendingCar, setPendingCar] = useState<CarType | null>(null);
   const [carRentalDates, setCarRentalDates] = useState({ pickupDate: '', returnDate: '' });
 
-  const handleSubmit = async () => {
-    setIsSubmitting(true);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-
-    // Reset after showing success
-    setTimeout(() => {
-      setIsSubmitted(false);
-      closeWizard();
-    }, 2000);
-  };
+  // Cross-selling moto selection state
+  const [motoSelectionMode, setMotoSelectionMode] = useState<'hidden' | 'list' | 'dates'>('hidden');
+  const [pendingMoto, setPendingMoto] = useState<CarType | null>(null);
+  const [motoRentalDates, setMotoRentalDates] = useState({ pickupDate: '', returnDate: '' });
 
   const canProceed = () => {
     switch (currentStep) {
       case 1: {
-        const hasDate = !!bookingDetails.pickupDate;
+        const hasPickupDate = !!bookingDetails.pickupDate;
+        const hasPickupTime = !!bookingDetails.pickupTime;
         const hasPeople = bookingDetails.numberOfPeople > 0;
-        // Transport: need origin + destination
-        if (selectedCar?.period === "trajet") {
-          return hasDate && !!bookingDetails.pickupLocation && !!bookingDetails.dropoffLocation && hasPeople;
+
+        // Excursion-only: need date, time, pickup location (Marrakech), and people
+        if (serviceType === "excursion" && !selectedCar) {
+          const hasPickupLocation = !!bookingDetails.pickupLocation;
+          return hasPickupDate && hasPickupTime && hasPickupLocation && hasPeople;
         }
-        // Car/Moto: need zone, and if "autre" also need address
-        const hasZone = !!bookingDetails.pickupZone;
-        const hasAddress = bookingDetails.pickupZone === "autre" ? !!bookingDetails.pickupLocation : true;
-        return hasDate && hasZone && hasAddress && hasPeople;
+
+        // Transport: need origin + destination (no return date needed)
+        if (selectedCar?.period === "trajet") {
+          return hasPickupDate && hasPickupTime && !!bookingDetails.pickupLocation && !!bookingDetails.dropoffLocation && hasPeople;
+        }
+
+        // Car/Moto: validate based on delivery city
+        const hasReturnDate = !!bookingDetails.returnDate;
+
+        // Marrakech delivery
+        if (bookingDetails.deliveryCity === "marrakech") {
+          const hasZone = !!bookingDetails.pickupZone;
+          const hasAddress = bookingDetails.pickupZone === "autre_marrakech" ? !!bookingDetails.pickupLocation : true;
+          return hasPickupDate && hasPickupTime && hasReturnDate && hasZone && hasAddress && hasPeople;
+        }
+
+        // Outside Marrakech delivery
+        if (bookingDetails.pickupZone === "hors_marrakech") {
+          const hasCity = !!bookingDetails.deliveryCity;
+          const hasAddress = !!bookingDetails.pickupLocation;
+          return hasPickupDate && hasPickupTime && hasReturnDate && hasCity && hasAddress && hasPeople;
+        }
+
+        // Default: need to select a city first
+        return false;
       }
       case 2:
         return selectedCar || selectedExcursions.length > 0;
@@ -159,53 +223,281 @@ export default function BookingWizard() {
     }
   };
 
-  const generateWhatsAppMessage = () => {
-    let message = `Bonjour H12,\n\nJe souhaite faire une réservation:\n\n`;
+  // Format date to French format
+  const formatDate = (dateStr: string) => {
+    if (!dateStr) return "-";
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('fr-FR', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    });
+  };
 
-    if (selectedCar) {
-      const vehicleType = serviceType === "moto" ? "Moto" : "Véhicule";
-      message += `*${vehicleType}:* ${selectedCar.name}\n`;
-      message += `*Prix:* ${selectedCar.price} DH/${selectedCar.period}\n\n`;
+  const generateWhatsAppMessage = () => {
+    const divider = "━━━━━━━━━━━━━━━━━━━━";
+    let message = `🚗 *DEMANDE DE RÉSERVATION H12*\n${divider}\n\n`;
+
+    // Service Type Header
+    if (serviceType === "moto") {
+      message += `🏍️ *LOCATION MOTO*\n\n`;
+    } else if (serviceType === "car") {
+      message += `🚘 *LOCATION VÉHICULE*\n\n`;
+    } else if (serviceType === "excursion") {
+      message += `🏔️ *RÉSERVATION EXCURSION*\n\n`;
     }
 
+    // Vehicle Details
+    if (selectedCar) {
+      message += `📌 *Véhicule sélectionné:*\n`;
+      message += `   • ${selectedCar.name}\n`;
+      if (selectedCar.period === "trajet") {
+        message += `   • ${selectedCar.price} DH par trajet\n\n`;
+      } else {
+        const days = getRentalDays();
+        message += `   • ${selectedCar.price} DH/jour × ${days} jour${days > 1 ? 's' : ''}\n`;
+        message += `   • Sous-total: ${parseInt(selectedCar.price) * days} DH\n\n`;
+      }
+    }
+
+    // Excursions Details
     if (selectedExcursions.length > 0) {
-      message += `*Excursions:*\n`;
+      message += `🎯 *Excursions sélectionnées:*\n`;
       selectedExcursions.forEach((exc) => {
-        message += `- ${exc.name} (${exc.price} DH/pers)\n`;
+        const excTotal = parseInt(exc.price) * bookingDetails.numberOfPeople;
+        message += `   • ${exc.name}\n`;
+        message += `     ${exc.price} DH × ${bookingDetails.numberOfPeople} pers = ${excTotal} DH\n`;
       });
       message += `\n`;
     }
 
-    message += `*Détails:*\n`;
-    message += `- Date: ${bookingDetails.pickupDate}\n`;
-    if (bookingDetails.returnDate) {
-      message += `- Retour: ${bookingDetails.returnDate}\n`;
+    // Booking Details
+    message += `📅 *Détails de la réservation:*\n`;
+    message += `   • Date: ${formatDate(bookingDetails.pickupDate)}`;
+    if (bookingDetails.pickupTime) {
+      message += ` à ${bookingDetails.pickupTime}`;
     }
+    message += `\n`;
+    if (bookingDetails.returnDate && selectedCar?.period !== "trajet") {
+      message += `   • Retour: ${formatDate(bookingDetails.returnDate)}\n`;
+      message += `   • Durée: ${getRentalDays()} jour${getRentalDays() > 1 ? 's' : ''}\n`;
+    }
+
     if (selectedCar?.period === "trajet") {
-      message += `- Départ: ${bookingDetails.pickupLocation}\n`;
-      message += `- Destination: ${bookingDetails.dropoffLocation}\n`;
+      message += `   • Départ: ${bookingDetails.pickupLocation}\n`;
+      message += `   • Destination: ${bookingDetails.dropoffLocation}\n`;
+    } else if (serviceType === "excursion" && !selectedCar) {
+      // Excursion-only: show pickup location (Marrakech)
+      message += `   • Lieu: ${bookingDetails.pickupLocation} (Marrakech)\n`;
     } else {
-      const zoneName = deliveryZones.find(z => z.value === bookingDetails.pickupZone)?.label || bookingDetails.pickupZone;
-      message += `- Zone: ${zoneName}\n`;
-      if (bookingDetails.pickupZone === "autre" && bookingDetails.pickupLocation) {
-        message += `- Adresse: ${bookingDetails.pickupLocation}\n`;
+      // Car/Moto rental: show delivery location
+      if (bookingDetails.deliveryCity === "marrakech") {
+        const zone = marrakechZones.find(z => z.value === bookingDetails.pickupZone);
+        const zoneName = zone?.label || bookingDetails.pickupZone;
+        message += `   • Ville: Marrakech\n`;
+        message += `   • Zone: ${zoneName} ✅ (Livraison gratuite)\n`;
+        if (bookingDetails.pickupZone === "autre_marrakech" && bookingDetails.pickupLocation) {
+          message += `   • Adresse: ${bookingDetails.pickupLocation}\n`;
+        }
+      } else {
+        // Outside Marrakech
+        const city = moroccanCities.find(c => c.value === bookingDetails.deliveryCity);
+        const cityName = city?.label || bookingDetails.deliveryCity;
+        message += `   • Ville: ${cityName} 📍 (Frais de livraison)\n`;
+        if (bookingDetails.pickupLocation) {
+          message += `   • Adresse: ${bookingDetails.pickupLocation}\n`;
+        }
+      }
+
+      // Driver option
+      if (bookingDetails.wantsDriver) {
+        message += `   • 🚗 Avec chauffeur\n`;
       }
     }
-    message += `- Personnes: ${bookingDetails.numberOfPeople}\n\n`;
+    message += `   • Personnes: ${bookingDetails.numberOfPeople}\n\n`;
 
-    message += `*Contact:*\n`;
-    message += `- Nom: ${contactInfo.fullName}\n`;
-    message += `- Tél: ${contactInfo.phone}\n`;
+    // Contact Info
+    message += `👤 *Coordonnées client:*\n`;
+    message += `   • Nom: ${contactInfo.fullName}\n`;
+    message += `   • Tél: ${contactInfo.phone}\n`;
     if (contactInfo.email) {
-      message += `- Email: ${contactInfo.email}\n`;
-    }
-    if (contactInfo.notes) {
-      message += `\n*Notes:* ${contactInfo.notes}\n`;
+      message += `   • Email: ${contactInfo.email}\n`;
     }
 
-    message += `\n*Total estimé:* ${getTotalPrice()} DH`;
+    // Special Notes
+    if (contactInfo.notes) {
+      message += `\n📝 *Notes:*\n   ${contactInfo.notes}\n`;
+    }
+
+    // Total
+    message += `\n${divider}\n`;
+    message += `💰 *TOTAL ESTIMÉ: ${getTotalPrice()} DH*\n`;
+    message += `${divider}\n\n`;
+    message += `_Merci de confirmer la disponibilité._`;
 
     return encodeURIComponent(message);
+  };
+
+  // Handle email submission
+  const handleEmailSubmit = async () => {
+    setIsSubmitting(true);
+    setSubmissionMethod('email');
+
+    try {
+      // Build email body
+      const emailData = {
+        to: "contact@h12.ma", // Replace with actual email
+        subject: `Nouvelle réservation - ${contactInfo.fullName}`,
+        serviceType,
+        selectedCar: selectedCar ? {
+          name: selectedCar.name,
+          price: selectedCar.price,
+          period: selectedCar.period,
+        } : null,
+        selectedExcursions: selectedExcursions.map(e => ({
+          name: e.name,
+          price: e.price,
+          duration: e.duration,
+        })),
+        bookingDetails: {
+          ...bookingDetails,
+          pickupDateFormatted: formatDate(bookingDetails.pickupDate),
+          pickupTimeFormatted: bookingDetails.pickupTime || null,
+          returnDateFormatted: bookingDetails.returnDate ? formatDate(bookingDetails.returnDate) : null,
+          rentalDays: getRentalDays(),
+          zoneName: deliveryZones.find(z => z.value === bookingDetails.pickupZone)?.label || bookingDetails.pickupZone,
+        },
+        contactInfo,
+        totalPrice: getTotalPrice(),
+      };
+
+      // Send to API
+      const response = await fetch('/api/booking', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(emailData),
+      });
+
+      if (!response.ok) throw new Error('Failed to send');
+
+      setIsSubmitted(true);
+      setTimeout(() => {
+        setIsSubmitted(false);
+        setSubmissionMethod(null);
+        closeWizard();
+      }, 3000);
+    } catch (error) {
+      console.error('Email submission error:', error);
+      alert('Erreur lors de l\'envoi. Veuillez réessayer ou utiliser WhatsApp.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Build booking URL with all data encoded as params
+  const buildBookingURL = () => {
+    // Use current origin so it works on localhost AND production
+    const baseURL = `${window.location.origin}/demande`;
+    const params = new URLSearchParams();
+
+    // Contact info
+    params.set("n", contactInfo.fullName);
+    params.set("p", contactInfo.phone);
+    if (contactInfo.email) params.set("e", contactInfo.email);
+    if (contactInfo.notes) params.set("no", contactInfo.notes);
+
+    // Service type
+    params.set("s", serviceType || "car");
+
+    // Vehicle info
+    if (selectedCar) {
+      params.set("v", selectedCar.name);
+      params.set("vp", selectedCar.price);
+      params.set("vd", selectedCar.period);
+    }
+
+    // Excursions (format: name1:price1|name2:price2)
+    if (selectedExcursions.length > 0) {
+      const excStr = selectedExcursions
+        .map(e => `${e.name}:${e.price}`)
+        .join("|");
+      params.set("ex", excStr);
+    }
+
+    // Booking details
+    if (bookingDetails.pickupDate) params.set("d", bookingDetails.pickupDate);
+    if (bookingDetails.pickupTime) params.set("t", bookingDetails.pickupTime);
+    if (bookingDetails.returnDate) params.set("r", bookingDetails.returnDate);
+
+    // Location
+    const zoneName = bookingDetails.pickupZone
+      ? (marrakechZones.find(z => z.value === bookingDetails.pickupZone)?.label || bookingDetails.pickupZone)
+      : "";
+    if (zoneName) params.set("z", zoneName);
+    if (bookingDetails.pickupLocation) params.set("a", bookingDetails.pickupLocation);
+    params.set("c", bookingDetails.deliveryCity || "marrakech");
+
+    // Options
+    if (bookingDetails.wantsDriver) params.set("dr", "1");
+    params.set("pp", String(bookingDetails.numberOfPeople));
+
+    // Totals
+    params.set("tot", String(getTotalPrice()));
+    params.set("dy", String(getRentalDays()));
+
+    return `${baseURL}?${params.toString()}`;
+  };
+
+  // Handle WhatsApp submission - sends booking link DIRECTLY (no PDF, no share sheet)
+  const handleWhatsAppWithPDF = async () => {
+    setIsSubmitting(true);
+    setSubmissionMethod('whatsapp');
+
+    try {
+      // Build the booking URL
+      const bookingURL = buildBookingURL();
+
+      // Build WhatsApp message with the link
+      const message = encodeURIComponent(
+        `Bonjour H12! 👋\n\n` +
+        `Nouvelle demande de réservation:\n\n` +
+        `👤 *${contactInfo.fullName}*\n` +
+        `📞 ${contactInfo.phone}\n` +
+        `💰 Total: ${getTotalPrice()} DH\n\n` +
+        `📋 Voir les détails:\n${bookingURL}\n\n` +
+        `Merci de confirmer la disponibilité! 🙏`
+      );
+
+      // Show success state
+      setIsSubmitted(true);
+      setIsSubmitting(false);
+
+      // Open WhatsApp DIRECTLY (use location.href for better mobile support)
+      setTimeout(() => {
+        window.location.href = `https://wa.me/212614968594?text=${message}`;
+      }, 600);
+
+      // Close wizard after user sees success
+      setTimeout(() => {
+        closeWizard();
+        setIsSubmitted(false);
+        setSubmissionMethod(null);
+      }, 3000);
+
+    } catch (error) {
+      console.error('Error building booking URL:', error);
+      // Fallback: just open WhatsApp with text message
+      window.location.href = `https://wa.me/212614968594?text=${generateWhatsAppMessage()}`;
+      setIsSubmitted(true);
+      setTimeout(() => {
+        closeWizard();
+        setIsSubmitted(false);
+        setSubmissionMethod(null);
+      }, 2000);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -312,22 +604,50 @@ export default function BookingWizard() {
                       Détails de la réservation
                     </h3>
 
-                    {/* Pickup Date */}
-                    <div>
-                      <label className="text-sm text-white/60 mb-1.5 block">
-                        Date de prise en charge *
-                      </label>
-                      <div className="relative">
-                        <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
-                        <input
-                          type="date"
-                          value={bookingDetails.pickupDate}
-                          onChange={(e) =>
-                            updateBookingDetails({ pickupDate: e.target.value })
-                          }
-                          className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/5 border border-white/10
-                                     text-white placeholder:text-white/30 focus:outline-none focus:border-blue-500/50"
-                        />
+                    {/* Pickup Date & Time Row */}
+                    <div className="grid grid-cols-2 gap-3">
+                      {/* Pickup Date */}
+                      <div>
+                        <label className="text-sm text-white/60 mb-1.5 block">
+                          Date *
+                        </label>
+                        <div className="relative">
+                          <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
+                          <input
+                            type="date"
+                            value={bookingDetails.pickupDate}
+                            min={getTodayString()}
+                            onChange={(e) => {
+                              const newPickupDate = e.target.value;
+                              updateBookingDetails({ pickupDate: newPickupDate });
+                              // If return date is before new pickup date, reset it
+                              if (bookingDetails.returnDate && bookingDetails.returnDate < newPickupDate) {
+                                updateBookingDetails({ returnDate: '' });
+                              }
+                            }}
+                            className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/5 border border-white/10
+                                       text-white placeholder:text-white/30 focus:outline-none focus:border-blue-500/50"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Pickup Time */}
+                      <div>
+                        <label className="text-sm text-white/60 mb-1.5 block">
+                          Heure *
+                        </label>
+                        <div className="relative">
+                          <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
+                          <input
+                            type="time"
+                            value={bookingDetails.pickupTime}
+                            onChange={(e) =>
+                              updateBookingDetails({ pickupTime: e.target.value })
+                            }
+                            className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/5 border border-white/10
+                                       text-white placeholder:text-white/30 focus:outline-none focus:border-blue-500/50"
+                          />
+                        </div>
                       </div>
                     </div>
 
@@ -335,13 +655,14 @@ export default function BookingWizard() {
                     {(serviceType === "car" || serviceType === "moto") && selectedCar?.period !== "trajet" && (
                       <div>
                         <label className="text-sm text-white/60 mb-1.5 block">
-                          Date de retour
+                          Date de retour *
                         </label>
                         <div className="relative">
                           <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
                           <input
                             type="date"
                             value={bookingDetails.returnDate}
+                            min={bookingDetails.pickupDate || getTodayString()}
                             onChange={(e) =>
                               updateBookingDetails({ returnDate: e.target.value })
                             }
@@ -352,10 +673,10 @@ export default function BookingWizard() {
                       </div>
                     )}
 
-                    {/* Pickup Location - Transport vs Car/Moto */}
+                    {/* ========== LOCATION FIELDS ========== */}
                     {selectedCar?.period === "trajet" ? (
                       <>
-                        {/* Transport: Origin */}
+                        {/* Transport: Origin + Destination */}
                         <div>
                           <label className="text-sm text-white/60 mb-1.5 block">
                             Lieu de départ *
@@ -374,7 +695,6 @@ export default function BookingWizard() {
                             />
                           </div>
                         </div>
-                        {/* Transport: Destination */}
                         <div>
                           <label className="text-sm text-white/60 mb-1.5 block">
                             Destination *
@@ -394,72 +714,246 @@ export default function BookingWizard() {
                           </div>
                         </div>
                       </>
-                    ) : (
+                    ) : serviceType === "excursion" && !selectedCar ? (
                       <>
-                        {/* Car/Moto: Zone Dropdown */}
+                        {/* EXCURSION: Marrakech only with required pickup */}
+                        <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 mb-1">
+                          <div className="flex items-start gap-2">
+                            <Info className="w-4 h-4 text-amber-400 mt-0.5 flex-shrink-0" />
+                            <p className="text-xs text-amber-200">
+                              Les excursions sont disponibles uniquement au départ de <strong>Marrakech</strong>.
+                              Nous viendrons vous chercher à votre hébergement.
+                            </p>
+                          </div>
+                        </div>
                         <div>
                           <label className="text-sm text-white/60 mb-1.5 block">
-                            Zone de livraison *
+                            Lieu de prise en charge à Marrakech *
                           </label>
                           <div className="relative">
                             <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
-                            <select
-                              value={bookingDetails.pickupZone}
-                              onChange={(e) => {
-                                const zone = e.target.value;
-                                updateBookingDetails({
-                                  pickupZone: zone,
-                                  pickupLocation: zone !== "autre"
-                                    ? deliveryZones.find(z => z.value === zone)?.label || ""
-                                    : bookingDetails.pickupLocation,
-                                });
-                              }}
+                            <input
+                              type="text"
+                              value={bookingDetails.pickupLocation}
+                              onChange={(e) =>
+                                updateBookingDetails({ pickupLocation: e.target.value })
+                              }
+                              placeholder="Nom de votre hôtel ou riad..."
                               className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/5 border border-white/10
-                                         text-white focus:outline-none focus:border-blue-500/50 appearance-none"
-                            >
-                              <option value="" className="bg-zinc-900">Sélectionnez une zone</option>
-                              {deliveryZones.map((zone) => (
-                                <option key={zone.value} value={zone.value} className="bg-zinc-900">
-                                  {zone.label}
-                                </option>
-                              ))}
-                            </select>
+                                         text-white placeholder:text-white/30 focus:outline-none focus:border-blue-500/50"
+                            />
                           </div>
-                          {/* Delivery Badge */}
-                          {bookingDetails.pickupZone && (
-                            <div className="mt-2">
-                              {deliveryZones.find(z => z.value === bookingDetails.pickupZone)?.free ? (
-                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-xs font-medium text-green-400">
-                                  <Check className="w-3 h-3" />
-                                  Livraison gratuite
-                                </span>
-                              ) : (
-                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-xs font-medium text-amber-400">
-                                  Supplément à confirmer
-                                </span>
-                              )}
-                            </div>
-                          )}
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        {/* CAR/MOTO: City selection + Zone/Address */}
+
+                        {/* City Toggle: Marrakech vs Autre ville */}
+                        <div>
+                          <label className="text-sm text-white/60 mb-2 block">
+                            Ville de livraison *
+                          </label>
+                          <div className="grid grid-cols-2 gap-2">
+                            <button
+                              type="button"
+                              onClick={() => updateBookingDetails({
+                                deliveryCity: "marrakech",
+                                pickupZone: "",
+                                pickupLocation: ""
+                              })}
+                              className={`py-3 px-4 rounded-xl border text-sm font-medium transition-all
+                                ${bookingDetails.deliveryCity === "marrakech"
+                                  ? "bg-blue-500/20 border-blue-500/50 text-blue-400"
+                                  : "bg-white/5 border-white/10 text-white/60 hover:bg-white/10"}`}
+                            >
+                              <span className="flex items-center justify-center gap-2">
+                                <Check className={`w-4 h-4 ${bookingDetails.deliveryCity === "marrakech" ? "opacity-100" : "opacity-0"}`} />
+                                Marrakech
+                              </span>
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => updateBookingDetails({
+                                deliveryCity: "",
+                                pickupZone: "hors_marrakech",
+                                pickupLocation: ""
+                              })}
+                              className={`py-3 px-4 rounded-xl border text-sm font-medium transition-all
+                                ${bookingDetails.deliveryCity !== "marrakech" && bookingDetails.deliveryCity !== ""
+                                  ? "bg-blue-500/20 border-blue-500/50 text-blue-400"
+                                  : bookingDetails.pickupZone === "hors_marrakech"
+                                    ? "bg-blue-500/20 border-blue-500/50 text-blue-400"
+                                    : "bg-white/5 border-white/10 text-white/60 hover:bg-white/10"}`}
+                            >
+                              <span className="flex items-center justify-center gap-2">
+                                <Check className={`w-4 h-4 ${(bookingDetails.deliveryCity !== "marrakech" && bookingDetails.deliveryCity !== "") || bookingDetails.pickupZone === "hors_marrakech" ? "opacity-100" : "opacity-0"}`} />
+                                Autre ville
+                              </span>
+                            </button>
+                          </div>
                         </div>
 
-                        {/* "Autre" zone: show address text input */}
-                        {bookingDetails.pickupZone === "autre" && (
-                          <div>
-                            <label className="text-sm text-white/60 mb-1.5 block">
-                              Précisez l&apos;adresse *
-                            </label>
-                            <div className="relative">
-                              <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
-                              <input
-                                type="text"
-                                value={bookingDetails.pickupLocation}
-                                onChange={(e) =>
-                                  updateBookingDetails({ pickupLocation: e.target.value })
-                                }
-                                placeholder="Votre adresse exacte..."
-                                className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/5 border border-white/10
-                                           text-white placeholder:text-white/30 focus:outline-none focus:border-blue-500/50"
-                              />
+                        {/* Marrakech: Zone dropdown */}
+                        {bookingDetails.deliveryCity === "marrakech" && (
+                          <>
+                            <div>
+                              <label className="text-sm text-white/60 mb-1.5 block">
+                                Quartier / Zone *
+                              </label>
+                              <div className="relative">
+                                <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
+                                <select
+                                  value={bookingDetails.pickupZone}
+                                  onChange={(e) => {
+                                    const zone = e.target.value;
+                                    updateBookingDetails({
+                                      pickupZone: zone,
+                                      pickupLocation: zone !== "autre_marrakech"
+                                        ? marrakechZones.find(z => z.value === zone)?.label || ""
+                                        : "",
+                                    });
+                                  }}
+                                  className="w-full pl-11 pr-10 py-3 rounded-xl bg-white/5 border border-white/10
+                                             text-white focus:outline-none focus:border-blue-500/50 appearance-none"
+                                >
+                                  <option value="" className="bg-zinc-900">Sélectionnez une zone</option>
+                                  {marrakechZones.map((zone) => (
+                                    <option key={zone.value} value={zone.value} className="bg-zinc-900">
+                                      {zone.label}
+                                    </option>
+                                  ))}
+                                </select>
+                                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40 pointer-events-none" />
+                              </div>
+                              {/* Free delivery badge */}
+                              {bookingDetails.pickupZone && bookingDetails.pickupZone !== "autre_marrakech" && (
+                                <div className="mt-2">
+                                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-xs font-medium text-green-400">
+                                    <Check className="w-3 h-3" />
+                                    Livraison gratuite à Marrakech
+                                  </span>
+                                </div>
+                              )}
+                            </div>
+
+                            {/* Precise address for "autre quartier" */}
+                            {bookingDetails.pickupZone === "autre_marrakech" && (
+                              <div>
+                                <label className="text-sm text-white/60 mb-1.5 block">
+                                  Adresse précise à Marrakech *
+                                </label>
+                                <div className="relative">
+                                  <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
+                                  <input
+                                    type="text"
+                                    value={bookingDetails.pickupLocation}
+                                    onChange={(e) => updateBookingDetails({ pickupLocation: e.target.value })}
+                                    placeholder="Adresse, nom d'hôtel..."
+                                    className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/5 border border-white/10
+                                               text-white placeholder:text-white/30 focus:outline-none focus:border-blue-500/50"
+                                  />
+                                </div>
+                                <div className="mt-2">
+                                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-xs font-medium text-green-400">
+                                    <Check className="w-3 h-3" />
+                                    Livraison gratuite à Marrakech
+                                  </span>
+                                </div>
+                              </div>
+                            )}
+                          </>
+                        )}
+
+                        {/* Outside Marrakech: City + Address */}
+                        {bookingDetails.pickupZone === "hors_marrakech" && (
+                          <>
+                            <div>
+                              <label className="text-sm text-white/60 mb-1.5 block">
+                                Ville *
+                              </label>
+                              <div className="relative">
+                                <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
+                                <select
+                                  value={bookingDetails.deliveryCity}
+                                  onChange={(e) => updateBookingDetails({
+                                    deliveryCity: e.target.value,
+                                    pickupLocation: ""
+                                  })}
+                                  className="w-full pl-11 pr-10 py-3 rounded-xl bg-white/5 border border-white/10
+                                             text-white focus:outline-none focus:border-blue-500/50 appearance-none"
+                                >
+                                  <option value="" className="bg-zinc-900">Sélectionnez une ville</option>
+                                  {moroccanCities.map((city) => (
+                                    <option key={city.value} value={city.value} className="bg-zinc-900">
+                                      {city.label}
+                                    </option>
+                                  ))}
+                                </select>
+                                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40 pointer-events-none" />
+                              </div>
+                            </div>
+
+                            {bookingDetails.deliveryCity && (
+                              <div>
+                                <label className="text-sm text-white/60 mb-1.5 block">
+                                  Adresse de livraison *
+                                </label>
+                                <div className="relative">
+                                  <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
+                                  <input
+                                    type="text"
+                                    value={bookingDetails.pickupLocation}
+                                    onChange={(e) => updateBookingDetails({ pickupLocation: e.target.value })}
+                                    placeholder="Hôtel, adresse..."
+                                    className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/5 border border-white/10
+                                               text-white placeholder:text-white/30 focus:outline-none focus:border-blue-500/50"
+                                  />
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Paid delivery notice */}
+                            <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20">
+                              <div className="flex items-start gap-2">
+                                <Info className="w-4 h-4 text-amber-400 mt-0.5 flex-shrink-0" />
+                                <p className="text-xs text-amber-200">
+                                  La livraison hors Marrakech est soumise à des frais supplémentaires.
+                                  Nous vous contacterons pour confirmer le tarif.
+                                </p>
+                              </div>
+                            </div>
+                          </>
+                        )}
+
+                        {/* Driver option */}
+                        {(serviceType === "car" || serviceType === "moto") && selectedCar?.period !== "trajet" && (
+                          <div
+                            onClick={() => updateBookingDetails({ wantsDriver: !bookingDetails.wantsDriver })}
+                            className={`p-4 rounded-xl border cursor-pointer transition-all
+                              ${bookingDetails.wantsDriver
+                                ? "bg-blue-500/10 border-blue-500/30"
+                                : "bg-white/5 border-white/10 hover:bg-white/10"}`}
+                          >
+                            <div className="flex items-center gap-3">
+                              <div className={`w-10 h-10 rounded-full flex items-center justify-center
+                                ${bookingDetails.wantsDriver ? "bg-blue-500/20" : "bg-white/10"}`}>
+                                <CircleUser className={`w-5 h-5 ${bookingDetails.wantsDriver ? "text-blue-400" : "text-white/50"}`} />
+                              </div>
+                              <div className="flex-1">
+                                <p className={`font-medium ${bookingDetails.wantsDriver ? "text-white" : "text-white/80"}`}>
+                                  Avec chauffeur
+                                </p>
+                                <p className="text-xs text-white/50">
+                                  Un chauffeur professionnel conduira pour vous
+                                </p>
+                              </div>
+                              <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all
+                                ${bookingDetails.wantsDriver
+                                  ? "bg-blue-500 border-blue-500"
+                                  : "border-white/30"}`}>
+                                {bookingDetails.wantsDriver && <Check className="w-4 h-4 text-white" />}
+                              </div>
                             </div>
                           </div>
                         )}
@@ -535,6 +1029,11 @@ export default function BookingWizard() {
                             </h4>
                             <p className="text-sm text-white/60">
                               {selectedCar.price} DH / {selectedCar.period}
+                              {selectedCar.period !== "trajet" && bookingDetails.returnDate && (
+                                <span className="text-blue-400 ml-2">
+                                  × {getRentalDays()} jour{getRentalDays() > 1 ? 's' : ''} = {parseInt(selectedCar.price) * getRentalDays()} DH
+                                </span>
+                              )}
                             </p>
                           </div>
                           <Check className="w-5 h-5 text-green-500" />
@@ -577,13 +1076,22 @@ export default function BookingWizard() {
                       <div className="space-y-1 text-sm">
                         <div className="flex justify-between text-white/60">
                           <span>Date</span>
-                          <span>{bookingDetails.pickupDate || "-"}</span>
+                          <span>
+                            {bookingDetails.pickupDate || "-"}
+                            {bookingDetails.pickupTime && ` à ${bookingDetails.pickupTime}`}
+                          </span>
                         </div>
                         {bookingDetails.returnDate && (
-                          <div className="flex justify-between text-white/60">
-                            <span>Retour</span>
-                            <span>{bookingDetails.returnDate}</span>
-                          </div>
+                          <>
+                            <div className="flex justify-between text-white/60">
+                              <span>Retour</span>
+                              <span>{bookingDetails.returnDate}</span>
+                            </div>
+                            <div className="flex justify-between text-blue-400 font-medium">
+                              <span>Durée</span>
+                              <span>{getRentalDays()} jour{getRentalDays() > 1 ? 's' : ''}</span>
+                            </div>
+                          </>
                         )}
                         {selectedCar?.period === "trajet" ? (
                           <>
@@ -596,18 +1104,45 @@ export default function BookingWizard() {
                               <span>{bookingDetails.dropoffLocation || "-"}</span>
                             </div>
                           </>
-                        ) : (
+                        ) : serviceType === "excursion" && !selectedCar ? (
+                          // Excursion-only: show pickup location (Marrakech)
                           <div className="flex justify-between text-white/60">
-                            <span>Zone</span>
-                            <span className="flex items-center gap-2">
-                              {deliveryZones.find(z => z.value === bookingDetails.pickupZone)?.label || "-"}
-                              {bookingDetails.pickupZone && (
-                                deliveryZones.find(z => z.value === bookingDetails.pickupZone)?.free
-                                  ? <span className="text-[10px] text-green-400">(Gratuit)</span>
-                                  : <span className="text-[10px] text-amber-400">(Supp.)</span>
-                              )}
-                            </span>
+                            <span>Lieu</span>
+                            <span>{bookingDetails.pickupLocation} <span className="text-[10px] text-blue-400">(Marrakech)</span></span>
                           </div>
+                        ) : (
+                          // Car/Moto rental: show delivery info
+                          <>
+                            {bookingDetails.deliveryCity === "marrakech" ? (
+                              <div className="flex justify-between text-white/60">
+                                <span>Livraison</span>
+                                <span className="flex items-center gap-2">
+                                  {marrakechZones.find(z => z.value === bookingDetails.pickupZone)?.label || "Marrakech"}
+                                  <span className="text-[10px] text-green-400">(Gratuit)</span>
+                                </span>
+                              </div>
+                            ) : (
+                              <div className="flex justify-between text-white/60">
+                                <span>Livraison</span>
+                                <span className="flex items-center gap-2">
+                                  {moroccanCities.find(c => c.value === bookingDetails.deliveryCity)?.label || bookingDetails.deliveryCity}
+                                  <span className="text-[10px] text-amber-400">(Frais)</span>
+                                </span>
+                              </div>
+                            )}
+                            {bookingDetails.pickupLocation && (bookingDetails.pickupZone === "autre_marrakech" || bookingDetails.pickupZone === "hors_marrakech") && (
+                              <div className="flex justify-between text-white/60">
+                                <span>Adresse</span>
+                                <span className="truncate max-w-[180px]">{bookingDetails.pickupLocation}</span>
+                              </div>
+                            )}
+                            {bookingDetails.wantsDriver && (
+                              <div className="flex justify-between text-blue-400">
+                                <span>Chauffeur</span>
+                                <span>Oui ✓</span>
+                              </div>
+                            )}
+                          </>
                         )}
                         <div className="flex justify-between text-white/60">
                           <span>Personnes</span>
@@ -627,8 +1162,8 @@ export default function BookingWizard() {
                     exit={{ opacity: 0, x: -20 }}
                     className="space-y-4"
                   >
-                    {/* Car Selection Sub-flow for Excursion Customers */}
-                    {serviceType === "excursion" && carSelectionMode !== 'hidden' && (
+                    {/* ========== CAR SELECTION SUB-FLOW ========== */}
+                    {(serviceType === "excursion" || serviceType === "moto") && carSelectionMode !== 'hidden' && (
                       <AnimatePresence mode="wait">
                         {/* Car List View */}
                         {carSelectionMode === 'list' && (
@@ -646,10 +1181,10 @@ export default function BookingWizard() {
                               <span className="text-sm">Retour</span>
                             </button>
                             <h3 className="text-xl font-bold text-white mb-2">
-                              Choisissez votre véhicule
+                              Choisissez votre voiture
                             </h3>
                             <p className="text-sm text-white/60 mb-4">
-                              Sélectionnez un véhicule pour vos déplacements
+                              Sélectionnez une voiture pour vos déplacements
                             </p>
                             <div className="space-y-2 max-h-[300px] overflow-y-auto pr-1 scrollbar-thin">
                               {availableCars.map((car) => (
@@ -689,7 +1224,7 @@ export default function BookingWizard() {
                           </motion.div>
                         )}
 
-                        {/* Date Selection View */}
+                        {/* Car Date Selection View */}
                         {carSelectionMode === 'dates' && pendingCar && (
                           <motion.div
                             key="car-dates"
@@ -702,7 +1237,7 @@ export default function BookingWizard() {
                               className="flex items-center gap-2 text-white/60 hover:text-white mb-4 transition"
                             >
                               <ArrowLeft className="w-4 h-4" />
-                              <span className="text-sm">Changer de véhicule</span>
+                              <span className="text-sm">Changer de voiture</span>
                             </button>
 
                             {/* Selected Car Preview */}
@@ -737,7 +1272,15 @@ export default function BookingWizard() {
                                 <input
                                   type="date"
                                   value={carRentalDates.pickupDate}
-                                  onChange={(e) => setCarRentalDates(prev => ({ ...prev, pickupDate: e.target.value }))}
+                                  min={getTodayString()}
+                                  onChange={(e) => {
+                                    const newPickupDate = e.target.value;
+                                    setCarRentalDates(prev => ({
+                                      ...prev,
+                                      pickupDate: newPickupDate,
+                                      returnDate: prev.returnDate && prev.returnDate < newPickupDate ? '' : prev.returnDate
+                                    }));
+                                  }}
                                   className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/5 border border-white/10
                                              text-white placeholder:text-white/30 focus:outline-none focus:border-blue-500/50"
                                 />
@@ -754,6 +1297,7 @@ export default function BookingWizard() {
                                 <input
                                   type="date"
                                   value={carRentalDates.returnDate}
+                                  min={carRentalDates.pickupDate || getTodayString()}
                                   onChange={(e) => setCarRentalDates(prev => ({ ...prev, returnDate: e.target.value }))}
                                   className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/5 border border-white/10
                                              text-white placeholder:text-white/30 focus:outline-none focus:border-blue-500/50"
@@ -780,30 +1324,226 @@ export default function BookingWizard() {
                                          hover:bg-blue-600 transition"
                             >
                               <Check className="w-4 h-4" />
-                              Ajouter ce véhicule
+                              Ajouter cette voiture
                             </button>
                           </motion.div>
                         )}
                       </AnimatePresence>
                     )}
 
-                    {/* Normal Step 3 Content (when not in car selection mode) */}
-                    {(serviceType !== "excursion" || carSelectionMode === 'hidden') && (
+                    {/* ========== MOTO SELECTION SUB-FLOW ========== */}
+                    {(serviceType === "car" || serviceType === "excursion") && motoSelectionMode !== 'hidden' && (
+                      <AnimatePresence mode="wait">
+                        {/* Moto List View */}
+                        {motoSelectionMode === 'list' && (
+                          <motion.div
+                            key="moto-list"
+                            initial={{ opacity: 0, x: 20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{ opacity: 0, x: -20 }}
+                          >
+                            <button
+                              onClick={() => setMotoSelectionMode('hidden')}
+                              className="flex items-center gap-2 text-white/60 hover:text-white mb-4 transition"
+                            >
+                              <ArrowLeft className="w-4 h-4" />
+                              <span className="text-sm">Retour</span>
+                            </button>
+                            <h3 className="text-xl font-bold text-white mb-2">
+                              Choisissez votre moto
+                            </h3>
+                            <p className="text-sm text-white/60 mb-4">
+                              Sélectionnez une moto pour vos aventures
+                            </p>
+                            <div className="space-y-2 max-h-[300px] overflow-y-auto pr-1 scrollbar-thin">
+                              {availableMotos.map((moto) => (
+                                <button
+                                  key={moto.id}
+                                  onClick={() => {
+                                    setPendingMoto(moto);
+                                    setMotoSelectionMode('dates');
+                                  }}
+                                  className="w-full p-3 rounded-xl bg-white/5 border border-white/10
+                                             hover:border-orange-500/50 hover:bg-white/10 transition-all text-left
+                                             flex items-center gap-3"
+                                >
+                                  <div className="w-16 h-12 rounded-lg bg-white/10 overflow-hidden flex-shrink-0 relative">
+                                    <Image
+                                      src={moto.image}
+                                      alt={moto.name}
+                                      fill
+                                      className="object-cover"
+                                    />
+                                  </div>
+                                  <div className="flex-1 min-w-0">
+                                    <h4 className="font-semibold text-white text-sm truncate">
+                                      {moto.name}
+                                    </h4>
+                                    <p className="text-xs text-white/50">{moto.category}</p>
+                                  </div>
+                                  <div className="text-right flex-shrink-0">
+                                    <p className="font-bold text-orange-400 text-sm">
+                                      {moto.price} DH
+                                    </p>
+                                    <p className="text-[10px] text-white/40">/{moto.period}</p>
+                                  </div>
+                                </button>
+                              ))}
+                            </div>
+                          </motion.div>
+                        )}
+
+                        {/* Moto Date Selection View */}
+                        {motoSelectionMode === 'dates' && pendingMoto && (
+                          <motion.div
+                            key="moto-dates"
+                            initial={{ opacity: 0, x: 20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{ opacity: 0, x: -20 }}
+                          >
+                            <button
+                              onClick={() => setMotoSelectionMode('list')}
+                              className="flex items-center gap-2 text-white/60 hover:text-white mb-4 transition"
+                            >
+                              <ArrowLeft className="w-4 h-4" />
+                              <span className="text-sm">Changer de moto</span>
+                            </button>
+
+                            {/* Selected Moto Preview */}
+                            <div className="p-4 rounded-xl bg-orange-500/10 border border-orange-500/30 mb-4">
+                              <div className="flex items-center gap-3">
+                                <div className="w-16 h-12 rounded-lg bg-white/10 overflow-hidden flex-shrink-0 relative">
+                                  <Image
+                                    src={pendingMoto.image}
+                                    alt={pendingMoto.name}
+                                    fill
+                                    className="object-cover"
+                                  />
+                                </div>
+                                <div className="flex-1">
+                                  <h4 className="font-semibold text-white">{pendingMoto.name}</h4>
+                                  <p className="text-sm text-orange-400">{pendingMoto.price} DH/{pendingMoto.period}</p>
+                                </div>
+                              </div>
+                            </div>
+
+                            <h3 className="text-lg font-bold text-white mb-3">
+                              Dates de location
+                            </h3>
+
+                            {/* Pickup Date */}
+                            <div className="mb-3">
+                              <label className="text-sm text-white/60 mb-1.5 block">
+                                Date de prise en charge *
+                              </label>
+                              <div className="relative">
+                                <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
+                                <input
+                                  type="date"
+                                  value={motoRentalDates.pickupDate}
+                                  min={getTodayString()}
+                                  onChange={(e) => {
+                                    const newPickupDate = e.target.value;
+                                    setMotoRentalDates(prev => ({
+                                      ...prev,
+                                      pickupDate: newPickupDate,
+                                      returnDate: prev.returnDate && prev.returnDate < newPickupDate ? '' : prev.returnDate
+                                    }));
+                                  }}
+                                  className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/5 border border-white/10
+                                             text-white placeholder:text-white/30 focus:outline-none focus:border-blue-500/50"
+                                />
+                              </div>
+                            </div>
+
+                            {/* Return Date */}
+                            <div className="mb-4">
+                              <label className="text-sm text-white/60 mb-1.5 block">
+                                Date de retour *
+                              </label>
+                              <div className="relative">
+                                <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
+                                <input
+                                  type="date"
+                                  value={motoRentalDates.returnDate}
+                                  min={motoRentalDates.pickupDate || getTodayString()}
+                                  onChange={(e) => setMotoRentalDates(prev => ({ ...prev, returnDate: e.target.value }))}
+                                  className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/5 border border-white/10
+                                             text-white placeholder:text-white/30 focus:outline-none focus:border-blue-500/50"
+                                />
+                              </div>
+                            </div>
+
+                            {/* Confirm Button */}
+                            <button
+                              onClick={() => {
+                                if (motoRentalDates.pickupDate && motoRentalDates.returnDate) {
+                                  selectCar(pendingMoto);
+                                  updateBookingDetails({
+                                    returnDate: motoRentalDates.returnDate,
+                                  });
+                                  setMotoSelectionMode('hidden');
+                                  setPendingMoto(null);
+                                }
+                              }}
+                              disabled={!motoRentalDates.pickupDate || !motoRentalDates.returnDate}
+                              className="w-full py-3 rounded-xl bg-orange-500
+                                         text-white font-semibold flex items-center justify-center gap-2
+                                         disabled:opacity-50 disabled:cursor-not-allowed
+                                         hover:bg-orange-600 transition"
+                            >
+                              <Check className="w-4 h-4" />
+                              Ajouter cette moto
+                            </button>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    )}
+
+                    {/* ========== NORMAL STEP 3 CONTENT ========== */}
+                    {carSelectionMode === 'hidden' && motoSelectionMode === 'hidden' && (
                       <>
                         <h3 className="text-xl font-bold text-white mb-2">
-                          {serviceType === "car" || serviceType === "moto"
-                            ? "Ajoutez des excursions"
-                            : "Complétez votre aventure"}
+                          Complétez votre aventure
                         </h3>
                         <p className="text-sm text-white/60 mb-4">
-                          {serviceType === "excursion"
-                            ? "Ajoutez d'autres activités ou louez un véhicule"
-                            : "Complétez votre expérience avec nos activités"}
+                          {serviceType === "car"
+                            ? "Ajoutez une moto ou des excursions"
+                            : serviceType === "moto"
+                            ? "Ajoutez une voiture ou des excursions"
+                            : "Ajoutez une moto, une voiture ou d'autres excursions"}
                         </p>
 
-                        {/* Cross-sell Car for Excursion Customers */}
-                        {serviceType === "excursion" && !selectedCar && (
-                          <div className="mb-4">
+                        {/* ===== CROSS-SELL SECTION ===== */}
+                        <div className="space-y-3 mb-4">
+                          {/* Cross-sell MOTO for Car/Excursion customers */}
+                          {(serviceType === "car" || serviceType === "excursion") && (
+                            <button
+                              onClick={() => setMotoSelectionMode('list')}
+                              className="w-full p-4 rounded-xl border-2 border-dashed border-orange-500/30
+                                         bg-orange-500/5 hover:bg-orange-500/10 hover:border-orange-500/50
+                                         transition-all text-left group"
+                            >
+                              <div className="flex items-center gap-3">
+                                <div className="w-12 h-12 rounded-xl bg-orange-500/20 flex items-center justify-center
+                                                group-hover:bg-orange-500/30 transition">
+                                  <Bike className="w-6 h-6 text-orange-400" />
+                                </div>
+                                <div className="flex-1">
+                                  <h4 className="font-semibold text-white">
+                                    Envie d&apos;une moto ?
+                                  </h4>
+                                  <p className="text-sm text-white/60">
+                                    Louez une moto pour explorer librement
+                                  </p>
+                                </div>
+                                <ChevronRight className="w-5 h-5 text-orange-400 group-hover:translate-x-1 transition" />
+                              </div>
+                            </button>
+                          )}
+
+                          {/* Cross-sell CAR for Moto/Excursion customers */}
+                          {(serviceType === "moto" || serviceType === "excursion") && !selectedCar && (
                             <button
                               onClick={() => setCarSelectionMode('list')}
                               className="w-full p-4 rounded-xl border-2 border-dashed border-blue-500/30
@@ -817,7 +1557,7 @@ export default function BookingWizard() {
                                 </div>
                                 <div className="flex-1">
                                   <h4 className="font-semibold text-white">
-                                    Besoin d&apos;un véhicule ?
+                                    Besoin d&apos;une voiture ?
                                   </h4>
                                   <p className="text-sm text-white/60">
                                     Louez une voiture pour vos déplacements
@@ -826,76 +1566,128 @@ export default function BookingWizard() {
                                 <ChevronRight className="w-5 h-5 text-blue-400 group-hover:translate-x-1 transition" />
                               </div>
                             </button>
-                          </div>
-                        )}
+                          )}
 
-                        {/* Show selected car if added via cross-sell */}
-                        {serviceType === "excursion" && selectedCar && (
-                          <div className="mb-4 p-4 rounded-xl bg-blue-500/10 border border-blue-500/30">
-                            <div className="flex items-center gap-3">
-                              <div className="w-12 h-12 rounded-lg bg-blue-500/20 flex items-center justify-center">
-                                <Car className="w-6 h-6 text-blue-400" />
+                          {/* Show selected car if added via cross-sell (for excursion customers) */}
+                          {serviceType === "excursion" && selectedCar && (
+                            <div className="p-4 rounded-xl bg-blue-500/10 border border-blue-500/30">
+                              <div className="flex items-center gap-3">
+                                <div className="w-12 h-12 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                                  <Car className="w-6 h-6 text-blue-400" />
+                                </div>
+                                <div className="flex-1">
+                                  <h4 className="font-semibold text-white">{selectedCar.name}</h4>
+                                  <p className="text-sm text-blue-400">{selectedCar.price} DH/{selectedCar.period}</p>
+                                </div>
+                                <Check className="w-5 h-5 text-green-500" />
                               </div>
-                              <div className="flex-1">
-                                <h4 className="font-semibold text-white">{selectedCar.name}</h4>
-                                <p className="text-sm text-blue-400">{selectedCar.price} DH/{selectedCar.period}</p>
-                              </div>
-                              <Check className="w-5 h-5 text-green-500" />
                             </div>
-                          </div>
-                        )}
+                          )}
+                        </div>
 
-                        {/* Excursions List */}
-                        <div className="space-y-3">
-                          {availableExcursions.map((excursion) => {
-                            const isSelected = isExcursionSelected(excursion.id);
-                            return (
-                              <button
-                                key={excursion.id}
-                                onClick={() => toggleExcursion(excursion)}
-                                className={`w-full p-4 rounded-xl border transition-all text-left
-                                            ${
-                                              isSelected
-                                                ? "bg-blue-500/10 border-blue-500/50"
-                                                : "bg-white/5 border-white/10 hover:border-white/20"
-                                            }`}
-                              >
-                                <div className="flex items-center gap-3">
-                                  <div
-                                    className={`w-10 h-10 rounded-lg flex items-center justify-center
+                        {/* ===== EXCURSIONS LIST (for car and moto customers) ===== */}
+                        {(serviceType === "car" || serviceType === "moto") && (
+                          <>
+                            <div className="flex items-center gap-2 mb-3">
+                              <Mountain className="w-5 h-5 text-amber-400" />
+                              <h4 className="font-semibold text-white">Excursions disponibles</h4>
+                            </div>
+                            <div className="space-y-3">
+                              {availableExcursions.map((excursion) => {
+                                const isSelected = isExcursionSelected(excursion.id);
+                                return (
+                                  <button
+                                    key={excursion.id}
+                                    onClick={() => toggleExcursion(excursion)}
+                                    className={`w-full p-4 rounded-xl border transition-all text-left
                                                 ${
                                                   isSelected
-                                                    ? "bg-blue-500 text-white"
-                                                    : "bg-white/10 text-white"
+                                                    ? "bg-amber-500/10 border-amber-500/50"
+                                                    : "bg-white/5 border-white/10 hover:border-white/20"
                                                 }`}
                                   >
-                                    {isSelected ? (
-                                      <Check className="w-5 h-5" />
-                                    ) : (
-                                      <Plus className="w-5 h-5" />
-                                    )}
-                                  </div>
-                                  <div className="flex-1">
-                                    <h4 className="font-semibold text-white">
-                                      {excursion.name}
-                                    </h4>
-                                    <p className="text-sm text-white/60">
-                                      {excursion.duration}
-                                    </p>
-                                  </div>
-                                  <div className="text-right">
-                                    <p className="font-bold text-blue-400">
-                                      {excursion.price} DH
-                                    </p>
-                                    <p className="text-xs text-white/40">
-                                      par personne
-                                    </p>
-                                  </div>
-                                </div>
-                              </button>
-                            );
-                          })}
-                        </div>
+                                    <div className="flex items-center gap-3">
+                                      <div
+                                        className={`w-10 h-10 rounded-lg flex items-center justify-center
+                                                    ${
+                                                      isSelected
+                                                        ? "bg-amber-500 text-white"
+                                                        : "bg-white/10 text-white"
+                                                    }`}
+                                      >
+                                        {isSelected ? (
+                                          <Check className="w-5 h-5" />
+                                        ) : (
+                                          <Plus className="w-5 h-5" />
+                                        )}
+                                      </div>
+                                      <div className="flex-1">
+                                        <h4 className="font-semibold text-white">
+                                          {excursion.name}
+                                        </h4>
+                                        <p className="text-sm text-white/60">
+                                          {excursion.duration}
+                                        </p>
+                                      </div>
+                                      <div className="text-right">
+                                        <p className="font-bold text-amber-400">
+                                          {excursion.price} DH
+                                        </p>
+                                        <p className="text-xs text-white/40">
+                                          par personne
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </>
+                        )}
+
+                        {/* ===== MORE EXCURSIONS (for excursion customers) ===== */}
+                        {serviceType === "excursion" && (
+                          <>
+                            <div className="flex items-center gap-2 mb-3">
+                              <Mountain className="w-5 h-5 text-amber-400" />
+                              <h4 className="font-semibold text-white">Autres excursions</h4>
+                            </div>
+                            <div className="space-y-3">
+                              {availableExcursions
+                                .filter(exc => !isExcursionSelected(exc.id))
+                                .map((excursion) => (
+                                  <button
+                                    key={excursion.id}
+                                    onClick={() => toggleExcursion(excursion)}
+                                    className="w-full p-4 rounded-xl border transition-all text-left
+                                               bg-white/5 border-white/10 hover:border-amber-500/30"
+                                  >
+                                    <div className="flex items-center gap-3">
+                                      <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-white/10 text-white">
+                                        <Plus className="w-5 h-5" />
+                                      </div>
+                                      <div className="flex-1">
+                                        <h4 className="font-semibold text-white">
+                                          {excursion.name}
+                                        </h4>
+                                        <p className="text-sm text-white/60">
+                                          {excursion.duration}
+                                        </p>
+                                      </div>
+                                      <div className="text-right">
+                                        <p className="font-bold text-amber-400">
+                                          {excursion.price} DH
+                                        </p>
+                                        <p className="text-xs text-white/40">
+                                          par personne
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </button>
+                                ))}
+                            </div>
+                          </>
+                        )}
                       </>
                     )}
                   </motion.div>
@@ -954,10 +1746,10 @@ export default function BookingWizard() {
                       </div>
                     </div>
 
-                    {/* Email */}
+                    {/* Email (optional) */}
                     <div>
                       <label className="text-sm text-white/60 mb-1.5 block">
-                        Email
+                        Email <span className="text-white/30">(optionnel)</span>
                       </label>
                       <div className="relative">
                         <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
@@ -974,10 +1766,10 @@ export default function BookingWizard() {
                       </div>
                     </div>
 
-                    {/* Notes */}
+                    {/* Notes (optional) */}
                     <div>
                       <label className="text-sm text-white/60 mb-1.5 block">
-                        Notes / Demandes spéciales
+                        Notes <span className="text-white/30">(optionnel)</span>
                       </label>
                       <div className="relative">
                         <MessageSquare className="absolute left-3 top-3 w-5 h-5 text-white/40" />
@@ -986,8 +1778,8 @@ export default function BookingWizard() {
                           onChange={(e) =>
                             updateContactInfo({ notes: e.target.value })
                           }
-                          placeholder="Informations supplémentaires..."
-                          rows={3}
+                          placeholder="Demandes spéciales..."
+                          rows={2}
                           className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/5 border border-white/10
                                      text-white placeholder:text-white/30 focus:outline-none focus:border-blue-500/50
                                      resize-none"
@@ -996,10 +1788,10 @@ export default function BookingWizard() {
                     </div>
 
                     {/* Total */}
-                    <div className="p-4 rounded-xl bg-blue-500/20 border border-blue-500/30">
+                    <div className="p-4 rounded-xl bg-gradient-to-r from-green-500/20 to-green-600/20 border border-green-500/30">
                       <div className="flex items-center justify-between">
-                        <span className="text-white/80">Total estimé</span>
-                        <span className="text-2xl font-bold text-blue-400">
+                        <span className="text-white/80 font-medium">Total estimé</span>
+                        <span className="text-2xl font-bold text-green-400">
                           {getTotalPrice()} DH
                         </span>
                       </div>
@@ -1007,23 +1799,33 @@ export default function BookingWizard() {
                   </motion.div>
                 )}
 
-                {/* Success State */}
+                {/* Success State - Redirecting to WhatsApp */}
                 {isSubmitted && (
                   <motion.div
                     key="success"
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="py-8 text-center"
+                    className="py-12 text-center"
                   >
-                    <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-green-500/20 flex items-center justify-center">
-                      <Check className="w-8 h-8 text-green-500" />
-                    </div>
-                    <h3 className="text-xl font-bold text-white mb-2">
-                      Demande envoyée !
+                    <motion.div
+                      className="w-20 h-20 mx-auto mb-6 rounded-full bg-green-500/20 flex items-center justify-center"
+                      animate={{ scale: [1, 1.1, 1] }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <Check className="w-10 h-10 text-green-500" />
+                    </motion.div>
+                    <h3 className="text-2xl font-bold text-white mb-3">
+                      Parfait !
                     </h3>
-                    <p className="text-white/60">
-                      Nous vous contacterons rapidement
+                    <p className="text-white/60 mb-4">
+                      Redirection vers WhatsApp...
                     </p>
+                    <div className="flex items-center justify-center gap-2 text-green-400">
+                      <svg className="w-5 h-5 animate-pulse" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                      </svg>
+                      <span className="font-medium">Envoyez le PDF dans la discussion</span>
+                    </div>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -1058,25 +1860,28 @@ export default function BookingWizard() {
                       <ChevronRight className="w-4 h-4" />
                     </button>
                   ) : (
-                    <a
-                      href={`https://wa.me/212600000000?text=${generateWhatsAppMessage()}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={handleSubmit}
-                      className={`flex-1 py-3 rounded-xl bg-gradient-to-r from-green-500 to-green-600
-                                 text-white font-semibold hover:from-green-400 hover:to-green-500
-                                 transition flex items-center justify-center gap-2
-                                 ${!canProceed() || isSubmitting ? "opacity-50 pointer-events-none" : ""}`}
+                    <button
+                      onClick={handleWhatsAppWithPDF}
+                      disabled={!canProceed() || isSubmitting}
+                      className="flex-1 py-4 rounded-xl bg-gradient-to-r from-green-500 to-green-600
+                                 text-white font-bold text-lg hover:from-green-400 hover:to-green-500
+                                 transition flex items-center justify-center gap-3 shadow-lg shadow-green-500/25
+                                 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {isSubmitting ? (
-                        <span>Envoi...</span>
+                        <>
+                          <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                          <span>Préparation...</span>
+                        </>
                       ) : (
                         <>
-                          <Send className="w-4 h-4" />
-                          Envoyer via WhatsApp
+                          <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                          </svg>
+                          <span>Envoyer via WhatsApp</span>
                         </>
                       )}
-                    </a>
+                    </button>
                   )}
                 </div>
               </div>

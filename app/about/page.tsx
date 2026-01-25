@@ -60,13 +60,14 @@ export default function AboutPage() {
       {/* Hero Section */}
       <section className="relative pt-24 sm:pt-28 pb-16 lg:pt-40 lg:pb-24 overflow-hidden bg-gradient-to-b from-gray-50 to-white">
         {/* Subtle Background */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/4 -left-20 w-[500px] h-[500px] rounded-full bg-blue-500/5 blur-3xl" />
-          <div className="absolute bottom-1/4 -right-20 w-[400px] h-[400px] rounded-full bg-blue-400/5 blur-3xl" />
+        <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
+          <div className="absolute top-1/4 -left-20 w-[500px] h-[500px] rounded-full bg-blue-100/50 blur-3xl" />
+          <div className="absolute bottom-1/4 -right-20 w-[400px] h-[400px] rounded-full bg-blue-100/50 blur-3xl" />
         </div>
 
         <div className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-16 xl:px-24 relative z-10">
-          <div className="text-center max-w-3xl mx-auto">
+          {/* Mobile Layout */}
+          <div className="lg:hidden text-center">
             {/* Badge */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -85,7 +86,7 @@ export default function AboutPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-4xl sm:text-5xl lg:text-6xl font-black text-gray-900 mb-6 leading-tight tracking-tight"
+              className="text-4xl sm:text-5xl font-black text-gray-900 mb-4 leading-tight tracking-tight"
             >
               Votre Route{" "}
               <span className="text-blue-500">
@@ -93,37 +94,191 @@ export default function AboutPage() {
               </span>
             </motion.h1>
 
+            {/* Image Card - Mobile */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="relative mb-6"
+            >
+              <div className="relative w-48 h-48 mx-auto rounded-full overflow-hidden shadow-2xl shadow-blue-300/50 border-4 border-white">
+                <Image
+                  src="/h12carlogo.png"
+                  alt="H12 Logo"
+                  fill
+                  priority
+                  sizes="192px"
+                  className="object-cover"
+                />
+              </div>
+            </motion.div>
+
             {/* Description */}
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-lg text-gray-500 leading-relaxed mb-8"
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="text-base sm:text-lg text-gray-500 leading-relaxed mb-6 max-w-md mx-auto"
             >
               Notre mission est simple : vous offrir un service de location fiable,
               transparent et flexible, adapte aussi bien aux touristes qu&apos;aux residents.
-              Chez H12, chaque client est accueilli avec le sourire, ecoute avec attention,
-              et servi avec professionnalisme.
             </motion.p>
 
-            {/* Stats */}
+            {/* Stats - Mobile */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="flex flex-wrap items-center justify-center gap-4 sm:gap-6"
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="flex flex-wrap items-center justify-center gap-3 mb-8"
             >
               {stats.map((stat, idx) => (
-                <div key={idx} className="px-5 py-3 rounded-xl bg-white border border-gray-100 shadow-sm text-center">
-                  <div className="flex items-center justify-center gap-1">
-                    <span className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tighter">{stat.value}</span>
-                    {stat.hasStar && (
-                      <Star className="w-4 h-4 text-blue-500 fill-blue-500 ml-0.5" />
-                    )}
+                <div key={idx} className="px-4 py-2 rounded-xl bg-white border border-gray-100 shadow-sm text-center">
+                  <div className="flex items-center justify-center gap-0.5">
+                    <span className="text-xl sm:text-2xl font-black text-gray-900">{stat.value}</span>
+                    {stat.hasStar && <Star className="w-3 h-3 text-blue-500 fill-blue-500 ml-0.5" />}
                   </div>
-                  <div className="text-xs text-gray-400 mt-1">{stat.label}</div>
+                  <div className="text-[10px] text-gray-400 mt-0.5">{stat.label}</div>
                 </div>
               ))}
+            </motion.div>
+          </div>
+
+          {/* Desktop Layout - Two Column */}
+          <div className="hidden lg:grid lg:grid-cols-2 gap-16 xl:gap-24 items-center">
+            {/* Left - Content */}
+            <div>
+              {/* Overline */}
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: [0.25, 0.4, 0.25, 1] }}
+                className="text-blue-500 text-sm font-medium tracking-[0.15em] uppercase mb-5"
+              >
+                A Propos de H12
+              </motion.p>
+
+              {/* Main Title */}
+              <motion.h1
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.1, ease: [0.25, 0.4, 0.25, 1] }}
+                className="text-5xl xl:text-6xl font-bold text-gray-900 leading-[1.1] tracking-[-0.02em] mb-6"
+              >
+                Votre Route.
+                <br />
+                <span className="text-blue-500">
+                  Commence Ici.
+                </span>
+              </motion.h1>
+
+              {/* Description */}
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.4, 0.25, 1] }}
+                className="text-lg xl:text-xl text-gray-500 leading-relaxed mb-10 max-w-[520px]"
+              >
+                Notre mission est simple : vous offrir un service de location fiable,
+                transparent et flexible, adapte aussi bien aux touristes qu&apos;aux residents.
+                Chez H12, chaque client est accueilli avec le sourire.
+              </motion.p>
+
+              {/* Stats Row */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.3, ease: [0.25, 0.4, 0.25, 1] }}
+                className="flex items-center gap-4 mb-10"
+              >
+                {stats.map((stat, idx) => (
+                  <div key={idx} className="px-5 py-2.5 rounded-xl bg-white border border-gray-100 shadow-sm text-center">
+                    <div className="flex items-center justify-center gap-1">
+                      <span className="text-3xl font-black text-gray-900 tracking-tighter">{stat.value}</span>
+                      {stat.hasStar && (
+                        <Star className="w-4 h-4 text-blue-500 fill-blue-500 ml-0.5" />
+                      )}
+                    </div>
+                    <div className="text-xs text-gray-400 mt-1">{stat.label}</div>
+                  </div>
+                ))}
+              </motion.div>
+
+              {/* CTA Buttons */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.4, ease: [0.25, 0.4, 0.25, 1] }}
+                className="flex items-center gap-4"
+              >
+                <Link href="/voiture">
+                  <motion.button
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="group px-7 py-3.5 rounded-full bg-blue-500 text-white text-[15px] font-medium flex items-center gap-2 transition-all hover:bg-blue-600 shadow-lg shadow-blue-500/20"
+                  >
+                    Voir nos Vehicules
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200" />
+                  </motion.button>
+                </Link>
+
+                <Link href="/moto">
+                  <motion.button
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="px-7 py-3.5 rounded-full bg-gray-100 border border-gray-200 text-[15px] font-medium text-gray-700 transition-colors hover:bg-gray-200"
+                  >
+                    Voir Nos Motos
+                  </motion.button>
+                </Link>
+              </motion.div>
+            </div>
+
+            {/* Right - Image Card */}
+            <motion.div
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1, delay: 0.3, ease: [0.25, 0.4, 0.25, 1] }}
+              className="relative flex justify-center"
+            >
+              {/* Ambient Glow */}
+              <div className="absolute inset-0 bg-blue-200/30 blur-[80px] rounded-full" />
+
+              {/* Image Container */}
+              <MousePushCard maxTilt={6} smoothing={0.04} className="relative max-w-[400px] w-full">
+                <div className="relative aspect-square rounded-full overflow-hidden border-8 border-white shadow-2xl shadow-gray-300/50">
+                  <Image
+                    src="/h12carlogo.png"
+                    alt="H12 Logo"
+                    fill
+                    priority
+                    sizes="(max-width: 1024px) 100vw, 400px"
+                    className="object-cover"
+                  />
+                </div>
+
+                {/* Floating Icon Pills */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: 0.7, ease: [0.25, 0.4, 0.25, 1] }}
+                  className="absolute -top-4 -right-4 px-4 py-2.5 rounded-full bg-white flex items-center gap-2 shadow-lg border border-gray-100"
+                >
+                  <div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center">
+                    <Star className="w-3.5 h-3.5 text-white fill-white" />
+                  </div>
+                  <span className="text-sm font-medium text-gray-900">4.9</span>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: 0.9, ease: [0.25, 0.4, 0.25, 1] }}
+                  className="absolute -bottom-3 -left-3 px-4 py-2.5 rounded-full bg-blue-500 flex items-center gap-2 shadow-lg"
+                >
+                  <Users className="w-4 h-4 text-white" />
+                  <span className="text-sm font-medium text-white">500+ Clients</span>
+                </motion.div>
+              </MousePushCard>
             </motion.div>
           </div>
         </div>

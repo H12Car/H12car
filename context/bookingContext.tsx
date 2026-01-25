@@ -23,10 +23,13 @@ export interface Excursion {
 
 export interface BookingDetails {
   pickupDate: string;
+  pickupTime: string;
   returnDate: string;
   pickupLocation: string;
   pickupZone: string;
   dropoffLocation: string;
+  deliveryCity: string; // "marrakech" or other city name
+  wantsDriver: boolean; // If user wants a chauffeur
   numberOfPeople: number;
 }
 
@@ -76,15 +79,19 @@ interface BookingContextType {
 
   // Computed
   getTotalPrice: () => number;
+  getRentalDays: () => number;
   isExcursionSelected: (excursionId: number) => boolean;
 }
 
 const defaultBookingDetails: BookingDetails = {
   pickupDate: "",
+  pickupTime: "",
   returnDate: "",
   pickupLocation: "",
   pickupZone: "",
   dropoffLocation: "",
+  deliveryCity: "marrakech",
+  wantsDriver: false,
   numberOfPeople: 1,
 };
 
@@ -193,20 +200,41 @@ export function BookingProvider({ children }: { children: React.ReactNode }) {
     setContactInfo((prev) => ({ ...prev, ...info }));
   }, []);
 
+  // Helper to calculate number of rental days
+  const calculateRentalDays = useCallback(() => {
+    if (!bookingDetails.pickupDate || !bookingDetails.returnDate) {
+      return 1; // Default to 1 day if dates not set
+    }
+    const pickup = new Date(bookingDetails.pickupDate);
+    const returnD = new Date(bookingDetails.returnDate);
+    const diffTime = returnD.getTime() - pickup.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays > 0 ? diffDays : 1; // Minimum 1 day
+  }, [bookingDetails.pickupDate, bookingDetails.returnDate]);
+
   // Computed values
   const getTotalPrice = useCallback(() => {
     let total = 0;
 
     if (selectedCar) {
-      total += parseInt(selectedCar.price) || 0;
+      const dailyRate = parseInt(selectedCar.price) || 0;
+      // For transport (per trip), don't multiply by days
+      if (selectedCar.period === "trajet") {
+        total += dailyRate;
+      } else {
+        // For cars/motos (per day), multiply by number of days
+        const days = calculateRentalDays();
+        total += dailyRate * days;
+      }
     }
 
+    // Excursions are per person
     selectedExcursions.forEach((excursion) => {
       total += (parseInt(excursion.price) || 0) * bookingDetails.numberOfPeople;
     });
 
     return total;
-  }, [selectedCar, selectedExcursions, bookingDetails.numberOfPeople]);
+  }, [selectedCar, selectedExcursions, bookingDetails.numberOfPeople, calculateRentalDays]);
 
   return (
     <BookingContext.Provider
@@ -231,6 +259,7 @@ export function BookingProvider({ children }: { children: React.ReactNode }) {
         updateBookingDetails,
         updateContactInfo,
         getTotalPrice,
+        getRentalDays: calculateRentalDays,
         isExcursionSelected,
       }}
     >

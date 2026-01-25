@@ -37,7 +37,7 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="relative pt-24 sm:pt-28 pb-12 lg:pt-40 lg:pb-20 overflow-hidden bg-gradient-to-b from-gray-50 to-white">
         {/* Subtle Background Elements */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
           <div
             className="absolute top-1/4 -left-20 w-[500px] h-[500px] rounded-full bg-blue-100/50 blur-3xl"
             style={{ willChange: 'transform, opacity' }}
