@@ -61,11 +61,11 @@ export default function Footer() {
 
   return (
     <>
-      <footer className="relative overflow-hidden bg-gray-50 border-t border-gray-200">
+      <footer className="relative overflow-hidden bg-zinc-900 border-t border-zinc-800">
         {/* Subtle Background Gradient */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl" />
-          <div className="absolute top-0 right-1/4 w-80 h-80 bg-blue-400/5 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
+          <div className="absolute top-0 right-1/4 w-80 h-80 bg-blue-400/10 rounded-full blur-3xl" />
         </div>
 
         <div className="relative max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-16">
@@ -89,7 +89,7 @@ export default function Footer() {
                     />
                   </div>
                   <div className="flex flex-col items-start">
-                    <span className="text-2xl font-black text-gray-900">H12</span>
+                    <span className="text-2xl font-black text-white">H12</span>
                     <div className="flex items-center gap-1">
                       <Sparkles className="w-2.5 h-2.5 text-blue-500" />
                       <span className="text-[9px] text-blue-500 font-semibold uppercase tracking-wider">
@@ -100,7 +100,7 @@ export default function Footer() {
                 </motion.div>
               </Link>
 
-              <p className="text-gray-500 text-sm leading-relaxed max-w-xs mx-auto sm:mx-0">
+              <p className="text-zinc-400 text-sm leading-relaxed max-w-xs mx-auto sm:mx-0">
                 Location de véhicules premium et expériences exclusives à Marrakech.
               </p>
 
@@ -114,10 +114,10 @@ export default function Footer() {
                     rel="noopener noreferrer"
                     whileHover={{ scale: 1.1, y: -2 }}
                     whileTap={{ scale: 0.95 }}
-                    className="w-9 h-9 rounded-lg bg-gray-100 hover:bg-gray-200 border border-gray-200 hover:border-gray-300 flex items-center justify-center transition-all group"
+                    className="w-9 h-9 rounded-lg bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 hover:border-zinc-600 flex items-center justify-center transition-all group"
                     aria-label={social.label}
                   >
-                    <social.icon className="w-4 h-4 text-gray-500 group-hover:text-blue-500 transition-colors" />
+                    <social.icon className="w-4 h-4 text-zinc-400 group-hover:text-blue-400 transition-colors" />
                   </motion.a>
                 ))}
               </div>
@@ -125,13 +125,13 @@ export default function Footer() {
 
             {/* Quick Links Widget */}
             <div className="space-y-4">
-              <h3 className="text-gray-900 font-semibold text-sm">Navigation</h3>
+              <h3 className="text-white font-semibold text-sm">Navigation</h3>
               <div className="space-y-2">
                 {quickLinks.map((link) => (
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="block text-gray-500 hover:text-blue-500 text-sm transition-colors"
+                    className="block text-zinc-400 hover:text-blue-400 text-sm transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -141,15 +141,15 @@ export default function Footer() {
 
             {/* Services Widget */}
             <div className="space-y-4">
-              <h3 className="text-gray-900 font-semibold text-sm">Services</h3>
+              <h3 className="text-white font-semibold text-sm">Services</h3>
               <div className="space-y-2">
                 {services.map((service) => (
                   <Link
                     key={service.name}
                     href={service.href}
-                    className="flex items-center gap-2 text-gray-500 hover:text-blue-500 text-sm transition-colors group"
+                    className="flex items-center gap-2 text-zinc-400 hover:text-blue-400 text-sm transition-colors group"
                   >
-                    <service.icon className="w-3.5 h-3.5 text-blue-400/60 group-hover:text-blue-500 transition-colors" />
+                    <service.icon className="w-3.5 h-3.5 text-blue-400/60 group-hover:text-blue-400 transition-colors" />
                     {service.name}
                   </Link>
                 ))}
@@ -158,15 +158,15 @@ export default function Footer() {
 
             {/* Contact Widget */}
             <div className="space-y-4">
-              <h3 className="text-gray-900 font-semibold text-sm">Contact</h3>
+              <h3 className="text-white font-semibold text-sm">Contact</h3>
               <div className="space-y-3">
                 {contactInfo.map((info, idx) => (
                   <a
                     key={idx}
                     href={info.href}
-                    className="flex items-start gap-2 text-gray-500 hover:text-blue-500 text-sm transition-colors group"
+                    className="flex items-start gap-2 text-zinc-400 hover:text-blue-400 text-sm transition-colors group"
                   >
-                    <info.icon className="w-3.5 h-3.5 text-blue-400/60 group-hover:text-blue-500 transition-colors flex-shrink-0 mt-0.5" />
+                    <info.icon className="w-3.5 h-3.5 text-blue-400/60 group-hover:text-blue-400 transition-colors flex-shrink-0 mt-0.5" />
                     <span className="text-xs">{info.text}</span>
                   </a>
                 ))}
@@ -175,7 +175,7 @@ export default function Footer() {
               {/* Newsletter */}
               <div className="pt-2 max-w-xs mx-auto sm:mx-0">
                 {subscribed ? (
-                  <div className="px-3 py-2.5 rounded-lg bg-green-50 border border-green-200 text-green-600 text-sm text-center">
+                  <div className="px-3 py-2.5 rounded-lg bg-green-500/20 border border-green-500/30 text-green-400 text-sm text-center">
                     Merci pour votre inscription!
                   </div>
                 ) : (
@@ -186,7 +186,7 @@ export default function Footer() {
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="Newsletter"
                       required
-                      className="w-full px-3 py-2.5 pr-10 rounded-lg bg-white border border-gray-200 text-gray-900 text-sm placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500/50 focus:border-blue-500/30 transition-all"
+                      className="w-full px-3 py-2.5 pr-10 rounded-lg bg-zinc-800 border border-zinc-700 text-white text-sm placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-blue-500/50 focus:border-blue-500/30 transition-all"
                     />
                     <button
                       type="submit"
@@ -201,14 +201,14 @@ export default function Footer() {
           </div>
 
           {/* Bottom Bar */}
-          <div className="border-t border-gray-200 py-6">
+          <div className="border-t border-zinc-800 py-6">
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 text-center">
-              <div className="flex items-center gap-2 text-gray-400 text-xs">
+              <div className="flex items-center gap-2 text-zinc-500 text-xs">
                 <Star className="w-3 h-3 text-blue-400/60 fill-blue-400/60" />
                 <span>&copy; {new Date().getFullYear()} H12. Tous droits réservés.</span>
               </div>
-              <span className="hidden sm:block text-gray-300">•</span>
-              <span className="text-gray-400 text-xs">Développé par DigitalMaroc</span>
+              <span className="hidden sm:block text-zinc-700">•</span>
+              <span className="text-zinc-500 text-xs">Développé par DigitalMaroc</span>
             </div>
           </div>
         </div>

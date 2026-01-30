@@ -4,7 +4,7 @@ import { createContext, useContext, useState, useCallback } from "react";
 
 // Types
 export interface Car {
-  id: number;
+  id: string | number;
   name: string;
   price: string;
   period: string;
@@ -13,11 +13,11 @@ export interface Car {
 }
 
 export interface Excursion {
-  id: number;
+  id: string | number;
   name: string;
   price: string;
   period: string;
-  duration: string;
+  duration?: string;
   image: string;
 }
 
@@ -70,7 +70,7 @@ interface BookingContextType {
   // Item selection
   selectCar: (car: Car) => void;
   addExcursion: (excursion: Excursion) => void;
-  removeExcursion: (excursionId: number) => void;
+  removeExcursion: (excursionId: string | number) => void;
   toggleExcursion: (excursion: Excursion) => void;
 
   // Details update
@@ -80,7 +80,7 @@ interface BookingContextType {
   // Computed
   getTotalPrice: () => number;
   getRentalDays: () => number;
-  isExcursionSelected: (excursionId: number) => boolean;
+  isExcursionSelected: (excursionId: string | number) => boolean;
 }
 
 const defaultBookingDetails: BookingDetails = {
@@ -174,7 +174,7 @@ export function BookingProvider({ children }: { children: React.ReactNode }) {
     });
   }, []);
 
-  const removeExcursion = useCallback((excursionId: number) => {
+  const removeExcursion = useCallback((excursionId: string | number) => {
     setSelectedExcursions((prev) => prev.filter((e) => e.id !== excursionId));
   }, []);
 
@@ -187,7 +187,7 @@ export function BookingProvider({ children }: { children: React.ReactNode }) {
     });
   }, []);
 
-  const isExcursionSelected = useCallback((excursionId: number) => {
+  const isExcursionSelected = useCallback((excursionId: string | number) => {
     return selectedExcursions.some((e) => e.id === excursionId);
   }, [selectedExcursions]);
 

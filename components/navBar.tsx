@@ -63,19 +63,19 @@ export default function Navbar() {
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 lg:px-12 xl:px-20"
+        className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 lg:px-10 xl:px-16"
       >
         <div
           className={`max-w-[1400px] mx-auto transition-all duration-500 ${
             scrolled ? "mt-2" : "mt-3"
           }`}
         >
-          {/* Main Header Container - Apple Light Mode */}
+          {/* Main Header Container - Dark Mode */}
           <div
             className={`relative rounded-[24px] transition-all duration-500 ${
               scrolled
-                ? "bg-white/80 backdrop-blur-xl shadow-lg shadow-gray-200/50 border border-gray-100"
-                : "bg-white/60 backdrop-blur-md border border-gray-100/50"
+                ? "bg-zinc-900/90 backdrop-blur-xl shadow-lg shadow-black/20 border border-zinc-800"
+                : "bg-zinc-900/70 backdrop-blur-md border border-zinc-800/50"
             }`}
           >
             <div className="px-4 sm:px-5 py-4">
@@ -103,7 +103,7 @@ export default function Navbar() {
 
                 {/* Desktop Navigation - Centered Pill */}
                 <div className="hidden lg:flex items-center justify-center absolute left-1/2 -translate-x-1/2">
-                  <div className="relative flex items-center gap-0.5 p-1.5 rounded-full bg-gray-100/80 border border-gray-200/50 backdrop-blur-sm">
+                  <div className="relative flex items-center gap-0.5 p-1.5 rounded-full bg-zinc-800/80 border border-zinc-700/50 backdrop-blur-sm">
                     {navLinks.map((link) => (
                       <div
                         key={link.label}
@@ -118,13 +118,13 @@ export default function Navbar() {
                               onClick={() => setHoveredDropdown(hoveredDropdown === link.label ? null : link.label)}
                               className={`relative px-4 py-2.5 rounded-full text-[13px] font-medium transition-all duration-300 group/nav flex items-center gap-1 ${
                                 hoveredDropdown === link.label || link.dropdown?.some(item => activeLink === item.href)
-                                  ? "text-blue-600 font-semibold"
-                                  : "text-gray-600 hover:text-gray-900"
+                                  ? "text-blue-400 font-semibold"
+                                  : "text-zinc-400 hover:text-white"
                               }`}
                             >
                               <span className="relative z-10">{link.label}</span>
                               <ChevronDown className={`w-3 h-3 relative z-10 transition-transform duration-300 ${
-                                hoveredDropdown === link.label ? "rotate-180 text-blue-600" : "text-gray-400"
+                                hoveredDropdown === link.label ? "rotate-180 text-blue-400" : "text-zinc-500"
                               }`} />
 
                               {/* Hover underline effect */}
@@ -133,8 +133,8 @@ export default function Navbar() {
                               {/* Subtle background on hover */}
                               <div className={`absolute inset-0 rounded-full transition-all duration-300 ${
                                 hoveredDropdown === link.label || link.dropdown?.some(item => activeLink === item.href)
-                                  ? "bg-blue-50"
-                                  : "group-hover/nav:bg-gray-50"
+                                  ? "bg-blue-500/20"
+                                  : "group-hover/nav:bg-zinc-700/50"
                               }`} />
                             </button>
 
@@ -146,7 +146,7 @@ export default function Navbar() {
                                   animate={{ opacity: 1, y: 0, scale: 1 }}
                                   exit={{ opacity: 0, y: -10, scale: 0.95 }}
                                   transition={{ duration: 0.2, ease: "easeOut" }}
-                                  className="absolute top-full left-0 mt-2 min-w-[200px] rounded-[20px] overflow-hidden bg-white backdrop-blur-xl border border-gray-100 shadow-xl shadow-gray-200/50 z-50"
+                                  className="absolute top-full left-0 mt-2 min-w-[200px] rounded-[20px] overflow-hidden bg-zinc-900 backdrop-blur-xl border border-zinc-800 shadow-xl shadow-black/30 z-50"
                                 >
                                   <div className="p-2">
                                     {link.dropdown?.map((item, idx) => (
@@ -164,19 +164,19 @@ export default function Navbar() {
                                           }}
                                           className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group/dropdown ${
                                             activeLink === item.href
-                                              ? "bg-blue-50 text-blue-600"
-                                              : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                                              ? "bg-blue-500/20 text-blue-400"
+                                              : "text-zinc-400 hover:text-white hover:bg-zinc-800"
                                           }`}
                                         >
                                           <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
                                             activeLink === item.href
-                                              ? "bg-blue-100"
-                                              : "bg-gray-100"
+                                              ? "bg-blue-500/30"
+                                              : "bg-zinc-800"
                                           }`}>
                                             <item.icon className={`w-4 h-4 ${
                                               activeLink === item.href
-                                                ? "text-blue-600"
-                                                : "text-gray-500"
+                                                ? "text-blue-400"
+                                                : "text-zinc-500"
                                             }`} />
                                           </div>
                                           <span className="font-medium text-sm">{item.label}</span>
@@ -197,8 +197,8 @@ export default function Navbar() {
                             <span
                               className={`relative z-10 transition-colors duration-300 ${
                                 activeLink === link.href
-                                  ? "text-blue-600 font-semibold"
-                                  : "text-gray-600 hover:text-gray-900"
+                                  ? "text-blue-400 font-semibold"
+                                  : "text-zinc-400 hover:text-white"
                               }`}
                             >
                               {link.label}
@@ -210,8 +210,8 @@ export default function Navbar() {
                             {/* Subtle background on hover and active */}
                             <div className={`absolute inset-0 rounded-full transition-all duration-300 ${
                               activeLink === link.href
-                                ? "bg-blue-50"
-                                : "group-hover/nav:bg-gray-50"
+                                ? "bg-blue-500/20"
+                                : "group-hover/nav:bg-zinc-700/50"
                             }`} />
                           </Link>
                         )}
@@ -236,24 +236,24 @@ export default function Navbar() {
                 {/* Mobile Menu Button */}
                 <motion.button
                   whileTap={{ scale: 0.95 }}
-                  className="lg:hidden relative w-10 h-10 flex items-center justify-center rounded-xl bg-gray-100 border border-gray-200"
+                  className="lg:hidden relative w-10 h-10 flex items-center justify-center rounded-xl bg-zinc-800 border border-zinc-700"
                   onClick={() => setIsOpen(!isOpen)}
                   aria-label="Toggle menu"
                 >
                   <div className="flex flex-col gap-1.5 items-center justify-center">
                     <motion.span
                       animate={isOpen ? { rotate: 45, y: 5.5 } : { rotate: 0, y: 0 }}
-                      className="w-5 h-[2px] bg-gray-700 block rounded-full origin-center"
+                      className="w-5 h-[2px] bg-zinc-300 block rounded-full origin-center"
                       transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                     />
                     <motion.span
                       animate={isOpen ? { opacity: 0, scaleX: 0 } : { opacity: 1, scaleX: 1 }}
-                      className="w-5 h-[2px] bg-gray-700 block rounded-full"
+                      className="w-5 h-[2px] bg-zinc-300 block rounded-full"
                       transition={{ duration: 0.3 }}
                     />
                     <motion.span
                       animate={isOpen ? { rotate: -45, y: -5.5 } : { rotate: 0, y: 0 }}
-                      className="w-5 h-[2px] bg-gray-700 block rounded-full origin-center"
+                      className="w-5 h-[2px] bg-zinc-300 block rounded-full origin-center"
                       transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                     />
                   </div>
@@ -270,7 +270,7 @@ export default function Navbar() {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -20, scale: 0.95 }}
                 transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                className="lg:hidden mt-2 overflow-hidden rounded-[24px] bg-white backdrop-blur-xl border border-gray-100 shadow-xl shadow-gray-200/50"
+                className="lg:hidden mt-2 overflow-hidden rounded-[24px] bg-zinc-900 backdrop-blur-xl border border-zinc-800 shadow-xl shadow-black/30"
               >
                 <div className="p-4 flex flex-col gap-2">
                   {navLinks.map((link, index) => (
@@ -284,8 +284,8 @@ export default function Navbar() {
                             onClick={() => setMobileDropdownOpen(mobileDropdownOpen === link.label ? null : link.label)}
                             className={`w-full flex items-center justify-between px-5 py-3.5 rounded-xl transition-all duration-300 ${
                               mobileDropdownOpen === link.label || link.dropdown?.some(item => activeLink === item.href)
-                                ? "bg-blue-50 text-blue-600"
-                                : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                                ? "bg-blue-500/20 text-blue-400"
+                                : "text-zinc-400 hover:text-white hover:bg-zinc-800"
                             }`}
                           >
                             <span className="font-semibold">{link.label}</span>
@@ -303,7 +303,7 @@ export default function Navbar() {
                                 transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                                 className="overflow-hidden"
                               >
-                                <div className="ml-4 mt-2 pl-4 border-l-2 border-blue-100 flex flex-col gap-2">
+                                <div className="ml-4 mt-2 pl-4 border-l-2 border-blue-500/30 flex flex-col gap-2">
                                   {link.dropdown?.map((item, idx) => (
                                     <motion.div
                                       key={item.href}
@@ -320,19 +320,19 @@ export default function Navbar() {
                                         }}
                                         className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${
                                           activeLink === item.href
-                                            ? "bg-blue-50 text-blue-600"
-                                            : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                                            ? "bg-blue-500/20 text-blue-400"
+                                            : "text-zinc-400 hover:text-white hover:bg-zinc-800"
                                         }`}
                                       >
                                         <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
                                           activeLink === item.href
-                                            ? "bg-blue-100"
-                                            : "bg-gray-100"
+                                            ? "bg-blue-500/30"
+                                            : "bg-zinc-800"
                                         }`}>
                                           <item.icon className={`w-4 h-4 ${
                                             activeLink === item.href
-                                              ? "text-blue-600"
-                                              : "text-gray-500"
+                                              ? "text-blue-400"
+                                              : "text-zinc-500"
                                           }`} />
                                         </div>
                                         <span className="font-medium">{item.label}</span>
@@ -359,8 +359,8 @@ export default function Navbar() {
                             }}
                             className={`block px-5 py-3.5 rounded-xl transition-all duration-300 ${
                               activeLink === link.href
-                                ? "bg-blue-50 text-blue-600"
-                                : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                                ? "bg-blue-500/20 text-blue-400"
+                                : "text-zinc-400 hover:text-white hover:bg-zinc-800"
                             }`}
                           >
                             <span className="font-semibold">{link.label}</span>
@@ -375,7 +375,7 @@ export default function Navbar() {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: navLinks.length * 0.1, ease: [0.22, 1, 0.36, 1] }}
-                    className="mt-2 pt-2 border-t border-gray-100"
+                    className="mt-2 pt-2 border-t border-zinc-800"
                   >
                     <Link
                       href="/contact"

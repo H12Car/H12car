@@ -490,13 +490,13 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-zinc-800">
       {/* Hero Section */}
-      <section className="relative pt-24 sm:pt-28 pb-16 lg:pt-40 lg:pb-24 overflow-hidden bg-gradient-to-b from-gray-50 to-white">
+      <section className="relative pt-24 sm:pt-28 pb-16 lg:pt-40 lg:pb-24 overflow-hidden">
         {/* Subtle Background */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/4 -left-20 w-[500px] h-[500px] rounded-full bg-blue-500/5 blur-3xl" />
-          <div className="absolute bottom-1/4 -right-20 w-[400px] h-[400px] rounded-full bg-blue-400/5 blur-3xl" />
+          <div className="absolute top-1/4 -left-20 w-[500px] h-[500px] rounded-full bg-blue-500/20 blur-3xl" />
+          <div className="absolute bottom-1/4 -right-20 w-[400px] h-[400px] rounded-full bg-blue-500/20 blur-3xl" />
         </div>
 
         <div className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-16 xl:px-24 relative z-10">
@@ -506,10 +506,10 @@ export default function ContactPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100 mb-6"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/20 border border-blue-500/30 mb-6"
             >
-              <Sparkles className="w-4 h-4 text-blue-500" />
-              <span className="text-sm font-semibold text-blue-600">
+              <Sparkles className="w-4 h-4 text-blue-400" />
+              <span className="text-sm font-semibold text-blue-400">
                 Contactez-Nous
               </span>
             </motion.div>
@@ -519,7 +519,7 @@ export default function ContactPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-4xl sm:text-5xl lg:text-6xl font-black text-gray-900 mb-6 leading-tight tracking-tight"
+              className="text-4xl sm:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight tracking-tight"
             >
               Parlons de Votre{" "}
               <span className="text-blue-500">
@@ -532,7 +532,7 @@ export default function ContactPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-lg text-gray-500 leading-relaxed"
+              className="text-lg text-zinc-400 leading-relaxed"
             >
               Une question ? Une demande de devis ? Notre equipe est la pour vous
               accompagner dans tous vos projets de mobilite a Marrakech.
@@ -542,7 +542,7 @@ export default function ContactPage() {
       </section>
 
       {/* Contact Info Cards */}
-      <section className="py-8 lg:py-12 bg-white">
+      <section className="py-8 lg:py-12 bg-zinc-800">
         <div className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-16 xl:px-24">
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {contactInfo.map((info, idx) => (
@@ -553,16 +553,16 @@ export default function ContactPage() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: idx * 0.1 }}
                 onClick={info.isWhatsApp ? openWhatsApp : undefined}
-                className={`p-6 rounded-2xl bg-white border border-gray-100 shadow-sm hover:border-blue-200 hover:shadow-md transition-all ${info.isWhatsApp ? 'cursor-pointer' : ''}`}
+                className={`p-6 rounded-2xl bg-zinc-900 border border-zinc-700 shadow-sm hover:border-blue-500/30 hover:shadow-md transition-all ${info.isWhatsApp ? 'cursor-pointer' : ''}`}
               >
                 <div className="w-12 h-12 rounded-xl bg-blue-500 flex items-center justify-center mb-4">
                   <info.icon className="w-6 h-6 text-white" />
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-1">{info.title}</h3>
-                <p className="text-blue-500 font-medium mb-1">{info.value}</p>
-                <p className="text-sm text-gray-400">{info.description}</p>
+                <h3 className="text-lg font-bold text-white mb-1">{info.title}</h3>
+                <p className="text-blue-400 font-medium mb-1">{info.value}</p>
+                <p className="text-sm text-zinc-500">{info.description}</p>
                 {info.isWhatsApp && (
-                  <span className="inline-block mt-3 text-xs text-blue-500 font-medium">
+                  <span className="inline-block mt-3 text-xs text-blue-400 font-medium">
                     Cliquez pour ouvrir WhatsApp →
                   </span>
                 )}
@@ -573,7 +573,7 @@ export default function ContactPage() {
       </section>
 
       {/* Contact Form & Hours Section */}
-      <section className="py-16 lg:py-24 bg-gray-50">
+      <section className="py-16 lg:py-24 bg-zinc-900">
         <div className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-16 xl:px-24">
           <div className="grid lg:grid-cols-3 gap-12 lg:gap-16">
             {/* Contact Form */}
@@ -584,7 +584,7 @@ export default function ContactPage() {
               transition={{ duration: 0.8 }}
               className="lg:col-span-2"
             >
-              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6">
+              <h2 className="text-2xl sm:text-3xl font-bold text-white mb-6">
                 Envoyez-nous un{" "}
                 <span className="text-blue-500">
                   Message
@@ -605,7 +605,7 @@ export default function ContactPage() {
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div className="grid sm:grid-cols-2 gap-5">
                   <div>
-                    <label htmlFor="fullName" className="block text-sm font-medium text-gray-600 mb-2">
+                    <label htmlFor="fullName" className="block text-sm font-medium text-zinc-400 mb-2">
                       Nom Complet *
                     </label>
                     <input
@@ -615,12 +615,12 @@ export default function ContactPage() {
                       required
                       value={formData.fullName}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 transition"
+                      className="w-full px-4 py-3 rounded-xl bg-zinc-800 border border-zinc-700 text-white placeholder-zinc-500 focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 transition"
                       placeholder="Votre nom"
                     />
                   </div>
                   <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-600 mb-2">
+                    <label htmlFor="email" className="block text-sm font-medium text-zinc-400 mb-2">
                       Email *
                     </label>
                     <input
@@ -630,7 +630,7 @@ export default function ContactPage() {
                       required
                       value={formData.email}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 transition"
+                      className="w-full px-4 py-3 rounded-xl bg-zinc-800 border border-zinc-700 text-white placeholder-zinc-500 focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 transition"
                       placeholder="votre@email.com"
                     />
                   </div>
@@ -638,7 +638,7 @@ export default function ContactPage() {
 
                 <div className="grid sm:grid-cols-2 gap-5">
                   <div>
-                    <label htmlFor="phone" className="block text-sm font-medium text-gray-600 mb-2">
+                    <label htmlFor="phone" className="block text-sm font-medium text-zinc-400 mb-2">
                       Telephone
                     </label>
                     <input
@@ -647,12 +647,12 @@ export default function ContactPage() {
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 transition"
+                      className="w-full px-4 py-3 rounded-xl bg-zinc-800 border border-zinc-700 text-white placeholder-zinc-500 focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 transition"
                       placeholder="+212 6XX XX XX XX"
                     />
                   </div>
                   <div>
-                    <label htmlFor="subject" className="block text-sm font-medium text-gray-600 mb-2">
+                    <label htmlFor="subject" className="block text-sm font-medium text-zinc-400 mb-2">
                       Sujet *
                     </label>
                     <select
@@ -661,7 +661,7 @@ export default function ContactPage() {
                       required
                       value={formData.subject}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 text-gray-900 focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 transition"
+                      className="w-full px-4 py-3 rounded-xl bg-zinc-800 border border-zinc-700 text-white focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 transition"
                     >
                       <option value="">Selectionnez un sujet</option>
                       <option value="car">Location de voiture</option>
@@ -674,7 +674,7 @@ export default function ContactPage() {
                 </div>
 
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-600 mb-2">
+                  <label htmlFor="message" className="block text-sm font-medium text-zinc-400 mb-2">
                     Message *
                   </label>
                   <textarea
@@ -684,7 +684,7 @@ export default function ContactPage() {
                     rows={5}
                     value={formData.message}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 transition resize-none"
+                    className="w-full px-4 py-3 rounded-xl bg-zinc-800 border border-zinc-700 text-white placeholder-zinc-500 focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 transition resize-none"
                     placeholder="Decrivez votre demande..."
                   />
                 </div>
@@ -735,32 +735,32 @@ export default function ContactPage() {
               className="space-y-8"
             >
               {/* Hours */}
-              <div className="p-6 rounded-2xl bg-white border border-gray-100 shadow-sm">
+              <div className="p-6 rounded-2xl bg-zinc-800 border border-zinc-700 shadow-sm">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center">
-                    <Clock className="w-5 h-5 text-blue-500" />
+                  <div className="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                    <Clock className="w-5 h-5 text-blue-400" />
                   </div>
-                  <h3 className="text-lg font-bold text-gray-900">Horaires</h3>
+                  <h3 className="text-lg font-bold text-white">Horaires</h3>
                 </div>
                 <div className="space-y-3">
                   {hours.map((item, idx) => (
                     <div key={idx} className="flex justify-between text-sm">
-                      <span className="text-gray-500">{item.day}</span>
-                      <span className="text-gray-900 font-medium">{item.hours}</span>
+                      <span className="text-zinc-500">{item.day}</span>
+                      <span className="text-white font-medium">{item.hours}</span>
                     </div>
                   ))}
                 </div>
-                <p className="text-xs text-gray-400 mt-4">
+                <p className="text-xs text-zinc-500 mt-4">
                   * Assistance telephonique disponible 7j/7
                 </p>
               </div>
 
               {/* WhatsApp CTA */}
-              <div className="p-6 rounded-2xl bg-blue-50 border border-blue-100">
-                <h3 className="text-lg font-bold text-gray-900 mb-2">
+              <div className="p-6 rounded-2xl bg-blue-500/20 border border-blue-500/30">
+                <h3 className="text-lg font-bold text-white mb-2">
                   Reponse Immediate ?
                 </h3>
-                <p className="text-gray-500 text-sm mb-4">
+                <p className="text-zinc-400 text-sm mb-4">
                   Contactez-nous directement sur WhatsApp pour une reponse rapide.
                 </p>
                 <button
@@ -773,17 +773,17 @@ export default function ContactPage() {
               </div>
 
               {/* Map placeholder */}
-              <div className="p-6 rounded-2xl bg-white border border-gray-100 shadow-sm">
+              <div className="p-6 rounded-2xl bg-zinc-800 border border-zinc-700 shadow-sm">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center">
-                    <MapPin className="w-5 h-5 text-blue-500" />
+                  <div className="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                    <MapPin className="w-5 h-5 text-blue-400" />
                   </div>
-                  <h3 className="text-lg font-bold text-gray-900">Notre Zone</h3>
+                  <h3 className="text-lg font-bold text-white">Notre Zone</h3>
                 </div>
-                <p className="text-gray-500 text-sm mb-3">
+                <p className="text-zinc-400 text-sm mb-3">
                   Nous intervenons sur tout Marrakech et ses environs.
                 </p>
-                <ul className="text-sm text-gray-400 space-y-1">
+                <ul className="text-sm text-zinc-500 space-y-1">
                   <li>• Aeroport Menara</li>
                   <li>• Medina & Gueliz</li>
                   <li>• Palmeraie</li>

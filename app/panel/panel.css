@@ -1,0 +1,22 @@
+/* Hide main site header, footer, and floating elements in panel */
+.panel-wrapper ~ nav,
+.panel-wrapper ~ header,
+.panel-wrapper ~ footer,
+body:has(.panel-wrapper) > nav,
+body:has(.panel-wrapper) > header,
+body:has(.panel-wrapper) > footer,
+body:has(.panel-wrapper) [class*="whatsapp"],
+body:has(.panel-wrapper) [class*="WhatsApp"],
+body:has(.panel-auth) > nav,
+body:has(.panel-auth) > header,
+body:has(.panel-auth) > footer,
+body:has(.panel-auth) [class*="whatsapp"],
+body:has(.panel-auth) [class*="WhatsApp"] {
+  display: none !important;
+}
+
+/* Make sure main element from root layout doesn't interfere */
+body:has(.panel-wrapper) > main,
+body:has(.panel-auth) > main {
+  display: contents;
+}

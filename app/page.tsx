@@ -33,17 +33,17 @@ const cardVariants: Variants = {
 export default function HomePage() {
 
   return (
-    <div className="bg-white min-h-screen">
+    <div className="bg-zinc-800 min-h-screen">
       {/* Hero Section */}
-      <section className="relative pt-24 sm:pt-28 pb-12 lg:pt-40 lg:pb-20 overflow-hidden bg-gradient-to-b from-gray-50 to-white">
+      <section className="relative pt-24 sm:pt-28 pb-12 lg:pt-40 lg:pb-20 overflow-hidden">
         {/* Subtle Background Elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
           <div
-            className="absolute top-1/4 -left-20 w-[500px] h-[500px] rounded-full bg-blue-100/50 blur-3xl"
+            className="absolute top-1/4 -left-20 w-[500px] h-[500px] rounded-full bg-blue-500/20 blur-3xl"
             style={{ willChange: 'transform, opacity' }}
           />
           <div
-            className="absolute bottom-1/4 -right-20 w-[400px] h-[400px] rounded-full bg-sky-100/40 blur-3xl"
+            className="absolute bottom-1/4 -right-20 w-[400px] h-[400px] rounded-full bg-sky-500/20 blur-3xl"
             style={{ willChange: 'transform, opacity' }}
           />
         </div>
@@ -58,9 +58,9 @@ export default function HomePage() {
               transition={{ duration: 0.6 }}
               className="flex items-center justify-center gap-3 mb-4"
             >
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100">
-                <Sparkles className="w-4 h-4 text-blue-500" />
-                <span className="text-sm font-semibold text-blue-600">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/20 border border-blue-500/30">
+                <Sparkles className="w-4 h-4 text-blue-400" />
+                <span className="text-sm font-semibold text-blue-400">
                   Premium Rental
                 </span>
               </div>
@@ -71,7 +71,7 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-4xl sm:text-5xl font-black text-gray-900 mb-4 leading-tight tracking-tight"
+              className="text-4xl sm:text-5xl font-black text-white mb-4 leading-tight tracking-tight"
             >
               Votre voyage.
               <br />
@@ -87,7 +87,7 @@ export default function HomePage() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="relative mb-6"
             >
-              <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl shadow-gray-300/50">
+              <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl shadow-black/50">
                 <Image
                   src="/h12_hero_new.webp"
                   alt="H12 Premium Car"
@@ -105,7 +105,7 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-base sm:text-lg text-gray-500 leading-relaxed mb-6 max-w-md mx-auto"
+              className="text-base sm:text-lg text-zinc-400 leading-relaxed mb-6 max-w-md mx-auto"
             >
               Découvrez la liberté de la route avec H12. Kilométrage illimité, service multilingue, expérience sans compromis.
             </motion.p>
@@ -122,13 +122,13 @@ export default function HomePage() {
                 { value: '40', suffix: '+', label: 'Véhicules' },
                 { value: '4.9', label: 'Note', hasStar: true }
               ].map((stat, idx) => (
-                <div key={idx} className="px-4 py-2 rounded-xl bg-white border border-gray-100 shadow-sm text-center">
+                <div key={idx} className="px-4 py-2 rounded-xl bg-zinc-800 border border-zinc-700 shadow-sm text-center">
                   <div className="flex items-center justify-center gap-0.5">
-                    <span className="text-xl sm:text-2xl font-black text-gray-900">{stat.value}</span>
-                    {stat.suffix && <span className="text-sm font-bold text-blue-500">{stat.suffix}</span>}
-                    {stat.hasStar && <Star className="w-3 h-3 text-blue-500 fill-blue-500 ml-0.5" />}
+                    <span className="text-xl sm:text-2xl font-black text-white">{stat.value}</span>
+                    {stat.suffix && <span className="text-sm font-bold text-blue-400">{stat.suffix}</span>}
+                    {stat.hasStar && <Star className="w-3 h-3 text-blue-400 fill-blue-400 ml-0.5" />}
                   </div>
-                  <div className="text-[10px] text-gray-400 mt-0.5">{stat.label}</div>
+                  <div className="text-[10px] text-zinc-500 mt-0.5">{stat.label}</div>
                 </div>
               ))}
             </motion.div>
@@ -167,7 +167,7 @@ export default function HomePage() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.1, ease: [0.25, 0.4, 0.25, 1] }}
-                className="text-5xl xl:text-6xl font-bold text-gray-900 leading-[1.1] tracking-[-0.02em] mb-6"
+                className="text-5xl xl:text-6xl font-bold text-white leading-[1.1] tracking-[-0.02em] mb-6"
               >
                 Votre voyage.
                 <br />
@@ -181,7 +181,7 @@ export default function HomePage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.4, 0.25, 1] }}
-                className="text-lg xl:text-xl text-gray-500 leading-relaxed mb-10 max-w-[520px]"
+                className="text-lg xl:text-xl text-zinc-400 leading-relaxed mb-10 max-w-[520px]"
               >
                 Découvrez la liberté de la route avec H12. Kilométrage illimité,
                 service multilingue, expérience sans compromis.
@@ -199,15 +199,15 @@ export default function HomePage() {
                   { value: '40', suffix: '+', label: 'Véhicules' },
                   { value: '4.9', label: 'Note', hasStar: true }
                 ].map((stat, idx) => (
-                  <div key={idx} className="px-5 py-2.5 rounded-xl bg-white border border-gray-100 shadow-sm text-center">
+                  <div key={idx} className="px-5 py-2.5 rounded-xl bg-zinc-800 border border-zinc-700 shadow-sm text-center">
                     <div className="flex items-center justify-center gap-1">
-                      <span className="text-3xl font-black text-gray-900 tracking-tighter">{stat.value}</span>
-                      {stat.suffix && <span className="text-xl font-bold text-blue-500">{stat.suffix}</span>}
+                      <span className="text-3xl font-black text-white tracking-tighter">{stat.value}</span>
+                      {stat.suffix && <span className="text-xl font-bold text-blue-400">{stat.suffix}</span>}
                       {stat.hasStar && (
-                        <Star className="w-4 h-4 text-blue-500 fill-blue-500 ml-0.5" />
+                        <Star className="w-4 h-4 text-blue-400 fill-blue-400 ml-0.5" />
                       )}
                     </div>
-                    <div className="text-xs text-gray-400 mt-1">{stat.label}</div>
+                    <div className="text-xs text-zinc-500 mt-1">{stat.label}</div>
                   </div>
                 ))}
               </motion.div>
@@ -234,7 +234,7 @@ export default function HomePage() {
                   <motion.button
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.98 }}
-                    className="px-7 py-3.5 rounded-full bg-gray-100 border border-gray-200 text-[15px] font-medium text-gray-700 transition-colors hover:bg-gray-200"
+                    className="px-7 py-3.5 rounded-full bg-zinc-800 border border-zinc-700 text-[15px] font-medium text-zinc-300 transition-colors hover:bg-zinc-700 hover:text-white"
                   >
                     En savoir plus
                   </motion.button>
@@ -250,11 +250,11 @@ export default function HomePage() {
               className="relative flex justify-center"
             >
               {/* Ambient Glow - subtle blue */}
-              <div className="absolute inset-0 bg-blue-200/30 blur-[80px] rounded-full" />
+              <div className="absolute inset-0 bg-blue-500/30 blur-[80px] rounded-full" />
 
               {/* Image Container */}
               <MousePushCard maxTilt={6} smoothing={0.04} className="relative max-w-[466px] w-full">
-                <div className="relative aspect-square rounded-3xl overflow-hidden border border-gray-100 shadow-2xl shadow-gray-300/50">
+                <div className="relative aspect-square rounded-3xl overflow-hidden border border-zinc-700 shadow-2xl shadow-black/50">
                   <Image
                     src="/h12_hero_new.webp"
                     alt="H12 Premium Vehicle"
@@ -272,12 +272,12 @@ export default function HomePage() {
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.5, delay: 0.7, ease: [0.25, 0.4, 0.25, 1] }}
-                  className="absolute -top-4 -right-4 px-4 py-2.5 rounded-full bg-white flex items-center gap-2 shadow-lg border border-gray-100"
+                  className="absolute -top-4 -right-4 px-4 py-2.5 rounded-full bg-zinc-800 flex items-center gap-2 shadow-lg shadow-black/30 border border-zinc-700"
                 >
                   <div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center">
                     <Star className="w-3.5 h-3.5 text-white fill-white" />
                   </div>
-                  <span className="text-sm font-medium text-gray-900">4.9</span>
+                  <span className="text-sm font-medium text-white">4.9</span>
                 </motion.div>
 
                 <motion.div
@@ -295,11 +295,11 @@ export default function HomePage() {
       </section>
 
       {/* Service section */}
-      <section id="services" className="relative py-20 lg:pb-20 lg:pt-10 overflow-hidden bg-gray-50">
+      <section id="services" className="relative py-20 lg:pb-20 lg:pt-10 overflow-hidden bg-zinc-900">
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div
-          className="absolute top-1/2 left-1/4 w-[400px] h-[400px] rounded-full bg-blue-100/30 blur-3xl"
+          className="absolute top-1/2 left-1/4 w-[400px] h-[400px] rounded-full bg-blue-500/20 blur-3xl"
           style={{ willChange: 'transform, opacity' }}
         />
       </div>
@@ -313,14 +313,14 @@ export default function HomePage() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16 lg:mb-20"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100 mb-6">
-            <Star className="w-4 h-4 text-blue-500" />
-            <span className="text-sm font-semibold text-blue-600 uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/20 border border-blue-500/30 mb-6">
+            <Star className="w-4 h-4 text-blue-400" />
+            <span className="text-sm font-semibold text-blue-400 uppercase tracking-wider">
               Nos Services
             </span>
           </div>
 
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-gray-900 mb-6 leading-tight">
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight">
             L&apos;Excellence dans chaque
             <br />
             <span className="text-blue-500">
@@ -328,7 +328,7 @@ export default function HomePage() {
             </span>
           </h2>
 
-          <p className="text-lg sm:text-xl text-gray-500 max-w-2xl mx-auto">
+          <p className="text-lg sm:text-xl text-zinc-400 max-w-2xl mx-auto">
             Des expériences sur mesure conçues avec précision et élégance
           </p>
         </motion.div>
@@ -415,15 +415,15 @@ export default function HomePage() {
     </section>
 
       {/* Reviews Section */}
-      <section className="relative py-20 lg:pb-20 lg:pt-10 overflow-hidden bg-gray-50/80">
+      <section className="relative py-20 lg:pb-20 lg:pt-10 overflow-hidden bg-zinc-800">
         {/* Background Gradient Orbs */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div
-            className="absolute top-1/3 -left-20 w-[400px] h-[400px] rounded-full bg-blue-50/50 blur-3xl"
+            className="absolute top-1/3 -left-20 w-[400px] h-[400px] rounded-full bg-blue-500/10 blur-3xl"
             style={{ willChange: 'transform, opacity' }}
           />
           <div
-            className="absolute bottom-1/4 -right-16 w-[500px] h-[500px] rounded-full bg-sky-50/50 blur-3xl"
+            className="absolute bottom-1/4 -right-16 w-[500px] h-[500px] rounded-full bg-sky-500/10 blur-3xl"
             style={{ willChange: 'transform, opacity' }}
           />
         </div>
@@ -437,21 +437,21 @@ export default function HomePage() {
             transition={{ duration: 0.6 }}
             className="text-center mb-16 lg:mb-20"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100 mb-6">
-              <Star className="w-4 h-4 text-blue-500" />
-              <span className="text-sm font-semibold text-blue-600 uppercase tracking-wider">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/20 border border-blue-500/30 mb-6">
+              <Star className="w-4 h-4 text-blue-400" />
+              <span className="text-sm font-semibold text-blue-400 uppercase tracking-wider">
                 Avis Clients
               </span>
             </div>
 
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-gray-900 mb-6 leading-tight">
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight">
               Ce Que Disent <br />
               <span className="text-blue-500">
                 Nos Clients
               </span>
             </h2>
 
-            <p className="text-lg sm:text-xl text-gray-500 max-w-2xl mx-auto">
+            <p className="text-lg sm:text-xl text-zinc-400 max-w-2xl mx-auto">
               Expériences réelles de clients qui ont voyagé avec H12. Qualité, confort et aventure garantis.
             </p>
           </motion.div>
@@ -459,8 +459,8 @@ export default function HomePage() {
           {/* Scrolling Reviews Container */}
           <div className="relative overflow-hidden">
             {/* Gradient fade edges */}
-            <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-gray-50 to-transparent z-10 pointer-events-none" />
-            <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-gray-50 to-transparent z-10 pointer-events-none" />
+            <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-zinc-800 to-transparent z-10 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-zinc-800 to-transparent z-10 pointer-events-none" />
 
             {/* Scrolling Wrapper */}
             <motion.div
@@ -554,10 +554,10 @@ export default function HomePage() {
                       viewport={{ once: true }}
                       transition={{ duration: 0.5, delay: idx * 0.1 }}
                       whileHover={{ y: -8, scale: 1.02 }}
-                      className="group relative flex-shrink-0 w-[320px] lg:w-[400px] rounded-3xl bg-white border border-gray-200 p-6 hover:border-blue-200 transition-all duration-500 hover:shadow-xl shadow-md"
+                      className="group relative flex-shrink-0 w-[320px] lg:w-[400px] rounded-3xl bg-zinc-900 border border-zinc-700 p-6 hover:border-blue-500/30 transition-all duration-500 hover:shadow-xl shadow-md shadow-black/20"
                     >
                       {/* Glow effect on hover */}
-                      <div className="absolute inset-0 bg-blue-50 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl -z-10" />
+                      <div className="absolute inset-0 bg-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl -z-10" />
 
                       {/* Top section with avatar and info */}
                       <div className="flex items-start justify-between ">
@@ -565,24 +565,24 @@ export default function HomePage() {
                           {/* Avatar with initials */}
                           <div className="relative">
                             <div className="absolute -inset-0.5 bg-blue-500 rounded-full blur opacity-20 group-hover:opacity-40 transition-opacity duration-500" />
-                            <div className="relative w-14 h-14 rounded-full bg-blue-50 border-2 border-blue-100 flex items-center justify-center">
-                              <span className="text-blue-600 font-bold text-lg">
+                            <div className="relative w-14 h-14 rounded-full bg-blue-500/20 border-2 border-blue-500/30 flex items-center justify-center">
+                              <span className="text-blue-400 font-bold text-lg">
                                 {client.initials}
                               </span>
                             </div>
                           </div>
                           <div>
-                            <h4 className="text-gray-900 font-bold text-lg">{client.name}</h4>
-                            <p className="text-gray-400 text-sm">{client.role}</p>
+                            <h4 className="text-white font-bold text-lg">{client.name}</h4>
+                            <p className="text-zinc-500 text-sm">{client.role}</p>
                           </div>
                         </div>
 
                         {/* Date */}
-                        <span className="text-gray-300 text-sm">{client.date}</span>
+                        <span className="text-zinc-600 text-sm">{client.date}</span>
                       </div>
 
                       {/* Review Text */}
-                      <p className="text-gray-600 text-sm leading-relaxed mb-6 line-clamp-3">
+                      <p className="text-zinc-400 text-sm leading-relaxed mb-6 line-clamp-3">
                         {client.review}
                       </p>
 
@@ -592,15 +592,15 @@ export default function HomePage() {
                           {[...Array(5)].map((_, i) => (
                             <Star
                               key={i}
-                              className={`w-4 h-4 fill-current ${i < client.rating ? "text-blue-500" : "text-gray-200"}`}
+                              className={`w-4 h-4 fill-current ${i < client.rating ? "text-blue-400" : "text-zinc-700"}`}
                             />
                           ))}
                         </div>
 
                         {/* Verified badge */}
-                        <div className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-blue-50 border border-blue-100">
-                          <Sparkles className="w-3 h-3 text-blue-500" />
-                          <span className="text-xs text-blue-600">Vérifié</span>
+                        <div className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-blue-500/20 border border-blue-500/30">
+                          <Sparkles className="w-3 h-3 text-blue-400" />
+                          <span className="text-xs text-blue-400">Vérifié</span>
                         </div>
                       </div>
 
@@ -634,7 +634,7 @@ export default function HomePage() {
               <motion.button
                 whileHover={{ scale: 1.03, y: -2 }}
                 whileTap={{ scale: 0.98 }}
-                className="group relative px-8 py-4 rounded-full bg-gray-100 border border-gray-200 text-[15px] font-semibold text-gray-700 flex items-center gap-2 hover:border-gray-300 hover:bg-gray-200 transition-all duration-300"
+                className="group relative px-8 py-4 rounded-full bg-zinc-800 border border-zinc-700 text-[15px] font-semibold text-zinc-300 flex items-center gap-2 hover:border-zinc-600 hover:bg-zinc-700 hover:text-white transition-all duration-300"
               >
                 Louer une Moto
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
@@ -646,9 +646,9 @@ export default function HomePage() {
       </section>
 
       {/* Simple CTA Section */}
-      <section className="relative py-20 lg:pb-20 lg:pt-10 overflow-hidden bg-white">
+      <section className="relative py-20 lg:pb-20 lg:pt-10 overflow-hidden bg-zinc-900">
         {/* Subtle Background */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-50/30 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-500/5 to-transparent" />
 
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6">
           <motion.div
@@ -660,7 +660,7 @@ export default function HomePage() {
           >
             {/* Title */}
             <div>
-              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-gray-900 mb-6 leading-tight">
+              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight">
                 Prêt à
                 <span className="text-blue-500 ml-3">
                   Découvrir ?
@@ -668,7 +668,7 @@ export default function HomePage() {
               </h2>
 
               {/* Description */}
-              <p className="text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed">
+              <p className="text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed">
                 Votre prochaine aventure vous attend. Choisissez votre expérience idéale.
               </p>
             </div>
@@ -693,7 +693,7 @@ export default function HomePage() {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.98 }}
-                  className="px-8 py-4 rounded-full bg-white border border-gray-200 text-gray-700 font-semibold hover:bg-gray-50 hover:border-gray-300 transition-all duration-300 shadow-sm"
+                  className="px-8 py-4 rounded-full bg-zinc-800 border border-zinc-700 text-zinc-300 font-semibold hover:bg-zinc-700 hover:border-zinc-600 hover:text-white transition-all duration-300"
                 >
                   Nous Contacter
                 </motion.button>

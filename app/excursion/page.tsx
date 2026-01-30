@@ -112,17 +112,17 @@ export default function ExcursionPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-zinc-800">
       {/* Hero Section */}
       <section className="relative pt-24 sm:pt-28 pb-12 lg:pt-40 lg:pb-20 overflow-hidden">
         {/* Background Elements - CSS animations for GPU acceleration */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div
-            className="absolute top-1/4 -left-20 w-[500px] h-[500px] rounded-full bg-blue-100/50 blur-3xl animate-pulse-slow"
+            className="absolute top-1/4 -left-20 w-[500px] h-[500px] rounded-full bg-blue-500/20 blur-3xl animate-pulse-slow"
             style={{ willChange: 'transform, opacity' }}
           />
           <div
-            className="absolute bottom-1/4 -right-20 w-[400px] h-[400px] rounded-full bg-sky-100/40 blur-3xl animate-pulse-slow-delayed"
+            className="absolute bottom-1/4 -right-20 w-[400px] h-[400px] rounded-full bg-sky-500/20 blur-3xl animate-pulse-slow-delayed"
             style={{ willChange: 'transform, opacity' }}
           />
         </div>
@@ -137,9 +137,9 @@ export default function ExcursionPage() {
               transition={{ duration: 0.6 }}
               className="flex items-center justify-center gap-3 mb-4"
             >
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100">
-                <Compass className="w-4 h-4 text-blue-600" />
-                <span className="text-sm font-semibold text-blue-600">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/20 border border-blue-500/30">
+                <Compass className="w-4 h-4 text-blue-400" />
+                <span className="text-sm font-semibold text-blue-400">
                   Excursions Guidées
                 </span>
               </div>
@@ -150,7 +150,7 @@ export default function ExcursionPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-4xl sm:text-5xl font-black text-gray-900 mb-4 leading-tight tracking-tight"
+              className="text-4xl sm:text-5xl font-black text-white mb-4 leading-tight tracking-tight"
             >
               Aventure.
               <br />
@@ -166,7 +166,7 @@ export default function ExcursionPage() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="relative mb-6"
             >
-              <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl shadow-gray-300/50">
+              <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl shadow-black/50">
                 <Image
                   src="/excursions/h12_excursion_new.webp"
                   alt="H12 Excursions"
@@ -184,7 +184,7 @@ export default function ExcursionPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-base sm:text-lg text-gray-500 leading-relaxed mb-6 max-w-md mx-auto"
+              className="text-base sm:text-lg text-zinc-400 leading-relaxed mb-6 max-w-md mx-auto"
             >
               Quad, dromadaire ou moto off-road : vivez des aventures uniques avec nos guides experts.
             </motion.p>
@@ -201,13 +201,13 @@ export default function ExcursionPage() {
                 { value: '100', suffix: '%', label: 'Guidé' },
                 { value: '4.8', label: 'Note', hasStar: true }
               ].map((stat, idx) => (
-                <div key={idx} className="px-4 py-2 rounded-xl bg-white border border-gray-100 shadow-sm text-center">
+                <div key={idx} className="px-4 py-2 rounded-xl bg-zinc-800 border border-zinc-700 shadow-sm text-center">
                   <div className="flex items-center justify-center gap-0.5">
-                    <span className="text-xl sm:text-2xl font-black text-gray-900">{stat.value}</span>
-                    {stat.suffix && <span className="text-sm font-bold text-blue-500">{stat.suffix}</span>}
-                    {stat.hasStar && <Star className="w-3 h-3 text-blue-500 fill-blue-500 ml-0.5" />}
+                    <span className="text-xl sm:text-2xl font-black text-white">{stat.value}</span>
+                    {stat.suffix && <span className="text-sm font-bold text-blue-400">{stat.suffix}</span>}
+                    {stat.hasStar && <Star className="w-3 h-3 text-blue-400 fill-blue-400 ml-0.5" />}
                   </div>
-                  <div className="text-[10px] text-gray-500 mt-0.5">{stat.label}</div>
+                  <div className="text-[10px] text-zinc-500 mt-0.5">{stat.label}</div>
                 </div>
               ))}
             </motion.div>
@@ -247,7 +247,7 @@ export default function ExcursionPage() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.1, ease: [0.25, 0.4, 0.25, 1] }}
-                className="text-5xl xl:text-6xl font-bold text-gray-900 leading-[1.1] tracking-[-0.02em] mb-6"
+                className="text-5xl xl:text-6xl font-bold text-white leading-[1.1] tracking-[-0.02em] mb-6"
               >
                 Aventure.
                 <br />
@@ -261,7 +261,7 @@ export default function ExcursionPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.4, 0.25, 1] }}
-                className="text-lg xl:text-xl text-gray-500 leading-relaxed mb-10 max-w-[520px]"
+                className="text-lg xl:text-xl text-zinc-400 leading-relaxed mb-10 max-w-[520px]"
               >
                 Quad, dromadaire ou moto off-road : explorez la palmeraie et
                 le désert de Marrakech avec nos guides locaux expérimentés.
@@ -279,15 +279,15 @@ export default function ExcursionPage() {
                   { value: '100', suffix: '%', label: 'Guidé' },
                   { value: '4.8', label: 'Note', hasStar: true }
                 ].map((stat, idx) => (
-                  <div key={idx} className="px-5 py-2.5 rounded-xl bg-white border border-gray-100 shadow-sm text-center">
+                  <div key={idx} className="px-5 py-2.5 rounded-xl bg-zinc-800 border border-zinc-700 shadow-sm text-center">
                     <div className="flex items-center justify-center gap-1">
-                      <span className="text-3xl font-black text-gray-900 tracking-tighter">{stat.value}</span>
-                      {stat.suffix && <span className="text-xl font-bold text-blue-500">{stat.suffix}</span>}
+                      <span className="text-3xl font-black text-white tracking-tighter">{stat.value}</span>
+                      {stat.suffix && <span className="text-xl font-bold text-blue-400">{stat.suffix}</span>}
                       {stat.hasStar && (
-                        <Star className="w-4 h-4 text-blue-500 fill-blue-500 ml-0.5" />
+                        <Star className="w-4 h-4 text-blue-400 fill-blue-400 ml-0.5" />
                       )}
                     </div>
-                    <div className="text-xs text-gray-500 mt-1">{stat.label}</div>
+                    <div className="text-xs text-zinc-500 mt-1">{stat.label}</div>
                   </div>
                 ))}
               </motion.div>
@@ -316,7 +316,7 @@ export default function ExcursionPage() {
                   }}
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.98 }}
-                  className="group px-7 py-3.5 rounded-full bg-gray-100 text-gray-700 text-[15px] font-medium flex items-center gap-2 transition-colors hover:bg-gray-200"
+                  className="group px-7 py-3.5 rounded-full bg-zinc-800 border border-zinc-700 text-zinc-300 text-[15px] font-medium flex items-center gap-2 transition-colors hover:bg-zinc-700 hover:text-white"
                 >
                   En savoir plus
                 </motion.button>
@@ -331,11 +331,11 @@ export default function ExcursionPage() {
               className="relative flex justify-center"
             >
               {/* Ambient Glow */}
-              <div className="absolute inset-0 bg-blue-100/40 blur-[80px] rounded-full" />
+              <div className="absolute inset-0 bg-blue-500/30 blur-[80px] rounded-full" />
 
               {/* Image Container */}
               <MousePushCard maxTilt={10} smoothing={0.06} className="relative max-w-[466px] w-full">
-                <div className="relative aspect-square rounded-3xl overflow-hidden border border-gray-100">
+                <div className="relative aspect-square rounded-3xl overflow-hidden border border-zinc-700 shadow-2xl shadow-black/50">
                   <Image
                     src="/excursions/h12_excursion_new.webp"
                     alt="H12 Excursions"
@@ -352,12 +352,12 @@ export default function ExcursionPage() {
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.5, delay: 0.7, ease: [0.25, 0.4, 0.25, 1] }}
-                  className="absolute -top-4 -right-4 px-4 py-2.5 rounded-full bg-white flex items-center gap-2 shadow-lg border border-gray-100"
+                  className="absolute -top-4 -right-4 px-4 py-2.5 rounded-full bg-zinc-800 flex items-center gap-2 shadow-lg shadow-black/30 border border-zinc-700"
                 >
                   <div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center">
                     <Star className="w-3.5 h-3.5 text-white fill-white" />
                   </div>
-                  <span className="text-sm font-medium text-gray-900">4.8</span>
+                  <span className="text-sm font-medium text-white">4.8</span>
                 </motion.div>
 
                 <motion.div
@@ -383,9 +383,9 @@ export default function ExcursionPage() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="flex flex-wrap gap-3 justify-center"
           >
-            <div className="px-5 py-2.5 rounded-full bg-blue-50 border border-blue-100 flex items-center gap-2">
-              <CheckCircle className="w-4 h-4 text-green-500" />
-              <span className="text-sm font-medium text-gray-700">Toutes nos excursions sont accompagnées par des guides locaux experts</span>
+            <div className="px-5 py-2.5 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center gap-2">
+              <CheckCircle className="w-4 h-4 text-green-400" />
+              <span className="text-sm font-medium text-zinc-300">Toutes nos excursions sont accompagnées par des guides locaux experts</span>
             </div>
           </motion.div>
         </div>
@@ -609,7 +609,7 @@ export default function ExcursionPage() {
         {/* Background Gradient - CSS animation */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-blue-100/30 blur-3xl animate-pulse-slow"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-blue-500/20 blur-3xl animate-pulse-slow"
             style={{ willChange: 'transform, opacity' }}
           />
         </div>
@@ -623,12 +623,12 @@ export default function ExcursionPage() {
             className="text-center"
           >
             {/* Subtitle */}
-            <p className="text-blue-500 text-sm font-medium tracking-[0.15em] uppercase mb-4">
+            <p className="text-blue-400 text-sm font-medium tracking-[0.15em] uppercase mb-4">
               Besoin d&apos;un véhicule ?
             </p>
 
             {/* Main Title */}
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-6">
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
               Louez une{" "}
               <span className="text-blue-500">
                 Voiture Premium
@@ -636,7 +636,7 @@ export default function ExcursionPage() {
             </h2>
 
             {/* Description */}
-            <p className="text-lg text-gray-500 max-w-xl mx-auto mb-10">
+            <p className="text-lg text-zinc-400 max-w-xl mx-auto mb-10">
               Découvrez notre flotte de véhicules haut de gamme pour explorer Marrakech et ses environs en toute liberté.
             </p>
 
@@ -655,7 +655,7 @@ export default function ExcursionPage() {
                 href="/voiture"
                 whileHover={{ scale: 1.03, y: -2 }}
                 whileTap={{ scale: 0.98 }}
-                className="group px-8 py-4 rounded-full bg-gray-100 text-gray-700 text-[15px] font-medium inline-flex items-center gap-2 transition-colors hover:bg-gray-200"
+                className="group px-8 py-4 rounded-full bg-zinc-800 border border-zinc-700 text-zinc-300 text-[15px] font-medium inline-flex items-center gap-2 transition-colors hover:bg-zinc-700 hover:text-white"
               >
                 En savoir plus
               </motion.a>

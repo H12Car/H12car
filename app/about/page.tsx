@@ -56,13 +56,13 @@ const services = [
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-zinc-800">
       {/* Hero Section */}
-      <section className="relative pt-24 sm:pt-28 pb-16 lg:pt-40 lg:pb-24 overflow-hidden bg-gradient-to-b from-gray-50 to-white">
+      <section className="relative pt-24 sm:pt-28 pb-16 lg:pt-40 lg:pb-24 overflow-hidden">
         {/* Subtle Background */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
-          <div className="absolute top-1/4 -left-20 w-[500px] h-[500px] rounded-full bg-blue-100/50 blur-3xl" />
-          <div className="absolute bottom-1/4 -right-20 w-[400px] h-[400px] rounded-full bg-blue-100/50 blur-3xl" />
+          <div className="absolute top-1/4 -left-20 w-[500px] h-[500px] rounded-full bg-blue-500/20 blur-3xl" />
+          <div className="absolute bottom-1/4 -right-20 w-[400px] h-[400px] rounded-full bg-blue-500/20 blur-3xl" />
         </div>
 
         <div className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-16 xl:px-24 relative z-10">
@@ -73,10 +73,10 @@ export default function AboutPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100 mb-6"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/20 border border-blue-500/30 mb-6"
             >
-              <Sparkles className="w-4 h-4 text-blue-500" />
-              <span className="text-sm font-semibold text-blue-600">
+              <Sparkles className="w-4 h-4 text-blue-400" />
+              <span className="text-sm font-semibold text-blue-400">
                 A Propos de H12
               </span>
             </motion.div>
@@ -86,7 +86,7 @@ export default function AboutPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-4xl sm:text-5xl font-black text-gray-900 mb-4 leading-tight tracking-tight"
+              className="text-4xl sm:text-5xl font-black text-white mb-4 leading-tight tracking-tight"
             >
               Votre Route{" "}
               <span className="text-blue-500">
@@ -101,7 +101,7 @@ export default function AboutPage() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="relative mb-6"
             >
-              <div className="relative w-48 h-48 mx-auto rounded-full overflow-hidden shadow-2xl shadow-blue-300/50 border-4 border-white">
+              <div className="relative w-48 h-48 mx-auto rounded-full overflow-hidden shadow-2xl shadow-black/50 border-4 border-zinc-700">
                 <Image
                   src="/h12carlogo.png"
                   alt="H12 Logo"
@@ -118,7 +118,7 @@ export default function AboutPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-base sm:text-lg text-gray-500 leading-relaxed mb-6 max-w-md mx-auto"
+              className="text-base sm:text-lg text-zinc-400 leading-relaxed mb-6 max-w-md mx-auto"
             >
               Notre mission est simple : vous offrir un service de location fiable,
               transparent et flexible, adapte aussi bien aux touristes qu&apos;aux residents.
@@ -132,12 +132,12 @@ export default function AboutPage() {
               className="flex flex-wrap items-center justify-center gap-3 mb-8"
             >
               {stats.map((stat, idx) => (
-                <div key={idx} className="px-4 py-2 rounded-xl bg-white border border-gray-100 shadow-sm text-center">
+                <div key={idx} className="px-4 py-2 rounded-xl bg-zinc-800 border border-zinc-700 shadow-sm text-center">
                   <div className="flex items-center justify-center gap-0.5">
-                    <span className="text-xl sm:text-2xl font-black text-gray-900">{stat.value}</span>
-                    {stat.hasStar && <Star className="w-3 h-3 text-blue-500 fill-blue-500 ml-0.5" />}
+                    <span className="text-xl sm:text-2xl font-black text-white">{stat.value}</span>
+                    {stat.hasStar && <Star className="w-3 h-3 text-blue-400 fill-blue-400 ml-0.5" />}
                   </div>
-                  <div className="text-[10px] text-gray-400 mt-0.5">{stat.label}</div>
+                  <div className="text-[10px] text-zinc-500 mt-0.5">{stat.label}</div>
                 </div>
               ))}
             </motion.div>
@@ -162,7 +162,7 @@ export default function AboutPage() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.1, ease: [0.25, 0.4, 0.25, 1] }}
-                className="text-5xl xl:text-6xl font-bold text-gray-900 leading-[1.1] tracking-[-0.02em] mb-6"
+                className="text-5xl xl:text-6xl font-bold text-white leading-[1.1] tracking-[-0.02em] mb-6"
               >
                 Votre Route.
                 <br />
@@ -176,7 +176,7 @@ export default function AboutPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.4, 0.25, 1] }}
-                className="text-lg xl:text-xl text-gray-500 leading-relaxed mb-10 max-w-[520px]"
+                className="text-lg xl:text-xl text-zinc-400 leading-relaxed mb-10 max-w-[520px]"
               >
                 Notre mission est simple : vous offrir un service de location fiable,
                 transparent et flexible, adapte aussi bien aux touristes qu&apos;aux residents.
@@ -191,14 +191,14 @@ export default function AboutPage() {
                 className="flex items-center gap-4 mb-10"
               >
                 {stats.map((stat, idx) => (
-                  <div key={idx} className="px-5 py-2.5 rounded-xl bg-white border border-gray-100 shadow-sm text-center">
+                  <div key={idx} className="px-5 py-2.5 rounded-xl bg-zinc-800 border border-zinc-700 shadow-sm text-center">
                     <div className="flex items-center justify-center gap-1">
-                      <span className="text-3xl font-black text-gray-900 tracking-tighter">{stat.value}</span>
+                      <span className="text-3xl font-black text-white tracking-tighter">{stat.value}</span>
                       {stat.hasStar && (
-                        <Star className="w-4 h-4 text-blue-500 fill-blue-500 ml-0.5" />
+                        <Star className="w-4 h-4 text-blue-400 fill-blue-400 ml-0.5" />
                       )}
                     </div>
-                    <div className="text-xs text-gray-400 mt-1">{stat.label}</div>
+                    <div className="text-xs text-zinc-500 mt-1">{stat.label}</div>
                   </div>
                 ))}
               </motion.div>
@@ -225,7 +225,7 @@ export default function AboutPage() {
                   <motion.button
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.98 }}
-                    className="px-7 py-3.5 rounded-full bg-gray-100 border border-gray-200 text-[15px] font-medium text-gray-700 transition-colors hover:bg-gray-200"
+                    className="px-7 py-3.5 rounded-full bg-zinc-800 border border-zinc-700 text-[15px] font-medium text-zinc-300 transition-colors hover:bg-zinc-700 hover:text-white"
                   >
                     Voir Nos Motos
                   </motion.button>
@@ -241,11 +241,11 @@ export default function AboutPage() {
               className="relative flex justify-center"
             >
               {/* Ambient Glow */}
-              <div className="absolute inset-0 bg-blue-200/30 blur-[80px] rounded-full" />
+              <div className="absolute inset-0 bg-blue-500/30 blur-[80px] rounded-full" />
 
               {/* Image Container */}
               <MousePushCard maxTilt={6} smoothing={0.04} className="relative max-w-[400px] w-full">
-                <div className="relative aspect-square rounded-full overflow-hidden border-8 border-white shadow-2xl shadow-gray-300/50">
+                <div className="relative aspect-square rounded-full overflow-hidden border-8 border-zinc-700 shadow-2xl shadow-black/50">
                   <Image
                     src="/h12carlogo.png"
                     alt="H12 Logo"
@@ -261,12 +261,12 @@ export default function AboutPage() {
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.5, delay: 0.7, ease: [0.25, 0.4, 0.25, 1] }}
-                  className="absolute -top-4 -right-4 px-4 py-2.5 rounded-full bg-white flex items-center gap-2 shadow-lg border border-gray-100"
+                  className="absolute -top-4 -right-4 px-4 py-2.5 rounded-full bg-zinc-800 flex items-center gap-2 shadow-lg shadow-black/30 border border-zinc-700"
                 >
                   <div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center">
                     <Star className="w-3.5 h-3.5 text-white fill-white" />
                   </div>
-                  <span className="text-sm font-medium text-gray-900">4.9</span>
+                  <span className="text-sm font-medium text-white">4.9</span>
                 </motion.div>
 
                 <motion.div
@@ -285,7 +285,7 @@ export default function AboutPage() {
       </section>
 
       {/* Mission Section */}
-      <section className="py-16 lg:py-24 bg-white">
+      <section className="py-16 lg:py-24 bg-zinc-900">
         <div className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-16 xl:px-24">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             {/* Image */}
@@ -296,8 +296,8 @@ export default function AboutPage() {
               transition={{ duration: 0.8 }}
               className="relative"
             >
-              <div className="absolute inset-0 bg-blue-500/10 blur-[60px] rounded-full" />
-              <div className="relative aspect-[4/3] rounded-3xl overflow-hidden border border-gray-200 shadow-lg">
+              <div className="absolute inset-0 bg-blue-500/20 blur-[60px] rounded-full" />
+              <div className="relative aspect-[4/3] rounded-3xl overflow-hidden border border-zinc-700 shadow-lg shadow-black/30">
                 <Image
                   src="/h12_hero_new.webp"
                   alt="H12 Premium Fleet"
@@ -318,18 +318,18 @@ export default function AboutPage() {
               <p className="text-blue-500 text-sm font-medium tracking-[0.15em] uppercase mb-4">
                 Notre Engagement
               </p>
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
+              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
                 Une Entreprise Locale,{" "}
                 <span className="text-blue-500">
                   Dynamique et de Confiance
                 </span>
               </h2>
-              <p className="text-gray-500 leading-relaxed mb-6">
+              <p className="text-zinc-400 leading-relaxed mb-6">
                 Nous proposons une flotte de vehicules economiques et confortables,
                 livres gratuitement a l&apos;aeroport ou en centre-ville, avec assurance
                 incluse et possibilite de location sans caution (sous conditions).
               </p>
-              <p className="text-gray-500 leading-relaxed mb-8">
+              <p className="text-zinc-400 leading-relaxed mb-8">
                 Nous organisons egalement des excursions sur devis pour vous faire
                 decouvrir les merveilles du Maroc. Faites le choix de la tranquillite
                 pour vos deplacements et aventures a Marrakech.
@@ -339,10 +339,10 @@ export default function AboutPage() {
               <div className="space-y-3">
                 {["Reservation simple par WhatsApp ou en ligne", "Aucun frais cache", "Service personnalise"].map((item, idx) => (
                   <div key={idx} className="flex items-center gap-3">
-                    <div className="w-6 h-6 rounded-full bg-blue-50 flex items-center justify-center">
-                      <CheckCircle className="w-4 h-4 text-blue-500" />
+                    <div className="w-6 h-6 rounded-full bg-blue-500/20 flex items-center justify-center">
+                      <CheckCircle className="w-4 h-4 text-blue-400" />
                     </div>
-                    <span className="text-gray-700">{item}</span>
+                    <span className="text-zinc-300">{item}</span>
                   </div>
                 ))}
               </div>
@@ -352,7 +352,7 @@ export default function AboutPage() {
       </section>
 
       {/* Services Section */}
-      <section className="py-16 lg:py-24 bg-gray-50">
+      <section className="py-16 lg:py-24 bg-zinc-800">
         <div className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-16 xl:px-24">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -361,10 +361,10 @@ export default function AboutPage() {
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <p className="text-blue-500 text-sm font-medium tracking-[0.15em] uppercase mb-4">
+            <p className="text-blue-400 text-sm font-medium tracking-[0.15em] uppercase mb-4">
               Nos Services
             </p>
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
+            <h2 className="text-3xl sm:text-4xl font-bold text-white">
               Tout Pour Vos{" "}
               <span className="text-blue-500">
                 Deplacements
@@ -381,12 +381,12 @@ export default function AboutPage() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: idx * 0.1 }}
               >
-                <MousePushCard maxTilt={8} smoothing={0.05} className="p-6 rounded-2xl bg-white border border-gray-100 shadow-sm hover:border-blue-200 hover:shadow-md transition-all group h-full">
+                <MousePushCard maxTilt={8} smoothing={0.05} className="p-6 rounded-2xl bg-zinc-900 border border-zinc-700 shadow-sm hover:border-blue-500/30 hover:shadow-md transition-all group h-full">
                   <div className="w-14 h-14 rounded-xl bg-blue-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                     <service.icon className="w-7 h-7 text-white" />
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">{service.title}</h3>
-                  <p className="text-gray-500">{service.description}</p>
+                  <h3 className="text-xl font-bold text-white mb-2">{service.title}</h3>
+                  <p className="text-zinc-400">{service.description}</p>
                 </MousePushCard>
               </motion.div>
             ))}
@@ -395,7 +395,7 @@ export default function AboutPage() {
       </section>
 
       {/* Why Choose Us Section */}
-      <section className="py-16 lg:py-24 bg-white">
+      <section className="py-16 lg:py-24 bg-zinc-900">
         <div className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-16 xl:px-24">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -404,10 +404,10 @@ export default function AboutPage() {
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <p className="text-blue-500 text-sm font-medium tracking-[0.15em] uppercase mb-4">
+            <p className="text-blue-400 text-sm font-medium tracking-[0.15em] uppercase mb-4">
               Pourquoi Nous Choisir
             </p>
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
+            <h2 className="text-3xl sm:text-4xl font-bold text-white">
               L&apos;Excellence{" "}
               <span className="text-blue-500">
                 a Votre Service
@@ -424,12 +424,12 @@ export default function AboutPage() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: idx * 0.1 }}
               >
-                <MousePushCard maxTilt={8} smoothing={0.05} className="text-center p-6 rounded-2xl bg-gray-50 border border-gray-100 h-full">
-                  <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center mx-auto mb-4">
-                    <feature.icon className="w-6 h-6 text-blue-500" />
+                <MousePushCard maxTilt={8} smoothing={0.05} className="text-center p-6 rounded-2xl bg-zinc-800 border border-zinc-700 h-full">
+                  <div className="w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center mx-auto mb-4">
+                    <feature.icon className="w-6 h-6 text-blue-400" />
                   </div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">{feature.title}</h3>
-                  <p className="text-sm text-gray-500">{feature.description}</p>
+                  <h3 className="text-lg font-bold text-white mb-2">{feature.title}</h3>
+                  <p className="text-sm text-zinc-400">{feature.description}</p>
                 </MousePushCard>
               </motion.div>
             ))}
@@ -438,7 +438,7 @@ export default function AboutPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 lg:py-24 bg-gray-50">
+      <section className="py-16 lg:py-24 bg-zinc-800">
         <div className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-16 xl:px-24">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
