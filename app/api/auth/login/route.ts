@@ -1,20 +1,20 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
-// Simple password - in production use environment variable
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "h12admin2024";
+const AUTH_SECRET = process.env.AUTH_SECRET || "h12-secret-key-change-in-production";
 
 export async function POST(request: Request) {
   try {
     const { password } = await request.json();
 
     if (password === ADMIN_PASSWORD) {
-      // Set auth cookie
+      // Set the secret as the cookie value - httpOnly prevents JS access
       const cookieStore = await cookies();
-      cookieStore.set("h12_admin_auth", "authenticated", {
+      cookieStore.set("h12_admin_auth", AUTH_SECRET, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
+        sameSite: "strict",
         maxAge: 60 * 60 * 24 * 7, // 7 days
         path: "/",
       });

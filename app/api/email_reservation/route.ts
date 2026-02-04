@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESERVATION_EMAIL_KEY);
+const resend = process.env.RESERVATION_EMAIL_KEY
+  ? new Resend(process.env.RESERVATION_EMAIL_KEY)
+  : null;
 
 export async function POST(request: NextRequest) {
   try {
@@ -108,7 +110,7 @@ export async function POST(request: NextRequest) {
     // Excursions
     if (selectedExcursions && selectedExcursions.length > 0) {
       emailHtml += `<div class="section"><div class="section-title">🎯 Excursions sélectionnées</div>`;
-      selectedExcursions.forEach((exc: any) => {
+      selectedExcursions.forEach((exc: { name: string; price: string }) => {
         const excTotal = parseInt(exc.price) * (bookingDetails.numberOfPeople || 1);
         emailHtml += `
           <div class="info-row">
@@ -261,6 +263,13 @@ export async function POST(request: NextRequest) {
         </body>
       </html>
     `;
+
+    if (!resend) {
+      return NextResponse.json(
+        { error: 'Service email non configuré' },
+        { status: 503 }
+      );
+    }
 
     // Envoyer l'email
     const { data, error } = await resend.emails.send({

@@ -128,11 +128,19 @@ export default function PanelSidebar({ pendingQuotes = 0 }: PanelSidebarProps) {
         </Link>
       </div>
 
-      {/* Version */}
+      {/* Version & Credit */}
       <div className="px-6 py-4 border-t border-zinc-800/50">
-        <p className="text-[10px] text-zinc-600">
+        <p className="text-[10px] text-zinc-600 mb-1">
           H12 Admin v1.0
         </p>
+        <a
+          href="https://digitalmaroc.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[10px] text-zinc-700 hover:text-zinc-500 transition-colors"
+        >
+          Codé par <span className="font-medium">DigitalMaroc</span>
+        </a>
       </div>
     </aside>
   );

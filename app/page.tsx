@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, type Variants } from "framer-motion";
-import { ArrowRight, Star, Sparkles } from "lucide-react";
+import { ArrowRight, Star, Sparkles, Shield, Clock, MapPin, Headphones, CheckCircle2, Car, Compass } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { services } from "@/types/home_service";
@@ -122,13 +122,13 @@ export default function HomePage() {
                 { value: '40', suffix: '+', label: 'Véhicules' },
                 { value: '4.9', label: 'Note', hasStar: true }
               ].map((stat, idx) => (
-                <div key={idx} className="px-4 py-2 rounded-xl bg-zinc-800 border border-zinc-700 shadow-sm text-center">
+                <div key={idx} className="min-w-[85px] px-4 py-2.5 rounded-xl bg-zinc-800/80 border border-zinc-700/50 backdrop-blur-sm">
                   <div className="flex items-center justify-center gap-0.5">
-                    <span className="text-xl sm:text-2xl font-black text-white">{stat.value}</span>
+                    <span className="text-xl sm:text-2xl font-black text-white tabular-nums">{stat.value}</span>
                     {stat.suffix && <span className="text-sm font-bold text-blue-400">{stat.suffix}</span>}
-                    {stat.hasStar && <Star className="w-3 h-3 text-blue-400 fill-blue-400 ml-0.5" />}
+                    {stat.hasStar && <Star className="w-3.5 h-3.5 text-blue-400 fill-blue-400 ml-0.5" />}
                   </div>
-                  <div className="text-[10px] text-zinc-500 mt-0.5">{stat.label}</div>
+                  <div className="text-[10px] text-zinc-500 text-center mt-1 font-medium">{stat.label}</div>
                 </div>
               ))}
             </motion.div>
@@ -199,15 +199,15 @@ export default function HomePage() {
                   { value: '40', suffix: '+', label: 'Véhicules' },
                   { value: '4.9', label: 'Note', hasStar: true }
                 ].map((stat, idx) => (
-                  <div key={idx} className="px-5 py-2.5 rounded-xl bg-zinc-800 border border-zinc-700 shadow-sm text-center">
+                  <div key={idx} className="min-w-[100px] px-5 py-3 rounded-xl bg-zinc-800/80 border border-zinc-700/50 backdrop-blur-sm">
                     <div className="flex items-center justify-center gap-1">
-                      <span className="text-3xl font-black text-white tracking-tighter">{stat.value}</span>
-                      {stat.suffix && <span className="text-xl font-bold text-blue-400">{stat.suffix}</span>}
+                      <span className="text-2xl xl:text-3xl font-black text-white tabular-nums">{stat.value}</span>
+                      {stat.suffix && <span className="text-lg font-bold text-blue-400">{stat.suffix}</span>}
                       {stat.hasStar && (
                         <Star className="w-4 h-4 text-blue-400 fill-blue-400 ml-0.5" />
                       )}
                     </div>
-                    <div className="text-xs text-zinc-500 mt-1">{stat.label}</div>
+                    <div className="text-xs text-zinc-500 text-center mt-1.5 font-medium">{stat.label}</div>
                   </div>
                 ))}
               </motion.div>
@@ -414,6 +414,390 @@ export default function HomePage() {
       </div>
     </section>
 
+      {/* Why H12 Section */}
+      <section className="relative py-20 lg:py-28 overflow-hidden bg-zinc-900">
+        {/* Background Gradient Orbs */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-1/4 -left-20 w-[500px] h-[500px] rounded-full bg-blue-500/10 blur-3xl" />
+          <div className="absolute bottom-1/4 -right-20 w-[400px] h-[400px] rounded-full bg-sky-500/10 blur-3xl" />
+        </div>
+
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 relative z-10">
+          {/* Section Header */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12 lg:mb-20"
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/20 border border-blue-500/30 mb-6">
+              <Shield className="w-4 h-4 text-blue-400" />
+              <span className="text-sm font-semibold text-blue-400 uppercase tracking-wider">
+                Pourquoi H12
+              </span>
+            </div>
+
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white mb-4 leading-tight">
+              La Confiance <br className="hidden sm:block" />
+              <span className="text-blue-500">Avant Tout</span>
+            </h2>
+            <p className="text-lg text-zinc-400 max-w-2xl mx-auto">
+              Des services premium pensés pour votre tranquillité
+            </p>
+          </motion.div>
+
+          {/* Features Grid - Service Card Style */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-5">
+            {[
+              {
+                icon: Car,
+                title: "Kilométrage Illimité",
+                description: "Roulez sans compter, sans frais cachés",
+                image: "/excursions/h12_quad.png",
+                tag: "01"
+              },
+              {
+                icon: Shield,
+                title: "Assurance Incluse",
+                description: "Tous risques pour votre tranquillité",
+                image: "/h12_hero_new.webp",
+                tag: "02"
+              },
+              {
+                icon: MapPin,
+                title: "Livraison Gratuite",
+                description: "À l'aéroport ou à votre hôtel",
+                image: "/excursions/h12_quad.png",
+                tag: "03"
+              },
+              {
+                icon: Headphones,
+                title: "Support 24/7",
+                description: "Une équipe à votre écoute",
+                image: "/h12_hero_new.webp",
+                tag: "04"
+              }
+            ].map((feature, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                className="group"
+              >
+                <div className="relative bg-zinc-900 rounded-[16px] sm:rounded-[20px] lg:rounded-[24px] overflow-hidden h-[220px] sm:h-[260px] lg:h-[320px] hover:scale-[1.02] hover:shadow-2xl transition-all duration-500 shadow-xl border border-zinc-800 hover:border-blue-500/30">
+                  {/* Image */}
+                  <Image
+                    src={feature.image}
+                    alt={feature.title}
+                    fill
+                    className="object-cover scale-[1.15] opacity-50 group-hover:opacity-70 group-hover:scale-[1.2] transition-all duration-700"
+                  />
+
+                  {/* Gradient Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/30" />
+
+                  {/* Number Tag - Top Left */}
+                  <div className="absolute top-3 left-3 sm:top-4 sm:left-4">
+                    <div className="w-7 h-7 sm:w-8 sm:h-8 bg-white/10 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center">
+                      <span className="text-[10px] sm:text-[11px] font-bold text-white/80">{feature.tag}</span>
+                    </div>
+                  </div>
+
+                  {/* Accent line at top - blue */}
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-8 sm:w-10 h-1 bg-blue-500 rounded-b-full" />
+
+                  {/* Content Card - Bottom */}
+                  <div className="absolute bottom-0 left-0 right-0 p-2.5 sm:p-3 lg:p-4">
+                    <div className="bg-white/10 backdrop-blur-xl rounded-xl sm:rounded-2xl p-3 sm:p-4 border border-white/10 group-hover:bg-white/15 group-hover:border-white/20 transition-all duration-500">
+                      {/* Icon */}
+                      <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-blue-500/20 backdrop-blur-sm border border-blue-500/30 flex items-center justify-center mb-2.5 sm:mb-3 group-hover:bg-blue-500/30 transition-colors duration-300">
+                        <feature.icon className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400" />
+                      </div>
+
+                      <h3 className="text-[13px] sm:text-[15px] lg:text-[16px] font-bold text-white mb-1 sm:mb-1.5">
+                        {feature.title}
+                      </h3>
+                      <p className="text-[11px] sm:text-[12px] text-white/60 leading-relaxed line-clamp-2">
+                        {feature.description}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works Section */}
+      <section className="relative py-20 lg:py-28 overflow-hidden bg-zinc-800">
+        {/* Background */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-blue-500/5 blur-3xl" />
+        </div>
+
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 relative z-10">
+          {/* Section Header */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12 lg:mb-20"
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/20 border border-blue-500/30 mb-6">
+              <CheckCircle2 className="w-4 h-4 text-blue-400" />
+              <span className="text-sm font-semibold text-blue-400 uppercase tracking-wider">
+                Comment ça marche
+              </span>
+            </div>
+
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white mb-4 leading-tight">
+              Simple. Rapide. <br className="hidden sm:block" />
+              <span className="text-blue-500">Efficace.</span>
+            </h2>
+            <p className="text-lg text-zinc-400 max-w-2xl mx-auto">
+              Trois étapes pour votre prochaine aventure
+            </p>
+          </motion.div>
+
+          {/* Steps - Same card style */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5 lg:gap-6">
+            {[
+              {
+                step: "01",
+                title: "Choisissez",
+                description: "Parcourez notre flotte premium et sélectionnez le véhicule idéal.",
+                icon: Car
+              },
+              {
+                step: "02",
+                title: "Réservez",
+                description: "Réservation en ligne simple. Confirmez vos dates et lieu de livraison.",
+                icon: Clock
+              },
+              {
+                step: "03",
+                title: "Profitez",
+                description: "Recevez votre véhicule et partez à la découverte de Marrakech.",
+                icon: Compass
+              }
+            ].map((item, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                className="group"
+              >
+                <div className="relative bg-zinc-900 rounded-[20px] sm:rounded-[24px] overflow-hidden h-[280px] sm:h-[320px] lg:h-[380px] hover:scale-[1.02] hover:shadow-2xl transition-all duration-500 shadow-xl border border-zinc-800 hover:border-blue-500/30">
+                  {/* Abstract SVG Background Pattern */}
+                  <div className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity duration-500">
+                    {idx === 0 && (
+                      <svg className="w-full h-full" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="200" cy="200" r="150" stroke="url(#grad1)" strokeWidth="2" strokeDasharray="10 5" className="animate-[spin_30s_linear_infinite]" />
+                        <circle cx="200" cy="200" r="100" stroke="url(#grad1)" strokeWidth="1.5" strokeDasharray="8 4" className="animate-[spin_25s_linear_infinite_reverse]" />
+                        <circle cx="200" cy="200" r="50" fill="url(#grad1)" fillOpacity="0.1" />
+                        <path d="M120 200 L200 120 L280 200 L200 280 Z" stroke="url(#grad1)" strokeWidth="1" fill="none" />
+                        <defs>
+                          <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stopColor="#3B82F6" />
+                            <stop offset="100%" stopColor="#60A5FA" />
+                          </linearGradient>
+                        </defs>
+                      </svg>
+                    )}
+                    {idx === 1 && (
+                      <svg className="w-full h-full" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="100" y="100" width="200" height="200" rx="20" stroke="url(#grad2)" strokeWidth="2" strokeDasharray="15 5" className="animate-pulse" />
+                        <rect x="140" y="140" width="120" height="120" rx="10" stroke="url(#grad2)" strokeWidth="1.5" fill="url(#grad2)" fillOpacity="0.05" />
+                        <line x1="50" y1="200" x2="150" y2="200" stroke="url(#grad2)" strokeWidth="1" />
+                        <line x1="250" y1="200" x2="350" y2="200" stroke="url(#grad2)" strokeWidth="1" />
+                        <line x1="200" y1="50" x2="200" y2="150" stroke="url(#grad2)" strokeWidth="1" />
+                        <line x1="200" y1="250" x2="200" y2="350" stroke="url(#grad2)" strokeWidth="1" />
+                        <defs>
+                          <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stopColor="#3B82F6" />
+                            <stop offset="100%" stopColor="#60A5FA" />
+                          </linearGradient>
+                        </defs>
+                      </svg>
+                    )}
+                    {idx === 2 && (
+                      <svg className="w-full h-full" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M200 50 L350 150 L350 300 L200 350 L50 300 L50 150 Z" stroke="url(#grad3)" strokeWidth="2" fill="url(#grad3)" fillOpacity="0.05" />
+                        <path d="M200 100 L300 175 L300 275 L200 325 L100 275 L100 175 Z" stroke="url(#grad3)" strokeWidth="1" fill="none" strokeDasharray="5 3" />
+                        <circle cx="200" cy="200" r="30" fill="url(#grad3)" fillOpacity="0.2" />
+                        <circle cx="200" cy="200" r="10" fill="#3B82F6" />
+                        <defs>
+                          <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stopColor="#3B82F6" />
+                            <stop offset="100%" stopColor="#60A5FA" />
+                          </linearGradient>
+                        </defs>
+                      </svg>
+                    )}
+                  </div>
+
+                  {/* Gradient Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/40" />
+
+                  {/* Number Tag - Top Left */}
+                  <div className="absolute top-4 left-4 sm:top-5 sm:left-5">
+                    <div className="w-8 h-8 sm:w-9 sm:h-9 bg-white/10 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center">
+                      <span className="text-[11px] sm:text-[12px] font-bold text-white/80">{item.step}</span>
+                    </div>
+                  </div>
+
+                  {/* Accent line at top - blue */}
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-10 sm:w-12 h-1 bg-blue-500 rounded-b-full" />
+
+                  {/* Content Card - Bottom */}
+                  <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4">
+                    <div className="bg-white/10 backdrop-blur-xl rounded-xl sm:rounded-2xl p-4 sm:p-5 border border-white/10 group-hover:bg-white/15 group-hover:border-white/20 transition-all duration-500">
+                      {/* Icon */}
+                      <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-blue-500 flex items-center justify-center mb-3 sm:mb-4 shadow-lg shadow-blue-500/20 mx-auto">
+                        <item.icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                      </div>
+
+                      <h3 className="text-[16px] sm:text-[18px] lg:text-[20px] font-bold text-white mb-2 text-center">
+                        {item.title}
+                      </h3>
+                      <p className="text-[12px] sm:text-[13px] text-white/60 leading-relaxed text-center">
+                        {item.description}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Fleet Section */}
+      <section className="relative py-20 lg:py-28 overflow-hidden bg-zinc-800">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-16">
+          {/* Section Header */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="flex flex-col md:flex-row md:items-end md:justify-between mb-12 lg:mb-16"
+          >
+            <div>
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/20 border border-blue-500/30 mb-6">
+                <Car className="w-4 h-4 text-blue-400" />
+                <span className="text-sm font-semibold text-blue-400 uppercase tracking-wider">
+                  Notre Flotte
+                </span>
+              </div>
+
+              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight">
+                Véhicules <span className="text-blue-500">Premium</span>
+              </h2>
+            </div>
+
+            <Link href="/voiture" className="mt-6 md:mt-0">
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.98 }}
+                className="group flex items-center gap-2 px-6 py-3 rounded-full border border-zinc-700 text-zinc-300 font-medium hover:border-blue-500/50 hover:text-white transition-all"
+              >
+                Voir toute la flotte
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </motion.button>
+            </Link>
+          </motion.div>
+
+          {/* Fleet Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              {
+                name: "Volkswagen Touareg",
+                category: "SUV Premium",
+                price: "800",
+                image: "/voiture_h12/h12_touareg.png",
+                features: ["Climatisation", "GPS", "7 Places"],
+                href: "/voiture"
+              },
+              {
+                name: "Honda Africa Twin 1100",
+                category: "Adventure",
+                price: "600",
+                image: "/moto_h12/h12_africatwin1100.png",
+                features: ["ABS", "DCT", "Adventure"],
+                href: "/moto"
+              },
+              {
+                name: "Quad Adventure",
+                category: "Excursion",
+                price: "400",
+                image: "/excursions/h12_quad.png",
+                features: ["Guide inclus", "Équipement", "Aventure"],
+                href: "/excursion"
+              }
+            ].map((vehicle, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                whileHover={{ y: -8 }}
+                className="group relative rounded-3xl overflow-hidden bg-zinc-900 border border-zinc-800 hover:border-blue-500/30 transition-all duration-500"
+              >
+                {/* Image */}
+                <div className="relative h-48 lg:h-56 overflow-hidden">
+                  <Image
+                    src={vehicle.image}
+                    alt={vehicle.name}
+                    fill
+                    className="object-cover group-hover:scale-110 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-transparent to-transparent" />
+
+                  {/* Category Badge */}
+                  <div className="absolute top-4 left-4">
+                    <span className="px-3 py-1.5 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 text-xs font-medium text-white">
+                      {vehicle.category}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-white mb-2">{vehicle.name}</h3>
+
+                  {/* Features */}
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {vehicle.features.map((feature, i) => (
+                      <span key={i} className="text-xs text-zinc-500">{feature}{i < vehicle.features.length - 1 && " •"}</span>
+                    ))}
+                  </div>
+
+                  {/* Price & CTA */}
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <span className="text-2xl font-black text-white">{vehicle.price}</span>
+                      <span className="text-zinc-500 text-sm ml-1">MAD/jour</span>
+                    </div>
+                    <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                      <ArrowRight className="w-5 h-5 text-white" />
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Reviews Section */}
       <section className="relative py-20 lg:pb-20 lg:pt-10 overflow-hidden bg-zinc-800">
         {/* Background Gradient Orbs */}
@@ -457,30 +841,19 @@ export default function HomePage() {
           </motion.div>
 
           {/* Scrolling Reviews Container */}
-          <div className="relative overflow-hidden">
+          <div className="relative overflow-hidden group/carousel">
             {/* Gradient fade edges */}
-            <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-zinc-800 to-transparent z-10 pointer-events-none" />
-            <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-zinc-800 to-transparent z-10 pointer-events-none" />
+            <div className="absolute left-0 top-0 bottom-0 w-20 sm:w-32 bg-gradient-to-r from-zinc-800 to-transparent z-10 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-20 sm:w-32 bg-gradient-to-l from-zinc-800 to-transparent z-10 pointer-events-none" />
 
-            {/* Scrolling Wrapper */}
-            <motion.div
-              className="flex gap-6 lg:gap-8"
-              animate={{
-                x: [0, -1032],
-              }}
-              transition={{
-                x: {
-                  repeat: Infinity,
-                  repeatType: "loop",
-                  duration: 40,
-                  ease: "linear",
-                },
-              }}
+            {/* Scrolling Wrapper - CSS animation for better hover control */}
+            <div
+              className="flex gap-4 sm:gap-6 animate-scroll group-hover/carousel:[animation-play-state:paused]"
               style={{ width: 'max-content' }}
             >
               {/* Duplicate reviews for seamless loop */}
-              {[...Array(3)].map((_, duplicateIndex) => (
-                <div key={duplicateIndex} className="flex gap-6 lg:gap-8">
+              {[...Array(2)].map((_, duplicateIndex) => (
+                <div key={duplicateIndex} className="flex gap-4 sm:gap-6">
                   {[
                     {
                       name: "Alex Johnson",
@@ -530,85 +903,63 @@ export default function HomePage() {
                       rating: 5,
                       date: "Il y a 4 jours"
                     },
-                    {
-                      name: "Pierre Martin",
-                      role: "Explorateur Urbain",
-                      initials: "PM",
-                      review: "Service impeccable et véhicules toujours parfaitement entretenus. H12 comprend les besoins des voyageurs modernes.",
-                      rating: 5,
-                      date: "Il y a 5 jours"
-                    },
-                    {
-                      name: "Camille Dubois",
-                      role: "Influenceuse Lifestyle",
-                      initials: "CD",
-                      review: "L'expérience H12 est bien plus qu'une simple location de voiture. C'est une aventure complète avec un service personnalisé exceptionnel.",
-                      rating: 5,
-                      date: "Il y a 2 semaines"
-                    },
                   ].map((client, idx) => (
-                    <motion.div
+                    <div
                       key={`${duplicateIndex}-${idx}`}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.5, delay: idx * 0.1 }}
-                      whileHover={{ y: -8, scale: 1.02 }}
-                      className="group relative flex-shrink-0 w-[320px] lg:w-[400px] rounded-3xl bg-zinc-900 border border-zinc-700 p-6 hover:border-blue-500/30 transition-all duration-500 hover:shadow-xl shadow-md shadow-black/20"
+                      className="group relative flex-shrink-0 w-[300px] sm:w-[340px] lg:w-[380px] rounded-2xl sm:rounded-3xl bg-zinc-900 border border-zinc-800 p-5 sm:p-6 hover:border-blue-500/40 transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-2"
                     >
                       {/* Glow effect on hover */}
-                      <div className="absolute inset-0 bg-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl -z-10" />
+                      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl sm:rounded-3xl" />
 
                       {/* Top section with avatar and info */}
-                      <div className="flex items-start justify-between ">
-                        <div className="flex items-center gap-4">
+                      <div className="relative z-10 flex items-start justify-between mb-4">
+                        <div className="flex items-center gap-3">
                           {/* Avatar with initials */}
                           <div className="relative">
-                            <div className="absolute -inset-0.5 bg-blue-500 rounded-full blur opacity-20 group-hover:opacity-40 transition-opacity duration-500" />
-                            <div className="relative w-14 h-14 rounded-full bg-blue-500/20 border-2 border-blue-500/30 flex items-center justify-center">
-                              <span className="text-blue-400 font-bold text-lg">
+                            <div className="absolute -inset-0.5 bg-blue-500 rounded-full blur opacity-0 group-hover:opacity-30 transition-opacity duration-300" />
+                            <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-blue-500/10 border border-blue-500/30 flex items-center justify-center group-hover:border-blue-500/50 transition-colors duration-300">
+                              <span className="text-blue-400 font-bold text-base sm:text-lg">
                                 {client.initials}
                               </span>
                             </div>
                           </div>
                           <div>
-                            <h4 className="text-white font-bold text-lg">{client.name}</h4>
-                            <p className="text-zinc-500 text-sm">{client.role}</p>
+                            <h4 className="text-white font-semibold text-base sm:text-lg">{client.name}</h4>
+                            <p className="text-zinc-500 text-xs sm:text-sm">{client.role}</p>
                           </div>
                         </div>
 
                         {/* Date */}
-                        <span className="text-zinc-600 text-sm">{client.date}</span>
+                        <span className="text-zinc-600 text-xs">{client.date}</span>
                       </div>
 
                       {/* Review Text */}
-                      <p className="text-zinc-400 text-sm leading-relaxed mb-6 line-clamp-3">
+                      <p className="relative z-10 text-zinc-400 text-sm leading-relaxed mb-5 line-clamp-3">
                         {client.review}
                       </p>
 
                       {/* Bottom section with rating */}
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-1">
+                      <div className="relative z-10 flex items-center justify-between">
+                        <div className="flex items-center gap-0.5">
                           {[...Array(5)].map((_, i) => (
                             <Star
                               key={i}
-                              className={`w-4 h-4 fill-current ${i < client.rating ? "text-blue-400" : "text-zinc-700"}`}
+                              className={`w-4 h-4 ${i < client.rating ? "text-blue-400 fill-blue-400" : "text-zinc-700"}`}
                             />
                           ))}
                         </div>
 
                         {/* Verified badge */}
-                        <div className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-blue-500/20 border border-blue-500/30">
+                        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 group-hover:bg-blue-500/20 group-hover:border-blue-500/30 transition-colors duration-300">
                           <Sparkles className="w-3 h-3 text-blue-400" />
-                          <span className="text-xs text-blue-400">Vérifié</span>
+                          <span className="text-xs text-blue-400 font-medium">Vérifié</span>
                         </div>
                       </div>
-
-                    </motion.div>
+                    </div>
                   ))}
                 </div>
               ))}
-            </motion.div>
+            </div>
           </div>
 
           {/* CTA Buttons */}

@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_CONTACT_KEY);
+const resend = process.env.RESEND_CONTACT_KEY
+  ? new Resend(process.env.RESEND_CONTACT_KEY)
+  : null;
 
 // Type pour les données du formulaire
 interface ContactFormData {
@@ -189,6 +191,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { error: 'Tous les champs obligatoires doivent être remplis' },
         { status: 400 }
+      );
+    }
+
+    if (!resend) {
+      return NextResponse.json(
+        { error: 'Service email non configuré' },
+        { status: 503 }
       );
     }
 

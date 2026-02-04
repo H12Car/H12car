@@ -80,23 +80,33 @@ export default function Navbar() {
           >
             <div className="px-4 sm:px-5 py-4">
               <div className="flex items-center justify-between">
-                {/* Logo - Using Image Component */}
+                {/* Logo + Company Name */}
                 <Link href="/" className="flex items-center gap-3 relative z-10 group">
                   <motion.div
-                    whileHover={{ scale: 1.05 }}
+                    whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     className="flex items-center gap-3"
                   >
                     {/* Logo Image */}
-                    <div className="relative w-12 h-12 flex items-center justify-center rounded-full overflow-hidden">
+                    <div className="relative w-11 h-11 flex items-center justify-center rounded-full overflow-hidden border border-zinc-700/50">
                       <Image
                         src="/h12carlogo.png"
-                        alt="H12 Logo"
-                        width={48}
-                        height={48}
+                        alt="H12 Car Logo"
+                        width={44}
+                        height={44}
                         className="object-cover w-full h-full"
                         priority
                       />
+                    </div>
+                    {/* Company Name */}
+                    <div className="flex flex-col">
+                      <span className="text-white font-bold text-lg tracking-tight leading-none">
+                        H12
+                        <span className="text-blue-400 ml-0.5">Car</span>
+                      </span>
+                      <span className="text-zinc-500 text-[10px] font-medium tracking-wider uppercase">
+                        Location
+                      </span>
                     </div>
                   </motion.div>
                 </Link>

@@ -393,9 +393,15 @@ import { useState } from "react";
 const contactInfo = [
   {
     icon: Phone,
-    title: "Telephone",
+    title: "Jabrane",
     value: "+212 6 14 96 85 94",
     description: "Appelez-nous directement"
+  },
+  {
+    icon: Phone,
+    title: "Souad",
+    value: "+212 6 43 10 37 59",
+    description: "Service client"
   },
   {
     icon: MessageCircle,
@@ -407,7 +413,7 @@ const contactInfo = [
   {
     icon: Mail,
     title: "Email",
-    value: "contact@h12car.com",
+    value: "k0664676267@gmail.com",
     description: "Pour vos demandes detaillees"
   },
   {
@@ -544,7 +550,7 @@ export default function ContactPage() {
       {/* Contact Info Cards */}
       <section className="py-8 lg:py-12 bg-zinc-800">
         <div className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-16 xl:px-24">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
             {contactInfo.map((info, idx) => (
               <motion.div
                 key={idx}
