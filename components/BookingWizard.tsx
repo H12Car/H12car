@@ -25,7 +25,7 @@ import {
   Info,
   ChevronDown,
 } from "lucide-react";
-import { useBooking, Excursion, Car as CarType } from "@/context/bookingContext";
+import { useBooking, type Excursion, type Car as CarType, type Transfer } from "@/context/bookingContext";
 import { useState } from "react";
 import Image from "next/image";
 // Web link is used instead of PDF - see /app/demande/page.tsx
@@ -60,16 +60,6 @@ const moroccanCities = [
   { value: "ouarzazate", label: "Ouarzazate" },
   { value: "meknes", label: "Meknès" },
   { value: "autre_ville", label: "Autre ville" },
-];
-
-// Legacy support for existing code
-const deliveryZones = [
-  { value: "aeroport", label: "Aéroport Menara", free: true },
-  { value: "medina", label: "Médina", free: true },
-  { value: "gueliz", label: "Gueliz", free: true },
-  { value: "hivernage", label: "Hivernage", free: true },
-  { value: "palmeraie", label: "Palmeraie", free: true },
-  { value: "autre", label: "Autre", free: false },
 ];
 
 // Available excursions for add-ons
@@ -149,6 +139,7 @@ export default function BookingWizard() {
     serviceType,
     selectedCar,
     selectedExcursions,
+    selectedTransfer,
     bookingDetails,
     contactInfo,
     updateBookingDetails,
@@ -162,7 +153,8 @@ export default function BookingWizard() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [submissionMethod, setSubmissionMethod] = useState<'whatsapp' | 'email' | null>(null);
+  const [submissionMethod, setSubmissionMethod] = useState<'whatsapp' | 'devis' | null>(null);
+  const [createdQuote, setCreatedQuote] = useState<{ reference: string; id: string } | null>(null);
 
   // Cross-selling car selection state
   const [carSelectionMode, setCarSelectionMode] = useState<'hidden' | 'list' | 'dates'>('hidden');
@@ -180,6 +172,12 @@ export default function BookingWizard() {
         const hasPickupDate = !!bookingDetails.pickupDate;
         const hasPickupTime = !!bookingDetails.pickupTime;
         const hasPeople = bookingDetails.numberOfPeople > 0;
+
+        // Transfer: need date, time, and pickup location
+        if (serviceType === "transfer" && selectedTransfer) {
+          const hasPickupLocation = !!bookingDetails.pickupLocation;
+          return hasPickupDate && hasPickupTime && hasPickupLocation && hasPeople;
+        }
 
         // Excursion-only: need date, time, pickup location (Marrakech), and people
         if (serviceType === "excursion" && !selectedCar) {
@@ -213,7 +211,7 @@ export default function BookingWizard() {
         return false;
       }
       case 2:
-        return selectedCar || selectedExcursions.length > 0;
+        return selectedCar || selectedExcursions.length > 0 || selectedTransfer;
       case 3:
         return true; // Extras are optional
       case 4:
@@ -246,6 +244,8 @@ export default function BookingWizard() {
       message += `🚘 *LOCATION VÉHICULE*\n\n`;
     } else if (serviceType === "excursion") {
       message += `🏔️ *RÉSERVATION EXCURSION*\n\n`;
+    } else if (serviceType === "transfer") {
+      message += `✈️ *RÉSERVATION TRANSFERT*\n\n`;
     }
 
     // Vehicle Details
@@ -259,6 +259,14 @@ export default function BookingWizard() {
         message += `   • ${selectedCar.price} DH/jour × ${days} jour${days > 1 ? 's' : ''}\n`;
         message += `   • Sous-total: ${parseInt(selectedCar.price) * days} DH\n\n`;
       }
+    }
+
+    // Transfer Details
+    if (selectedTransfer) {
+      message += `✈️ *Transfert sélectionné:*\n`;
+      message += `   • ${selectedTransfer.name}\n`;
+      message += `   • ${selectedTransfer.numPeople} personne${selectedTransfer.numPeople > 1 ? 's' : ''}\n`;
+      message += `   • Prix: ${selectedTransfer.price} DH\n\n`;
     }
 
     // Excursions Details
@@ -339,8 +347,8 @@ export default function BookingWizard() {
     return encodeURIComponent(message);
   };
 
-  // Save quote to database
-  const saveQuoteToDatabase = async () => {
+  // Save quote to database and return the created quote
+  const saveQuoteToDatabase = async (): Promise<{ reference: string; id: string } | null> => {
     const quoteData = {
       serviceType: serviceType || "car",
       vehicleId: selectedCar?.id ? String(selectedCar.id) : null,
@@ -358,6 +366,10 @@ export default function BookingWizard() {
       excursions: selectedExcursions.length > 0
         ? selectedExcursions.map(e => ({ name: e.name, price: parseInt(e.price) }))
         : null,
+      // Transfer data
+      transferId: selectedTransfer?.id || null,
+      transferName: selectedTransfer?.name || null,
+      transferPrice: selectedTransfer?.price || null,
       fullName: contactInfo.fullName,
       phone: contactInfo.phone,
       email: contactInfo.email || null,
@@ -375,66 +387,33 @@ export default function BookingWizard() {
 
       if (!response.ok) {
         console.error('Failed to save quote to database');
+        return null;
       }
+
+      const data = await response.json();
+      return { reference: data.reference, id: data.id };
     } catch (error) {
       console.error('Error saving quote:', error);
+      return null;
     }
   };
 
-  // Handle email submission
-  const handleEmailSubmit = async () => {
+  // Handle "Envoyer le devis" submission
+  const handleSendDevis = async () => {
     setIsSubmitting(true);
-    setSubmissionMethod('email');
+    setSubmissionMethod('devis');
 
     try {
-      // Save to database first
-      await saveQuoteToDatabase();
-
-      // Build email body
-      const emailData = {
-        to: "contact@h12.ma", // Replace with actual email
-        subject: `Nouvelle réservation - ${contactInfo.fullName}`,
-        serviceType,
-        selectedCar: selectedCar ? {
-          name: selectedCar.name,
-          price: selectedCar.price,
-          period: selectedCar.period,
-        } : null,
-        selectedExcursions: selectedExcursions.map(e => ({
-          name: e.name,
-          price: e.price,
-          duration: e.duration,
-        })),
-        bookingDetails: {
-          ...bookingDetails,
-          pickupDateFormatted: formatDate(bookingDetails.pickupDate),
-          pickupTimeFormatted: bookingDetails.pickupTime || null,
-          returnDateFormatted: bookingDetails.returnDate ? formatDate(bookingDetails.returnDate) : null,
-          rentalDays: getRentalDays(),
-          zoneName: deliveryZones.find(z => z.value === bookingDetails.pickupZone)?.label || bookingDetails.pickupZone,
-        },
-        contactInfo,
-        totalPrice: getTotalPrice(),
-      };
-
-      // Send to API
-      const response = await fetch('/api/booking', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(emailData),
-      });
-
-      if (!response.ok) throw new Error('Failed to send');
-
-      setIsSubmitted(true);
-      setTimeout(() => {
-        setIsSubmitted(false);
-        setSubmissionMethod(null);
-        closeWizard();
-      }, 3000);
+      const quote = await saveQuoteToDatabase();
+      if (quote) {
+        setCreatedQuote(quote);
+        setIsSubmitted(true);
+      } else {
+        alert('Erreur lors de la création du devis. Veuillez réessayer.');
+      }
     } catch (error) {
-      console.error('Email submission error:', error);
-      alert('Erreur lors de l\'envoi. Veuillez réessayer ou utiliser WhatsApp.');
+      console.error('Devis submission error:', error);
+      alert('Erreur lors de l\'envoi. Veuillez réessayer.');
     } finally {
       setIsSubmitting(false);
     }
@@ -470,6 +449,13 @@ export default function BookingWizard() {
       params.set("ex", excStr);
     }
 
+    // Transfer info
+    if (selectedTransfer) {
+      params.set("tr", selectedTransfer.name);
+      params.set("trp", String(selectedTransfer.price));
+      params.set("trn", String(selectedTransfer.numPeople));
+    }
+
     // Booking details
     if (bookingDetails.pickupDate) params.set("d", bookingDetails.pickupDate);
     if (bookingDetails.pickupTime) params.set("t", bookingDetails.pickupTime);
@@ -500,11 +486,16 @@ export default function BookingWizard() {
     setSubmissionMethod('whatsapp');
 
     try {
-      // Save to database first
-      await saveQuoteToDatabase();
+      // Save to database first and get reference
+      const quote = await saveQuoteToDatabase();
+      if (quote) {
+        setCreatedQuote(quote);
+      }
 
-      // Build the booking URL
-      const bookingURL = buildBookingURL();
+      // Build the devis URL instead of booking URL
+      const devisURL = quote
+        ? `${window.location.origin}/devis/${quote.reference}`
+        : buildBookingURL();
 
       // Build WhatsApp message with the link
       const message = encodeURIComponent(
@@ -512,8 +503,9 @@ export default function BookingWizard() {
         `Nouvelle demande de réservation:\n\n` +
         `👤 *${contactInfo.fullName}*\n` +
         `📞 ${contactInfo.phone}\n` +
-        `💰 Total: ${getTotalPrice()} DH\n\n` +
-        `📋 Voir les détails:\n${bookingURL}\n\n` +
+        `💰 Total: ${getTotalPrice()} DH\n` +
+        (quote ? `📝 Réf: ${quote.reference}\n\n` : '\n') +
+        `📋 Voir le devis:\n${devisURL}\n\n` +
         `Merci de confirmer la disponibilité! 🙏`
       );
 
@@ -526,23 +518,11 @@ export default function BookingWizard() {
         window.location.href = `https://wa.me/212614968594?text=${message}`;
       }, 600);
 
-      // Close wizard after user sees success
-      setTimeout(() => {
-        closeWizard();
-        setIsSubmitted(false);
-        setSubmissionMethod(null);
-      }, 3000);
-
     } catch (error) {
       console.error('Error building booking URL:', error);
       // Fallback: just open WhatsApp with text message
       window.location.href = `https://wa.me/212614968594?text=${generateWhatsAppMessage()}`;
       setIsSubmitted(true);
-      setTimeout(() => {
-        closeWizard();
-        setIsSubmitted(false);
-        setSubmissionMethod(null);
-      }, 2000);
     } finally {
       setIsSubmitting(false);
     }
@@ -760,6 +740,45 @@ export default function BookingWizard() {
                                          text-white placeholder:text-white/30 focus:outline-none focus:border-blue-500/50"
                             />
                           </div>
+                        </div>
+                      </>
+                    ) : serviceType === "transfer" && selectedTransfer ? (
+                      <>
+                        {/* TRANSFER: Show transfer summary + pickup location */}
+                        <div className="p-4 rounded-xl bg-blue-500/10 border border-blue-500/20 mb-2">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                              <MapPin className="w-5 h-5 text-blue-400" />
+                            </div>
+                            <div className="flex-1">
+                              <h4 className="font-semibold text-white text-sm">{selectedTransfer.name}</h4>
+                              <p className="text-xs text-white/60">
+                                {selectedTransfer.numPeople} pers · {selectedTransfer.price} DH
+                                {selectedTransfer.duration && ` · ${selectedTransfer.duration}`}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        <div>
+                          <label className="text-sm text-white/60 mb-1.5 block">
+                            Adresse de prise en charge *
+                          </label>
+                          <div className="relative">
+                            <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
+                            <input
+                              type="text"
+                              value={bookingDetails.pickupLocation}
+                              onChange={(e) =>
+                                updateBookingDetails({ pickupLocation: e.target.value })
+                              }
+                              placeholder="Hôtel, Riad, adresse complète..."
+                              className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/5 border border-white/10
+                                         text-white placeholder:text-white/30 focus:outline-none focus:border-blue-500/50"
+                            />
+                          </div>
+                          <p className="text-xs text-white/40 mt-1.5">
+                            Indiquez où nous devons venir vous chercher
+                          </p>
                         </div>
                       </>
                     ) : serviceType === "excursion" && !selectedCar ? (
@@ -1116,6 +1135,27 @@ export default function BookingWizard() {
                       </div>
                     )}
 
+                    {/* Selected Transfer */}
+                    {selectedTransfer && (
+                      <div className="p-4 rounded-xl bg-white/5 border border-white/10">
+                        <div className="flex items-center gap-3">
+                          <div className="w-12 h-12 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                            <MapPin className="w-6 h-6 text-blue-400" />
+                          </div>
+                          <div className="flex-1">
+                            <h4 className="font-semibold text-white">
+                              {selectedTransfer.name}
+                            </h4>
+                            <p className="text-sm text-white/60">
+                              {selectedTransfer.numPeople} pers · {selectedTransfer.price} DH
+                              {selectedTransfer.duration && ` · ${selectedTransfer.duration}`}
+                            </p>
+                          </div>
+                          <Check className="w-5 h-5 text-green-500" />
+                        </div>
+                      </div>
+                    )}
+
                     {/* Booking Summary */}
                     <div className="p-4 rounded-xl bg-blue-500/10 border border-blue-500/20">
                       <h4 className="text-sm font-semibold text-blue-400 mb-2">
@@ -1152,6 +1192,12 @@ export default function BookingWizard() {
                               <span>{bookingDetails.dropoffLocation || "-"}</span>
                             </div>
                           </>
+                        ) : serviceType === "transfer" && selectedTransfer ? (
+                          // Transfer: show pickup location
+                          <div className="flex justify-between text-white/60">
+                            <span>Prise en charge</span>
+                            <span className="truncate max-w-[180px]">{bookingDetails.pickupLocation || "-"}</span>
+                          </div>
                         ) : serviceType === "excursion" && !selectedCar ? (
                           // Excursion-only: show pickup location (Marrakech)
                           <div className="flex justify-between text-white/60">
@@ -1847,33 +1893,82 @@ export default function BookingWizard() {
                   </motion.div>
                 )}
 
-                {/* Success State - Redirecting to WhatsApp */}
+                {/* Success State - Show Devis Link or WhatsApp redirect */}
                 {isSubmitted && (
                   <motion.div
                     key="success"
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="py-12 text-center"
+                    className="py-8 text-center"
                   >
                     <motion.div
-                      className="w-20 h-20 mx-auto mb-6 rounded-full bg-green-500/20 flex items-center justify-center"
+                      className={`w-20 h-20 mx-auto mb-6 rounded-full flex items-center justify-center ${
+                        submissionMethod === 'devis' ? 'bg-blue-500/20' : 'bg-green-500/20'
+                      }`}
                       animate={{ scale: [1, 1.1, 1] }}
                       transition={{ duration: 0.5 }}
                     >
-                      <Check className="w-10 h-10 text-green-500" />
+                      <Check className={`w-10 h-10 ${submissionMethod === 'devis' ? 'text-blue-500' : 'text-green-500'}`} />
                     </motion.div>
-                    <h3 className="text-2xl font-bold text-white mb-3">
-                      Parfait !
-                    </h3>
-                    <p className="text-white/60 mb-4">
-                      Redirection vers WhatsApp...
-                    </p>
-                    <div className="flex items-center justify-center gap-2 text-green-400">
-                      <svg className="w-5 h-5 animate-pulse" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-                      </svg>
-                      <span className="font-medium">Envoyez le PDF dans la discussion</span>
-                    </div>
+
+                    {submissionMethod === 'devis' && createdQuote ? (
+                      <>
+                        <h3 className="text-2xl font-bold text-white mb-2">
+                          Devis créé !
+                        </h3>
+                        <p className="text-white/60 mb-2">
+                          Référence: <span className="text-blue-400 font-bold">{createdQuote.reference}</span>
+                        </p>
+                        <p className="text-sm text-white/40 mb-6">
+                          Conservez cette référence pour accéder à votre devis
+                        </p>
+
+                        <div className="space-y-3">
+                          <a
+                            href={`/devis/${createdQuote.reference}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-full py-3 rounded-xl bg-blue-500 hover:bg-blue-600
+                                       text-white font-semibold transition flex items-center justify-center gap-2"
+                          >
+                            <Send className="w-5 h-5" />
+                            Voir mon devis
+                          </a>
+                          <button
+                            onClick={() => {
+                              closeWizard();
+                              setIsSubmitted(false);
+                              setSubmissionMethod(null);
+                              setCreatedQuote(null);
+                            }}
+                            className="w-full py-3 rounded-xl bg-white/10 hover:bg-white/20
+                                       text-white/70 font-medium transition"
+                          >
+                            Fermer
+                          </button>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <h3 className="text-2xl font-bold text-white mb-3">
+                          Parfait !
+                        </h3>
+                        {createdQuote && (
+                          <p className="text-white/60 mb-2">
+                            Référence: <span className="text-green-400 font-bold">{createdQuote.reference}</span>
+                          </p>
+                        )}
+                        <p className="text-white/60 mb-4">
+                          Redirection vers WhatsApp...
+                        </p>
+                        <div className="flex items-center justify-center gap-2 text-green-400">
+                          <svg className="w-5 h-5 animate-pulse" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                          </svg>
+                          <span className="font-medium">Ouverture de WhatsApp...</span>
+                        </div>
+                      </>
+                    )}
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -1908,28 +2003,53 @@ export default function BookingWizard() {
                       <ChevronRight className="w-4 h-4" />
                     </button>
                   ) : (
-                    <button
-                      onClick={handleWhatsAppWithPDF}
-                      disabled={!canProceed() || isSubmitting}
-                      className="flex-1 py-4 rounded-xl bg-gradient-to-r from-green-500 to-green-600
-                                 text-white font-bold text-lg hover:from-green-400 hover:to-green-500
-                                 transition flex items-center justify-center gap-3 shadow-lg shadow-green-500/25
-                                 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      {isSubmitting ? (
-                        <>
-                          <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                          <span>Préparation...</span>
-                        </>
-                      ) : (
-                        <>
-                          <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-                          </svg>
-                          <span>Envoyer via WhatsApp</span>
-                        </>
-                      )}
-                    </button>
+                    <div className="flex-1 flex flex-col gap-2">
+                      {/* WhatsApp Button */}
+                      <button
+                        onClick={handleWhatsAppWithPDF}
+                        disabled={!canProceed() || isSubmitting}
+                        className="w-full py-3 rounded-xl bg-gradient-to-r from-green-500 to-green-600
+                                   text-white font-bold hover:from-green-400 hover:to-green-500
+                                   transition flex items-center justify-center gap-2 shadow-lg shadow-green-500/25
+                                   disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {isSubmitting && submissionMethod === 'whatsapp' ? (
+                          <>
+                            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                            <span>Envoi...</span>
+                          </>
+                        ) : (
+                          <>
+                            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                            </svg>
+                            <span>Envoyer via WhatsApp</span>
+                          </>
+                        )}
+                      </button>
+
+                      {/* Devis Button */}
+                      <button
+                        onClick={handleSendDevis}
+                        disabled={!canProceed() || isSubmitting}
+                        className="w-full py-3 rounded-xl bg-blue-500/20 border border-blue-500/40
+                                   text-blue-400 font-semibold hover:bg-blue-500/30
+                                   transition flex items-center justify-center gap-2
+                                   disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {isSubmitting && submissionMethod === 'devis' ? (
+                          <>
+                            <div className="w-5 h-5 border-2 border-blue-400/30 border-t-blue-400 rounded-full animate-spin" />
+                            <span>Création du devis...</span>
+                          </>
+                        ) : (
+                          <>
+                            <Send className="w-5 h-5" />
+                            <span>Recevoir mon devis</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
                   )}
                 </div>
               </div>

@@ -2,6 +2,16 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { QuoteStatus } from "@prisma/client";
 
+// Generate a unique reference code like "H12-ABC123"
+function generateReference(): string {
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // Exclude confusing chars: I, O, 0, 1
+  let code = "";
+  for (let i = 0; i < 6; i++) {
+    code += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return `H12-${code}`;
+}
+
 // GET /api/quotes - List all quotes
 export async function GET(request: NextRequest) {
   try {
@@ -42,8 +52,19 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
+    // Generate unique reference with retry logic
+    let reference = generateReference();
+    let attempts = 0;
+    while (attempts < 5) {
+      const existing = await prisma.quote.findUnique({ where: { reference } });
+      if (!existing) break;
+      reference = generateReference();
+      attempts++;
+    }
+
     const quote = await prisma.quote.create({
       data: {
+        reference,
         serviceType: body.serviceType,
         vehicleId: body.vehicleId,
         vehicleName: body.vehicleName,
@@ -58,12 +79,17 @@ export async function POST(request: NextRequest) {
         wantsDriver: body.wantsDriver || false,
         numberOfPeople: body.numberOfPeople,
         excursions: body.excursions,
+        // Transfer relation
+        transferRouteId: body.transferId || null,
         fullName: body.fullName,
         phone: body.phone,
         email: body.email,
         notes: body.notes,
         rentalDays: body.rentalDays,
         totalPrice: body.totalPrice,
+      },
+      include: {
+        transferRoute: true,
       },
     });
 

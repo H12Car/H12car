@@ -59,6 +59,7 @@ model Vehicle {
 
 model Quote {
   id              String      @id @default(cuid())
+  reference       String?     @unique // e.g., "H12-ABC123" for easy lookup
   status          QuoteStatus @default(PENDING)
 
   // Service info
@@ -82,6 +83,10 @@ model Quote {
   // Excursions (stored as JSON)
   excursions      Json?
 
+  // Transfer info (for transfer bookings)
+  transferRouteId String?
+  transferRoute   TransferRoute? @relation(fields: [transferRouteId], references: [id])
+
   // Contact info
   fullName        String
   phone           String
@@ -99,5 +104,48 @@ model Quote {
 
   @@index([status])
   @@index([createdAt])
+  @@schema("h12")
+}
+
+// Transfer route category
+enum TransferCategory {
+  AIRPORT
+  CITY
+  EXCURSION
+  NIGHTLIFE
+
+  @@schema("h12")
+}
+
+// Transfer routes with pricing tiers
+model TransferRoute {
+  id          String           @id @default(cuid())
+  name        String           // e.g., "Aéroport Marrakech (RAK)"
+  category    TransferCategory
+
+  // Pricing per passenger range (in MAD H.T)
+  price1to4   Int?             // 1-4 passengers (Berline/Van)
+  price5to8   Int?             // 5-8 passengers (Minivan)
+  price9to17  Int?             // 9-17 passengers (Minibus)
+  price18to48 Int?             // 18-48 passengers (Bus)
+
+  // Route details
+  distance    String?          // e.g., "6 km"
+  duration    String?          // e.g., "15-30 min"
+
+  // Display options
+  popular     Boolean          @default(false)
+  isActive    Boolean          @default(true)
+  sortOrder   Int              @default(0)
+
+  // Timestamps
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  // Relations
+  quotes      Quote[]
+
+  @@index([category])
+  @@index([isActive])
   @@schema("h12")
 }

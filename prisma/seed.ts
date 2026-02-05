@@ -6,6 +6,201 @@ const VehicleType = {
   MOTO: "MOTO",
 } as const;
 
+const TransferCategory = {
+  AIRPORT: "AIRPORT",
+  CITY: "CITY",
+  EXCURSION: "EXCURSION",
+  NIGHTLIFE: "NIGHTLIFE",
+} as const;
+
+// Transfer routes from H12 official tariff (Season 2025/2026)
+const transferRoutes = [
+  // Airport Marrakech
+  {
+    name: "Aéroport Marrakech (RAK)",
+    category: TransferCategory.AIRPORT,
+    price1to4: 150,
+    price5to8: 200,
+    price9to17: 400,
+    price18to48: 1400,
+    duration: "15-30 min",
+    distance: "6 km",
+    popular: true,
+    sortOrder: 1,
+  },
+  {
+    name: "Marrakech Centre Ville",
+    category: TransferCategory.AIRPORT,
+    price1to4: 150,
+    price5to8: 200,
+    price9to17: 400,
+    price18to48: 1400,
+    duration: "15-30 min",
+    distance: null,
+    popular: true,
+    sortOrder: 2,
+  },
+  {
+    name: "Marrakech Palmeraie / Bab Atlas",
+    category: TransferCategory.AIRPORT,
+    price1to4: 200,
+    price5to8: 300,
+    price9to17: 500,
+    price18to48: 1800,
+    duration: "25-40 min",
+    distance: null,
+    popular: false,
+    sortOrder: 3,
+  },
+  // Cities
+  {
+    name: "Aéroport Casablanca (MED 5)",
+    category: TransferCategory.CITY,
+    price1to4: 1500,
+    price5to8: 1600,
+    price9to17: 2400,
+    price18to48: 5000,
+    duration: "2h30",
+    distance: "240 km",
+    popular: false,
+    sortOrder: 10,
+  },
+  {
+    name: "Casablanca Centre Ville",
+    category: TransferCategory.CITY,
+    price1to4: 1600,
+    price5to8: 1800,
+    price9to17: 2700,
+    price18to48: 5500,
+    duration: "2h45",
+    distance: "250 km",
+    popular: false,
+    sortOrder: 11,
+  },
+  {
+    name: "Rabat",
+    category: TransferCategory.CITY,
+    price1to4: 2000,
+    price5to8: 2300,
+    price9to17: 3000,
+    price18to48: 7000,
+    duration: "3h30",
+    distance: "320 km",
+    popular: false,
+    sortOrder: 12,
+  },
+  {
+    name: "Fès",
+    category: TransferCategory.CITY,
+    price1to4: 3000,
+    price5to8: 3500,
+    price9to17: 4800,
+    price18to48: 10500,
+    duration: "5h",
+    distance: "480 km",
+    popular: false,
+    sortOrder: 13,
+  },
+  {
+    name: "Agadir",
+    category: TransferCategory.CITY,
+    price1to4: 1500,
+    price5to8: 1700,
+    price9to17: 2500,
+    price18to48: 5300,
+    duration: "3h",
+    distance: "260 km",
+    popular: false,
+    sortOrder: 14,
+  },
+  {
+    name: "Tanger",
+    category: TransferCategory.CITY,
+    price1to4: 4000,
+    price5to8: 4500,
+    price9to17: 5000,
+    price18to48: 14000,
+    duration: "6h",
+    distance: "550 km",
+    popular: false,
+    sortOrder: 15,
+  },
+  // Excursions
+  {
+    name: "Imlil (Atlas)",
+    category: TransferCategory.EXCURSION,
+    price1to4: 600,
+    price5to8: 700,
+    price9to17: 1200,
+    price18to48: null,
+    duration: "1h15",
+    distance: "65 km",
+    popular: false,
+    sortOrder: 20,
+  },
+  {
+    name: "Essaouira",
+    category: TransferCategory.EXCURSION,
+    price1to4: 1100,
+    price5to8: 1200,
+    price9to17: 1700,
+    price18to48: 4000,
+    duration: "2h30",
+    distance: "175 km",
+    popular: true,
+    sortOrder: 21,
+  },
+  {
+    name: "Ouarzazate",
+    category: TransferCategory.EXCURSION,
+    price1to4: 1500,
+    price5to8: 1300,
+    price9to17: 1700,
+    price18to48: 5300,
+    duration: "4h",
+    distance: "200 km",
+    popular: false,
+    sortOrder: 22,
+  },
+  // Nightlife
+  {
+    name: "Aller/Retour Restaurant (Marrakech)",
+    category: TransferCategory.NIGHTLIFE,
+    price1to4: 300,
+    price5to8: 400,
+    price9to17: 600,
+    price18to48: 1300,
+    duration: "Sur place",
+    distance: null,
+    popular: false,
+    sortOrder: 30,
+  },
+  {
+    name: "Aller/Retour Discothèque (Centre)",
+    category: TransferCategory.NIGHTLIFE,
+    price1to4: 400,
+    price5to8: 500,
+    price9to17: 800,
+    price18to48: 1800,
+    duration: "Sur place",
+    distance: null,
+    popular: false,
+    sortOrder: 31,
+  },
+  {
+    name: "Aller/Retour Discothèque (Palmeraie)",
+    category: TransferCategory.NIGHTLIFE,
+    price1to4: 500,
+    price5to8: 600,
+    price9to17: 1000,
+    price18to48: 2200,
+    duration: "Sur place",
+    distance: null,
+    popular: false,
+    sortOrder: 32,
+  },
+];
+
 // Existing cars from voiture/page.tsx
 const cars = [
   {
@@ -453,6 +648,30 @@ async function main() {
 
   console.log(`✅ Inserted ${cars.length} cars`);
   console.log(`✅ Inserted ${motos.length} motos`);
+
+  // Clear existing transfer routes
+  await sql`DELETE FROM "h12"."TransferRoute"`;
+  console.log("🗑️  Cleared existing transfer routes");
+
+  // Insert transfer routes
+  for (const t of transferRoutes) {
+    const id = generateId();
+    const now = new Date().toISOString();
+    await sql`
+      INSERT INTO "h12"."TransferRoute" (
+        id, name, category, "price1to4", "price5to8", "price9to17", "price18to48",
+        duration, distance, popular, "isActive", "sortOrder",
+        "createdAt", "updatedAt"
+      ) VALUES (
+        ${id}, ${t.name}, ${t.category}::"h12"."TransferCategory",
+        ${t.price1to4}, ${t.price5to8}, ${t.price9to17}, ${t.price18to48},
+        ${t.duration}, ${t.distance}, ${t.popular}, true, ${t.sortOrder},
+        ${now}::timestamp, ${now}::timestamp
+      )
+    `;
+  }
+
+  console.log(`✅ Inserted ${transferRoutes.length} transfer routes`);
   console.log("🎉 Seed completed!");
 }
 

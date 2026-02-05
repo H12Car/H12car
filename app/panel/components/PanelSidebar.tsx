@@ -7,6 +7,7 @@ import {
   LayoutDashboard,
   FileText,
   Car,
+  Plane,
   ExternalLink,
   LogOut
 } from "lucide-react";
@@ -27,6 +28,11 @@ const navItems = [
     href: "/panel/vehicles",
     label: "Véhicules",
     icon: Car
+  },
+  {
+    href: "/panel/transfers",
+    label: "Transferts",
+    icon: Plane
   },
 ];
 

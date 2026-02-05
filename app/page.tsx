@@ -339,16 +339,17 @@ export default function HomePage() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5"
+          className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5"
         >
           {services.map((service, index) => {
-            const tags = ['01', '02', '03'];
+            const tags = ['01', '02', '03', '04'];
             const ctaLabels: Record<string, string> = {
               car: 'Louer une Voiture',
               motorbike: 'Louer une Moto',
-              excursion: 'Trouver une Excursion'
+              excursion: 'Trouver une Excursion',
+              transfer: 'Voir les Tarifs'
             };
-            const cardImages = ['/voiture_h12/h12_car_new.webp', '/moto_h12/h12_moto_new.webp', '/excursions/h12_excursion_new.webp'];
+            const cardImages = ['/voiture_h12/h12_car_new.webp', '/moto_h12/h12_moto_new.webp', '/excursions/h12_excursion_new.webp', '/voiture_h12/h12_transporttouristicmerco.png'];
 
             const CardContent = (
               <div className="relative bg-gray-900 rounded-[20px] sm:rounded-[24px] overflow-hidden h-[300px] sm:h-[350px] lg:h-[400px] hover:scale-[1.02] hover:shadow-2xl transition-all duration-500 shadow-xl">
@@ -399,7 +400,8 @@ export default function HomePage() {
             const serviceLinks: Record<string, string> = {
               car: '/voiture',
               motorbike: '/moto',
-              excursion: '/excursion'
+              excursion: '/excursion',
+              transfer: '/transfer'
             };
 
             return (

@@ -1,4 +1,4 @@
-import { Car, Bike, Map } from "lucide-react";
+import { Car, Bike, Map, Plane } from "lucide-react";
 
 export interface Service {
   icon: React.ElementType;
@@ -6,7 +6,7 @@ export interface Service {
   description: string;
   features: string[];
   color: string;
-  serviceType: "car" | "motorbike" | "excursion";
+  serviceType: "car" | "motorbike" | "excursion" | "transfer";
 }
 
 export const services: Service[] = [
@@ -36,5 +36,14 @@ export const services: Service[] = [
     features: ["Itinéraires sur mesure", "Expertise locale", "Aventures uniques"],
     color: "from-blue-500 to-blue-700",
     serviceType: "excursion",
+  },
+  {
+    icon: Plane,
+    title: "Transfert Aéroport",
+    description:
+      "Service de navette premium depuis l'aéroport Menara. Véhicules climatisés, chauffeurs professionnels, prix fixes pour votre tranquillité.",
+    features: ["Prix fixe garanti", "Disponible 24h/24", "Jusqu'à 15 personnes"],
+    color: "from-sky-500 to-blue-600",
+    serviceType: "transfer",
   },
 ];

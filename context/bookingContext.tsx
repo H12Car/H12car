@@ -21,6 +21,16 @@ export interface Excursion {
   image: string;
 }
 
+export interface Transfer {
+  id: string;
+  name: string;
+  price: number; // Already calculated based on number of people
+  category: string;
+  distance?: string;
+  duration?: string;
+  numPeople: number; // Number of people for this booking
+}
+
 export interface BookingDetails {
   pickupDate: string;
   pickupTime: string;
@@ -40,7 +50,7 @@ export interface ContactInfo {
   notes: string;
 }
 
-export type ServiceType = "car" | "excursion" | "moto" | null;
+export type ServiceType = "car" | "excursion" | "moto" | "transfer" | null;
 export type WizardStep = 1 | 2 | 3 | 4;
 
 interface BookingContextType {
@@ -52,13 +62,14 @@ interface BookingContextType {
   // Selected items
   selectedCar: Car | null;
   selectedExcursions: Excursion[];
+  selectedTransfer: Transfer | null;
 
   // Booking details
   bookingDetails: BookingDetails;
   contactInfo: ContactInfo;
 
   // Actions
-  openWizard: (type: ServiceType, item?: Car | Excursion) => void;
+  openWizard: (type: ServiceType, item?: Car | Excursion | Transfer) => void;
   closeWizard: () => void;
   resetWizard: () => void;
 
@@ -72,6 +83,7 @@ interface BookingContextType {
   addExcursion: (excursion: Excursion) => void;
   removeExcursion: (excursionId: string | number) => void;
   toggleExcursion: (excursion: Excursion) => void;
+  selectTransfer: (transfer: Transfer) => void;
 
   // Details update
   updateBookingDetails: (details: Partial<BookingDetails>) => void;
@@ -111,6 +123,7 @@ export function BookingProvider({ children }: { children: React.ReactNode }) {
   const [serviceType, setServiceType] = useState<ServiceType>(null);
   const [selectedCar, setSelectedCar] = useState<Car | null>(null);
   const [selectedExcursions, setSelectedExcursions] = useState<Excursion[]>([]);
+  const [selectedTransfer, setSelectedTransfer] = useState<Transfer | null>(null);
   const [bookingDetails, setBookingDetails] = useState<BookingDetails>(defaultBookingDetails);
   const [contactInfo, setContactInfo] = useState<ContactInfo>(defaultContactInfo);
 
@@ -120,12 +133,13 @@ export function BookingProvider({ children }: { children: React.ReactNode }) {
     setServiceType(null);
     setSelectedCar(null);
     setSelectedExcursions([]);
+    setSelectedTransfer(null);
     setBookingDetails(defaultBookingDetails);
     setContactInfo(defaultContactInfo);
   }, []);
 
   // Open wizard with initial item
-  const openWizard = useCallback((type: ServiceType, item?: Car | Excursion) => {
+  const openWizard = useCallback((type: ServiceType, item?: Car | Excursion | Transfer) => {
     resetWizard();
     setServiceType(type);
 
@@ -133,6 +147,11 @@ export function BookingProvider({ children }: { children: React.ReactNode }) {
       setSelectedCar(item as Car);
     } else if (type === "excursion" && item) {
       setSelectedExcursions([item as Excursion]);
+    } else if (type === "transfer" && item) {
+      const transfer = item as Transfer;
+      setSelectedTransfer(transfer);
+      // Set number of people from transfer
+      setBookingDetails(prev => ({ ...prev, numberOfPeople: transfer.numPeople }));
     }
 
     setIsWizardOpen(true);
@@ -191,6 +210,12 @@ export function BookingProvider({ children }: { children: React.ReactNode }) {
     return selectedExcursions.some((e) => e.id === excursionId);
   }, [selectedExcursions]);
 
+  // Transfer selection
+  const selectTransfer = useCallback((transfer: Transfer) => {
+    setSelectedTransfer(transfer);
+    setBookingDetails(prev => ({ ...prev, numberOfPeople: transfer.numPeople }));
+  }, []);
+
   // Details update
   const updateBookingDetails = useCallback((details: Partial<BookingDetails>) => {
     setBookingDetails((prev) => ({ ...prev, ...details }));
@@ -233,8 +258,13 @@ export function BookingProvider({ children }: { children: React.ReactNode }) {
       total += (parseInt(excursion.price) || 0) * bookingDetails.numberOfPeople;
     });
 
+    // Transfer price is already calculated based on people
+    if (selectedTransfer) {
+      total += selectedTransfer.price;
+    }
+
     return total;
-  }, [selectedCar, selectedExcursions, bookingDetails.numberOfPeople, calculateRentalDays]);
+  }, [selectedCar, selectedExcursions, selectedTransfer, bookingDetails.numberOfPeople, calculateRentalDays]);
 
   return (
     <BookingContext.Provider
@@ -244,6 +274,7 @@ export function BookingProvider({ children }: { children: React.ReactNode }) {
         serviceType,
         selectedCar,
         selectedExcursions,
+        selectedTransfer,
         bookingDetails,
         contactInfo,
         openWizard,
@@ -256,6 +287,7 @@ export function BookingProvider({ children }: { children: React.ReactNode }) {
         addExcursion,
         removeExcursion,
         toggleExcursion,
+        selectTransfer,
         updateBookingDetails,
         updateContactInfo,
         getTotalPrice,
