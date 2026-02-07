@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/navBar";
 import Footer from "@/components/footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
+// import WhatsAppButton from "@/components/WhatsAppButton";
 import BookingWizard from "@/components/BookingWizard";
 import { BookingProvider } from "@/context/bookingContext";
 
@@ -38,7 +38,7 @@ export default function RootLayout({
           <Navbar />
           <main>{children}</main>
           <Footer />
-          <WhatsAppButton />
+          {/* <WhatsAppButton /> */}
           <BookingWizard />
         </BookingProvider>
       </body>

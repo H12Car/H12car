@@ -6,6 +6,7 @@ import { Star, Fuel, Users, Settings, Car, ArrowRight, Heart, Shield, X, MapPin 
 import Image from "next/image";
 import { useBooking } from "@/context/bookingContext";
 import MousePushCard from "@/components/MousePushCard";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
 interface Vehicle {
   id: string;
@@ -641,6 +642,7 @@ export default function VoitureClient({ cars }: VoitureClientProps) {
           </motion.div>
         </div>
       </section>
+      <WhatsAppButton />
     </div>
   );
 }

@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { services } from "@/types/home_service";
 import MousePushCard from "@/components/MousePushCard";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
 // Animation variants moved outside component for better performance
 const containerVariants: Variants = {
@@ -1055,6 +1056,7 @@ export default function HomePage() {
           </motion.div>
         </div>
       </section>
+      <WhatsAppButton />
     </div>
   );
 }

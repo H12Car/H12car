@@ -19,6 +19,7 @@ import {
 import Image from "next/image";
 import { useBooking } from "@/context/bookingContext";
 import MousePushCard from "@/components/MousePushCard";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
 // ============================================
 // EXCURSIONS DATA
@@ -798,6 +799,7 @@ export default function ExcursionPage() {
           </motion.div>
         </div>
       </section>
+      <WhatsAppButton />
     </div>
   );
 }

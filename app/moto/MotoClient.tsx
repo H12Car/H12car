@@ -6,6 +6,7 @@ import { Star, Fuel, Users, Settings, Bike, ArrowRight, Heart, Shield, X, MapPin
 import Image from "next/image";
 import { useBooking } from "@/context/bookingContext";
 import MousePushCard from "@/components/MousePushCard";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
 interface Vehicle {
   id: string;
@@ -633,6 +634,7 @@ export default function MotoClient({ motos }: MotoClientProps) {
           </motion.div>
         </div>
       </section>
+      <WhatsAppButton />
     </div>
   );
 }

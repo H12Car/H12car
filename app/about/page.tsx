@@ -5,6 +5,7 @@ import { Star, Car, Bike, MapPin, Shield, Clock, Phone, CheckCircle, Users, Hear
 import Image from "next/image";
 import Link from "next/link";
 import MousePushCard from "@/components/MousePushCard";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
 const features = [
   {
@@ -479,6 +480,7 @@ export default function AboutPage() {
           </motion.div>
         </div>
       </section>
+      <WhatsAppButton />
     </div>
   );
 }
