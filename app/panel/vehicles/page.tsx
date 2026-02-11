@@ -13,7 +13,6 @@ import {
   Fuel,
   Users,
   Settings,
-  Calendar,
   Zap,
   Upload,
   Loader2
@@ -67,18 +66,66 @@ export default function VehiclesPage() {
   const [featuresInput, setFeaturesInput] = useState("");
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const vehiclesPerPage = 6;
+
+  // async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+  //   const file = e.target.files?.[0];
+  //   if (!file) return;
+
+  //   // Check file size (max 5MB)
+  //   if (file.size > 5 * 1024 * 1024) {
+  //     alert("L'image est trop grande. Maximum 5MB.");
+  //     return;
+  //   }
+
+  //   // Check file type
+  //   if (!file.type.startsWith("image/")) {
+  //     alert("Veuillez sélectionner une image.");
+  //     return;
+  //   }
+
+  //   setUploading(true);
+
+  //   try {
+  //     const formDataUpload = new FormData();
+  //     formDataUpload.append("file", file);
+  //     formDataUpload.append("UPLOADCARE_PUB_KEY", process.env.NEXT_PUBLIC_UPLOADCARE_PUBLIC_KEY || "");
+  //     formDataUpload.append("UPLOADCARE_STORE", "auto");
+
+  //     const res = await fetch("https://upload.uploadcare.com/base/", {
+  //       method: "POST",
+  //       body: formDataUpload,
+  //     });
+
+  //     const data = await res.json();
+
+  //     if (data.file) {
+  //       const imageUrl = `https://ucarecdn.com/${data.file}/`;
+  //       setFormData({ ...formData, image: imageUrl });
+  //     } else {
+  //       throw new Error("Upload failed");
+  //     }
+  //   } catch (error) {
+  //     console.error("Upload error:", error);
+  //     alert("Erreur lors de l'upload. Veuillez réessayer.");
+  //   } finally {
+  //     setUploading(false);
+  //     if (fileInputRef.current) {
+  //       fileInputRef.current.value = "";
+  //     }
+  //   }
+  // }
 
   async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Check file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
       alert("L'image est trop grande. Maximum 5MB.");
       return;
     }
 
-    // Check file type
     if (!file.type.startsWith("image/")) {
       alert("Veuillez sélectionner une image.");
       return;
@@ -89,21 +136,20 @@ export default function VehiclesPage() {
     try {
       const formDataUpload = new FormData();
       formDataUpload.append("file", file);
-      formDataUpload.append("UPLOADCARE_PUB_KEY", process.env.NEXT_PUBLIC_UPLOADCARE_PUBLIC_KEY || "");
-      formDataUpload.append("UPLOADCARE_STORE", "auto");
+      formDataUpload.append("upload_preset", process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || "");
 
-      const res = await fetch("https://upload.uploadcare.com/base/", {
+      const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+      const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
         method: "POST",
         body: formDataUpload,
       });
 
       const data = await res.json();
 
-      if (data.file) {
-        const imageUrl = `https://ucarecdn.com/${data.file}/`;
-        setFormData({ ...formData, image: imageUrl });
+      if (data.secure_url) {
+        setFormData({ ...formData, image: data.secure_url });
       } else {
-        throw new Error("Upload failed");
+        throw new Error(data.error?.message || "Upload failed");
       }
     } catch (error) {
       console.error("Upload error:", error);
@@ -275,6 +321,9 @@ export default function VehiclesPage() {
   }
 
   const filteredVehicles = vehicles.filter((v) => v.type === activeTab);
+  const totalPages = Math.ceil(filteredVehicles.length / vehiclesPerPage);
+  const startIndex = (currentPage - 1) * vehiclesPerPage;
+  const paginatedVehicles = filteredVehicles.slice(startIndex, startIndex + vehiclesPerPage);
 
   if (loading) {
     return (
@@ -314,7 +363,7 @@ export default function VehiclesPage() {
       {/* Tabs */}
       <div className="flex items-center gap-2 mb-6">
         <button
-          onClick={() => setActiveTab("CAR")}
+          onClick={() => { setActiveTab("CAR"); setCurrentPage(1); }}
           className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium transition-all ${
             activeTab === "CAR"
               ? "bg-blue-500/20 text-blue-400 border border-blue-500/30"
@@ -328,7 +377,7 @@ export default function VehiclesPage() {
           </span>
         </button>
         <button
-          onClick={() => setActiveTab("MOTO")}
+          onClick={() => { setActiveTab("MOTO"); setCurrentPage(1); }}
           className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium transition-all ${
             activeTab === "MOTO"
               ? "bg-blue-500/20 text-blue-400 border border-blue-500/30"
@@ -367,7 +416,7 @@ export default function VehiclesPage() {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-          {filteredVehicles.map((vehicle) => (
+          {paginatedVehicles.map((vehicle) => (
             <div
               key={vehicle.id}
               className={`bg-zinc-900 border rounded-2xl overflow-hidden transition-all ${
@@ -514,6 +563,41 @@ export default function VehiclesPage() {
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-center gap-2 mt-8">
+          <button
+            onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+            disabled={currentPage === 1}
+            className="px-3 py-2 rounded-lg bg-zinc-800 text-zinc-400 border border-zinc-700 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+          >
+            ← Précédent
+          </button>
+
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+            <button
+              key={page}
+              onClick={() => setCurrentPage(page)}
+              className={`w-10 h-10 rounded-lg font-medium transition-all ${
+                currentPage === page
+                  ? "bg-blue-500 text-white"
+                  : "bg-zinc-800 text-zinc-400 border border-zinc-700 hover:text-white"
+              }`}
+            >
+              {page}
+            </button>
+          ))}
+
+          <button
+            onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+            disabled={currentPage === totalPages}
+            className="px-3 py-2 rounded-lg bg-zinc-800 text-zinc-400 border border-zinc-700 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+          >
+            Suivant →
+          </button>
         </div>
       )}
 
@@ -696,7 +780,7 @@ export default function VehiclesPage() {
                       <>
                         <Upload className="w-10 h-10" />
                         <span>Cliquez pour ajouter une image</span>
-                        <span className="text-xs text-zinc-500">PNG, JPG jusqu'à 5MB</span>
+                        <span className="text-xs text-zinc-500">PNG, JPG jusqu&apos;à 5MB</span>
                       </>
                     )}
                   </button>
