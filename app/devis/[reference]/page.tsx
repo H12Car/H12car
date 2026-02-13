@@ -217,7 +217,7 @@ export default function DevisPage() {
               className="text-zinc-400 hover:text-white text-sm flex items-center justify-center gap-2"
             >
               <ArrowLeft className="w-4 h-4" />
-              Retour à l'accueil
+              Retour à l&apos;accueil
             </Link>
           </div>
         </motion.div>

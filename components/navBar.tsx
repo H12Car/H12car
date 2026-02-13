@@ -5,7 +5,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-import { ChevronDown, Car, Bike, Plane } from "lucide-react";
+import { ChevronDown, Car, Bike } from "lucide-react";
 
 const navLinks = [
   { href: "/", label: "Accueil" },

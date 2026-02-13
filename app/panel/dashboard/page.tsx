@@ -8,10 +8,7 @@ import {
   Bike,
   Clock,
   CheckCircle,
-  AlertCircle,
-  ArrowRight,
-  TrendingUp,
-  Users
+  ArrowRight
 } from "lucide-react";
 
 interface Quote {
@@ -170,7 +167,7 @@ export default function DashboardPage() {
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-white mb-2">Tableau de bord</h1>
-        <p className="text-zinc-400">Bienvenue sur le panneau d'administration H12</p>
+        <p className="text-zinc-400">Bienvenue sur le panneau d&apos;administration H12</p>
       </div>
 
       {/* Stats Cards */}

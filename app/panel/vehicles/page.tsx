@@ -68,55 +68,6 @@ export default function VehiclesPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const vehiclesPerPage = 6;
-
-  // async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
-  //   const file = e.target.files?.[0];
-  //   if (!file) return;
-
-  //   // Check file size (max 5MB)
-  //   if (file.size > 5 * 1024 * 1024) {
-  //     alert("L'image est trop grande. Maximum 5MB.");
-  //     return;
-  //   }
-
-  //   // Check file type
-  //   if (!file.type.startsWith("image/")) {
-  //     alert("Veuillez sélectionner une image.");
-  //     return;
-  //   }
-
-  //   setUploading(true);
-
-  //   try {
-  //     const formDataUpload = new FormData();
-  //     formDataUpload.append("file", file);
-  //     formDataUpload.append("UPLOADCARE_PUB_KEY", process.env.NEXT_PUBLIC_UPLOADCARE_PUBLIC_KEY || "");
-  //     formDataUpload.append("UPLOADCARE_STORE", "auto");
-
-  //     const res = await fetch("https://upload.uploadcare.com/base/", {
-  //       method: "POST",
-  //       body: formDataUpload,
-  //     });
-
-  //     const data = await res.json();
-
-  //     if (data.file) {
-  //       const imageUrl = `https://ucarecdn.com/${data.file}/`;
-  //       setFormData({ ...formData, image: imageUrl });
-  //     } else {
-  //       throw new Error("Upload failed");
-  //     }
-  //   } catch (error) {
-  //     console.error("Upload error:", error);
-  //     alert("Erreur lors de l'upload. Veuillez réessayer.");
-  //   } finally {
-  //     setUploading(false);
-  //     if (fileInputRef.current) {
-  //       fileInputRef.current.value = "";
-  //     }
-  //   }
-  // }
-
   async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
