@@ -32,6 +32,15 @@ export async function GET(request: NextRequest) {
             category: true,
           },
         },
+        transferRoute: {
+          select: {
+            id: true,
+            name: true,
+            category: true,
+            distance: true,
+            duration: true,
+          },
+        },
       },
       orderBy: { createdAt: "desc" },
       ...(limit && { take: parseInt(limit) }),

@@ -22,101 +22,26 @@ import MousePushCard from "@/components/MousePushCard";
 import WhatsAppButton from "@/components/WhatsAppButton";
 
 // ============================================
-// EXCURSIONS DATA
+// EXCURSION TYPE
 // ============================================
-const excursions = [
-  {
-    id: 1,
-    name: "Balade en Dromadaire",
-    category: "Palmeraie",
-    price: "350",
-    period: "personne",
-    image: "/excursions/h12_dromadaire.png",
-    description:
-      "Vivez une expérience authentique à dos de dromadaire à travers la palmeraie de Marrakech et ses 100 000 palmiers",
-    features: ["Transport A/R", "Guide berbère", "Thé à la menthe", "Photos souvenirs"],
-    rating: 4.9,
-    reviews: 234,
-    duration: "1 heure",
-    groupSize: "1-8",
-    departure: "Multiple",
-    difficulty: "Facile",
-    highlights: [
-      "Palmeraie de Marrakech",
-      "Villages berbères",
-      "Pause thé traditionnelle",
-      "Coucher de soleil disponible",
-    ],
-    favorite: true,
-  },
-  {
-    id: 2,
-    name: "Aventure Quad",
-    category: "Aventure",
-    price: "450",
-    period: "personne",
-    image: "/excursions/h12_quad.png",
-    description:
-      "Pilotez votre quad à travers la palmeraie et le désert rocheux avec des vues panoramiques sur l'Atlas",
-    features: ["Équipement complet", "Guide moniteur", "Quad automatique", "Pause thé berbère"],
-    rating: 4.8,
-    reviews: 312,
-    duration: "2 heures",
-    groupSize: "1-12",
-    departure: "Multiple",
-    difficulty: "Modéré",
-    highlights: [
-      "Palmeraie & désert rocheux",
-      "Vue sur l'Atlas",
-      "Villages berbères",
-      "Adrénaline garantie",
-    ],
-    favorite: true,
-  },
-  {
-    id: 3,
-    name: "Moto Off-Road",
-    category: "Extrême",
-    price: "650",
-    period: "personne",
-    image: "/excursions/h12_motooffroad.png",
-    description:
-      "Aventure tout-terrain en moto dirt bike à travers les pistes rocheuses et les sentiers de la palmeraie",
-    features: ["Moto dirt bike", "Équipement pro", "Guide expert", "Briefing sécurité"],
-    rating: 4.7,
-    reviews: 145,
-    duration: "2-3 heures",
-    groupSize: "1-6",
-    departure: "09:00 / 14:00",
-    difficulty: "Sportif",
-    highlights: ["Pistes techniques", "Terrain varié", "Sensations fortes", "Encadrement pro"],
-    favorite: false,
-  },
-  {
-    id: 4,
-    name: "Combo Quad + Dromadaire",
-    category: "Pack",
-    price: "700",
-    period: "personne",
-    image: "/excursions/h12_quadetdromadaire.png",
-    description:
-      "L'expérience complète : combinez l'adrénaline du quad et la sérénité de la balade en dromadaire",
-    features: ["2 activités", "Demi-journée", "Guide dédié", "Thé & collation"],
-    rating: 4.9,
-    reviews: 189,
-    duration: "3 heures",
-    groupSize: "1-8",
-    departure: "09:00 / 15:00",
-    difficulty: "Modéré",
-    highlights: [
-      "1h Quad + 1h Dromadaire",
-      "Meilleur rapport qualité/prix",
-      "Pause dans camp berbère",
-      "Photos incluses",
-    ],
-    favorite: true,
-  },
-];
+interface ExcursionData {
+  id: string;
+  name: string;
+  category: string;
+  price: number;
+  period: string;
+  image: string;
+  description: string;
+  features: string[];
+  highlights: string[];
+  rating: number;
+  reviews: number;
+  duration: string | null;
+  groupSize: string | null;
+  departure: string | null;
+  difficulty: string | null;
+  favorite: boolean;
+}
 
 // ============================================
 // TRANSFER TYPES
@@ -165,14 +90,28 @@ export default function ExcursionPage() {
   const [activeTab, setActiveTab] = useState<"excursions" | "transfers">("excursions");
 
   // Excursions state
-  const [expandedExcursionId, setExpandedExcursionId] = useState<number | null>(null);
-  const [favorites, setFavorites] = useState<number[]>([1, 2, 4]);
+  const [excursions, setExcursions] = useState<ExcursionData[]>([]);
+  const [loadingExcursions, setLoadingExcursions] = useState(true);
+  const [expandedExcursionId, setExpandedExcursionId] = useState<string | null>(null);
+  const [favorites, setFavorites] = useState<string[]>([]);
   const { openWizard } = useBooking();
 
   // Transfers state
   const [transferRoutes, setTransferRoutes] = useState<TransferRoute[]>([]);
   const [loadingTransfers, setLoadingTransfers] = useState(false);
   const [numPeople, setNumPeople] = useState(2);
+
+  // Fetch excursions on mount
+  useEffect(() => {
+    fetch("/api/excursions")
+      .then((res) => res.json())
+      .then((data: ExcursionData[]) => {
+        setExcursions(data);
+        setFavorites(data.filter((e) => e.favorite).map((e) => e.id));
+      })
+      .catch(console.error)
+      .finally(() => setLoadingExcursions(false));
+  }, []);
 
   // Fetch transfer routes when tab switches
   useEffect(() => {
@@ -188,24 +127,24 @@ export default function ExcursionPage() {
     }
   }, [activeTab, transferRoutes.length]);
 
-  const handleFavorite = (id: number) => {
+  const handleFavorite = (id: string) => {
     setFavorites((prev) =>
       prev.includes(id) ? prev.filter((favId) => favId !== id) : [...prev, id]
     );
   };
 
-  const handleCardClick = (excursionId: number) => {
+  const handleCardClick = (excursionId: string) => {
     setExpandedExcursionId(expandedExcursionId === excursionId ? null : excursionId);
   };
 
-  const handleReserve = (excursion: (typeof excursions)[0]) => {
+  const handleReserve = (excursion: ExcursionData) => {
     setExpandedExcursionId(null);
     openWizard("excursion", {
       id: excursion.id,
       name: excursion.name,
-      price: excursion.price,
+      price: String(excursion.price),
       period: excursion.period,
-      duration: excursion.duration,
+      duration: excursion.duration || undefined,
       image: excursion.image,
     });
   };
@@ -268,7 +207,7 @@ export default function ExcursionPage() {
               className={`flex items-center gap-3 px-6 py-4 rounded-2xl font-semibold text-lg transition-all ${
                 activeTab === "excursions"
                   ? "bg-blue-500 text-white shadow-lg shadow-blue-500/30"
-                  : "bg-zinc-900/50 text-zinc-400 border border-zinc-700 hover:text-white hover:border-zinc-600"
+                  : "bg-zinc-900/50 text-zinc-400 border border-zinc-700 lg:hover:text-white lg:hover:border-zinc-600"
               }`}
             >
               <Compass className="w-5 h-5" />
@@ -279,7 +218,7 @@ export default function ExcursionPage() {
               className={`flex items-center gap-3 px-6 py-4 rounded-2xl font-semibold text-lg transition-all ${
                 activeTab === "transfers"
                   ? "bg-blue-500 text-white shadow-lg shadow-blue-500/30"
-                  : "bg-zinc-900/50 text-zinc-400 border border-zinc-700 hover:text-white hover:border-zinc-600"
+                  : "bg-zinc-900/50 text-zinc-400 border border-zinc-700 lg:hover:text-white lg:hover:border-zinc-600"
               }`}
             >
               <Plane className="w-5 h-5" />
@@ -316,6 +255,17 @@ export default function ExcursionPage() {
           {/* Excursions Grid */}
           <section id="excursions-grid" className="py-8">
             <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-16">
+              {loadingExcursions ? (
+                <div className="text-center py-16">
+                  <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                  <p className="text-zinc-400">Chargement des excursions...</p>
+                </div>
+              ) : excursions.length === 0 ? (
+                <div className="text-center py-16">
+                  <Compass className="w-16 h-16 text-zinc-600 mx-auto mb-4" />
+                  <p className="text-zinc-400">Aucune excursion disponible pour le moment</p>
+                </div>
+              ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
                 {excursions.map((excursion, index) => {
                   const isExpanded = expandedExcursionId === excursion.id;
@@ -332,7 +282,7 @@ export default function ExcursionPage() {
                       <MousePushCard maxTilt={8} smoothing={0.05}>
                         <div
                           className={`relative bg-black overflow-hidden rounded-[20px] sm:rounded-[24px] h-[380px] sm:h-[400px] lg:h-[440px] transition-all duration-500 ${
-                            !isExpanded ? "hover:shadow-2xl" : "shadow-2xl ring-2 ring-blue-500/30"
+                            !isExpanded ? "lg:hover:shadow-2xl" : "shadow-2xl ring-2 ring-blue-500/30"
                           }`}
                         >
                           {/* Excursion Image */}
@@ -344,7 +294,7 @@ export default function ExcursionPage() {
                             className={`object-cover object-top transition-all duration-700 ${
                               isExpanded
                                 ? "scale-[1.15]"
-                                : "scale-[1.1] group-hover:scale-[1.12]"
+                                : "scale-[1.1] lg:group-hover:scale-[1.12]"
                             }`}
                           />
 
@@ -363,13 +313,13 @@ export default function ExcursionPage() {
                               e.stopPropagation();
                               handleFavorite(excursion.id);
                             }}
-                            className="absolute top-4 right-4 sm:top-5 sm:right-5 z-20 w-8 h-8 sm:w-9 sm:h-9 bg-white/10 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center hover:bg-white/20 transition-all duration-300"
+                            className="absolute top-4 right-4 sm:top-5 sm:right-5 z-20 w-8 h-8 sm:w-9 sm:h-9 bg-white/10 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center lg:hover:bg-white/20 transition-all duration-300"
                           >
                             <Heart
                               className={`w-4 h-4 sm:w-[18px] sm:h-[18px] transition-all duration-300 ${
                                 favorites.includes(excursion.id)
                                   ? "fill-red-500 text-red-500"
-                                  : "text-white/80 hover:text-red-400"
+                                  : "text-white/80 lg:hover:text-red-400"
                               }`}
                             />
                           </button>
@@ -382,7 +332,7 @@ export default function ExcursionPage() {
                                   e.stopPropagation();
                                   setExpandedExcursionId(null);
                                 }}
-                                className="w-8 h-8 sm:w-9 sm:h-9 bg-white/10 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center hover:bg-white/20 transition-all duration-300"
+                                className="w-8 h-8 sm:w-9 sm:h-9 bg-white/10 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center lg:hover:bg-white/20 transition-all duration-300"
                               >
                                 <X className="w-4 h-4 text-white" />
                               </button>
@@ -408,7 +358,7 @@ export default function ExcursionPage() {
                                 transition={{ duration: 0.3 }}
                                 className="absolute bottom-0 left-0 right-0 p-2.5 sm:p-3 md:p-4"
                               >
-                                <div className="bg-white/10 backdrop-blur-xl rounded-xl sm:rounded-2xl p-3 sm:p-3.5 md:p-4 border border-white/10 group-hover:bg-white/15 group-hover:border-white/20 transition-all duration-500">
+                                <div className="bg-white/10 backdrop-blur-xl rounded-xl sm:rounded-2xl p-3 sm:p-3.5 md:p-4 border border-white/10 lg:group-hover:bg-white/15 lg:group-hover:border-white/20 transition-all duration-500">
                                   <div className="flex items-start justify-between mb-2">
                                     <h3 className="text-sm sm:text-[15px] md:text-[17px] font-bold text-white leading-tight pr-2">
                                       {excursion.name}
@@ -456,7 +406,7 @@ export default function ExcursionPage() {
                                       <span className="text-[10px] sm:text-[11px] md:text-[12px] font-semibold tracking-wide">
                                         Détails
                                       </span>
-                                      <div className="w-6 h-6 sm:w-7 sm:h-7 bg-blue-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                      <div className="w-6 h-6 sm:w-7 sm:h-7 bg-blue-500 rounded-full flex items-center justify-center lg:group-hover:scale-110 transition-transform duration-300">
                                         <ArrowRight className="w-3 h-3 sm:w-[14px] sm:h-[14px] text-white" />
                                       </div>
                                     </div>
@@ -557,7 +507,7 @@ export default function ExcursionPage() {
                                     onClick={() => handleReserve(excursion)}
                                     whileHover={{ scale: 1.02 }}
                                     whileTap={{ scale: 0.98 }}
-                                    className="w-full py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 text-white text-sm font-bold rounded-full shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2 transition-all duration-300"
+                                    className="w-full py-3 bg-gradient-to-r from-blue-500 to-blue-600 lg:hover:from-blue-400 lg:hover:to-blue-500 text-white text-sm font-bold rounded-full shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2 transition-all duration-300"
                                   >
                                     Réserver cette activité
                                     <ArrowRight className="w-4 h-4" />
@@ -572,6 +522,7 @@ export default function ExcursionPage() {
                   );
                 })}
               </div>
+              )}
             </div>
           </section>
         </>
@@ -609,7 +560,7 @@ export default function ExcursionPage() {
                         className={`min-w-[48px] h-12 px-3 rounded-xl font-semibold transition-all ${
                           numPeople === num
                             ? "bg-blue-500 text-white"
-                            : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-white"
+                            : "bg-zinc-800 text-zinc-400 lg:hover:bg-zinc-700 lg:hover:text-white"
                         }`}
                       >
                         {num}
@@ -643,7 +594,7 @@ export default function ExcursionPage() {
                         className={`relative bg-zinc-900 border rounded-2xl p-5 transition-all ${
                           route.popular
                             ? "border-blue-500/50 shadow-lg shadow-blue-500/10"
-                            : "border-zinc-700 hover:border-zinc-600"
+                            : "border-zinc-700 lg:hover:border-zinc-600"
                         } ${!isAvailable ? "opacity-60" : ""}`}
                       >
                         {route.popular && (
@@ -705,7 +656,7 @@ export default function ExcursionPage() {
                                 duration: route.duration || undefined,
                                 numPeople: numPeople,
                               })}
-                              className="flex items-center gap-1.5 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-sm font-medium transition-all"
+                              className="flex items-center gap-1.5 px-4 py-2 bg-blue-500 lg:hover:bg-blue-600 text-white rounded-lg text-sm font-medium transition-all"
                             >
                               Réserver
                               <ChevronRight className="w-4 h-4" />
@@ -730,7 +681,7 @@ export default function ExcursionPage() {
                 >
                   <a
                     href="/transfer"
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-white rounded-full font-medium transition-all"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-zinc-800 lg:hover:bg-zinc-700 border border-zinc-700 text-white rounded-full font-medium transition-all"
                   >
                     Voir toutes les destinations
                     <ChevronRight className="w-5 h-5" />
@@ -782,16 +733,16 @@ export default function ExcursionPage() {
                 href="/voiture"
                 whileHover={{ scale: 1.03, y: -2 }}
                 whileTap={{ scale: 0.98 }}
-                className="group px-8 py-4 rounded-full bg-blue-500 text-white text-[15px] font-medium inline-flex items-center gap-2 transition-colors hover:bg-blue-600"
+                className="group px-8 py-4 rounded-full bg-blue-500 text-white text-[15px] font-medium inline-flex items-center gap-2 transition-colors lg:hover:bg-blue-600"
               >
                 Voir notre flotte
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200" />
+                <ArrowRight className="w-4 h-4 lg:group-hover:translate-x-0.5 transition-transform duration-200" />
               </motion.a>
               <motion.a
-                href="/voiture"
+                href="/about"
                 whileHover={{ scale: 1.03, y: -2 }}
                 whileTap={{ scale: 0.98 }}
-                className="group px-8 py-4 rounded-full bg-zinc-800 border border-zinc-700 text-zinc-300 text-[15px] font-medium inline-flex items-center gap-2 transition-colors hover:bg-zinc-700 hover:text-white"
+                className="group px-8 py-4 rounded-full bg-zinc-800 border border-zinc-700 text-zinc-300 text-[15px] font-medium inline-flex items-center gap-2 transition-colors lg:hover:bg-zinc-700 lg:hover:text-white"
               >
                 En savoir plus
               </motion.a>

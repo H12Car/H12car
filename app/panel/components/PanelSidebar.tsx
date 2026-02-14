@@ -8,6 +8,7 @@ import {
   FileText,
   Car,
   Plane,
+  Compass,
   ExternalLink,
   LogOut
 } from "lucide-react";
@@ -33,6 +34,11 @@ const navItems = [
     href: "/panel/transfers",
     label: "Transferts",
     icon: Plane
+  },
+  {
+    href: "/panel/excursions",
+    label: "Excursions",
+    icon: Compass
   },
 ];
 
@@ -83,13 +89,13 @@ export default function PanelSidebar({ pendingQuotes = 0 }: PanelSidebarProps) {
               className={`group flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 ${
                 isActive
                   ? "bg-blue-500/15 text-blue-400"
-                  : "text-zinc-400 hover:text-white hover:bg-zinc-800/50"
+                  : "text-zinc-400 lg:hover:text-white lg:hover:bg-zinc-800/50"
               }`}
             >
               <div className={`p-2 rounded-lg transition-colors ${
                 isActive
                   ? "bg-blue-500/20"
-                  : "bg-zinc-800/50 group-hover:bg-zinc-700/50"
+                  : "bg-zinc-800/50 lg:group-hover:bg-zinc-700/50"
               }`}>
                 <item.icon className="w-4 h-4" />
               </div>
@@ -114,7 +120,7 @@ export default function PanelSidebar({ pendingQuotes = 0 }: PanelSidebarProps) {
         <Link
           href="/"
           target="_blank"
-          className="flex items-center gap-3 px-3 py-2.5 text-zinc-500 hover:text-white hover:bg-zinc-800/50 rounded-xl transition-all duration-200"
+          className="flex items-center gap-3 px-3 py-2.5 text-zinc-500 lg:hover:text-white lg:hover:bg-zinc-800/50 rounded-xl transition-all duration-200"
         >
           <div className="p-2 rounded-lg bg-zinc-800/50">
             <ExternalLink className="w-4 h-4" />
@@ -125,7 +131,7 @@ export default function PanelSidebar({ pendingQuotes = 0 }: PanelSidebarProps) {
         {/* Logout - goes to dedicated logout page */}
         <Link
           href="/panel/logout"
-          className="w-full flex items-center gap-3 px-3 py-2.5 text-zinc-500 hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-all duration-200"
+          className="w-full flex items-center gap-3 px-3 py-2.5 text-zinc-500 lg:hover:text-red-400 lg:hover:bg-red-500/10 rounded-xl transition-all duration-200"
         >
           <div className="p-2 rounded-lg bg-zinc-800/50">
             <LogOut className="w-4 h-4" />
@@ -137,15 +143,15 @@ export default function PanelSidebar({ pendingQuotes = 0 }: PanelSidebarProps) {
       {/* Version & Credit */}
       <div className="px-6 py-4 border-t border-zinc-800/50">
         <p className="text-[10px] text-zinc-600 mb-1">
-          H12 Admin v1.0
+          H12 Admin v2.5
         </p>
         <a
-          href="https://digitalmaroc.com"
+          href="https://digital-maroc.vercel.app/services"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-[10px] text-zinc-700 hover:text-zinc-500 transition-colors"
+          className="text-[10px] text-zinc-700 lg:hover:text-zinc-500 transition-colors"
         >
-          Codé par <span className="font-medium">DigitalMaroc</span>
+          Codé par <span className="font-medium">DigitalMaroc Team</span>
         </a>
       </div>
     </aside>

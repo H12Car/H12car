@@ -187,7 +187,7 @@ export default function VoitureClient({ cars }: VoitureClientProps) {
                 document.getElementById('cars-grid')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
               }}
               whileTap={{ scale: 0.98 }}
-              className="mx-auto px-7 py-3.5 rounded-full bg-blue-500 text-white text-sm font-semibold shadow-lg flex items-center gap-2 hover:bg-blue-600 transition-all"
+              className="mx-auto px-7 py-3.5 rounded-full bg-blue-500 text-white text-sm font-semibold shadow-lg flex items-center gap-2 lg:hover:bg-blue-600 transition-all"
             >
               Voir notre Flotte
               <ArrowRight className="w-4 h-4" />
@@ -271,10 +271,10 @@ export default function VoitureClient({ cars }: VoitureClientProps) {
                   }}
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.98 }}
-                  className="group px-7 py-3.5 rounded-full bg-blue-500 text-white text-[15px] font-medium flex items-center gap-2 transition-colors hover:bg-blue-600"
+                  className="group px-7 py-3.5 rounded-full bg-blue-500 text-white text-[15px] font-medium flex items-center gap-2 transition-colors lg:hover:bg-blue-600"
                 >
                   Voir notre Flotte
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200" />
+                  <ArrowRight className="w-4 h-4 lg:group-hover:translate-x-0.5 transition-transform duration-200" />
                 </motion.button>
               </motion.div>
             </div>
@@ -348,7 +348,7 @@ export default function VoitureClient({ cars }: VoitureClientProps) {
                 className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
                   selectedCategory === category
                     ? "bg-blue-500 text-white shadow-lg"
-                    : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-white border border-zinc-700"
+                    : "bg-zinc-800 text-zinc-400 lg:hover:bg-zinc-700 lg:hover:text-white border border-zinc-700"
                 }`}
               >
                 {category}
@@ -376,7 +376,7 @@ export default function VoitureClient({ cars }: VoitureClientProps) {
                 >
                   <MousePushCard maxTilt={8} smoothing={0.05}>
                   <div
-                    className={`relative bg-black overflow-hidden rounded-[20px] sm:rounded-[24px] h-[380px] sm:h-[400px] lg:h-[440px] transition-all duration-500 ${!isExpanded ? 'hover:shadow-2xl' : 'shadow-2xl ring-2 ring-blue-500/30'}`}
+                    className={`relative bg-black overflow-hidden rounded-[20px] sm:rounded-[24px] h-[380px] sm:h-[400px] lg:h-[440px] transition-all duration-500 ${!isExpanded ? 'lg:hover:shadow-2xl' : 'shadow-2xl ring-2 ring-blue-500/30'}`}
                   >
                     {/* Car Image - Always full size */}
                     <Image
@@ -384,7 +384,7 @@ export default function VoitureClient({ cars }: VoitureClientProps) {
                       alt={car.name}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className={`object-cover object-center transition-all duration-700 ${isExpanded ? 'scale-[1.15]' : 'scale-[1.1] group-hover:scale-[1.12]'}`}
+                      className={`object-cover object-center transition-all duration-700 ${isExpanded ? 'scale-[1.15]' : 'scale-[1.1] lg:group-hover:scale-[1.12]'}`}
                     />
 
                     {/* Gradient Overlay - stronger when expanded */}
@@ -396,13 +396,13 @@ export default function VoitureClient({ cars }: VoitureClientProps) {
                         e.stopPropagation();
                         handleFavorite(car.id);
                       }}
-                      className="absolute top-4 right-4 sm:top-5 sm:right-5 z-20 w-8 h-8 sm:w-9 sm:h-9 bg-white/10 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center hover:bg-white/20 transition-all duration-300"
+                      className="absolute top-4 right-4 sm:top-5 sm:right-5 z-20 w-8 h-8 sm:w-9 sm:h-9 bg-white/10 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center lg:hover:bg-white/20 transition-all duration-300"
                     >
                       <Heart
                         className={`w-4 h-4 sm:w-[18px] sm:h-[18px] transition-all duration-300 ${
                           favorites.includes(car.id)
                             ? "fill-red-500 text-red-500"
-                            : "text-white/80 hover:text-red-400"
+                            : "text-white/80 lg:hover:text-red-400"
                         }`}
                       />
                     </button>
@@ -415,7 +415,7 @@ export default function VoitureClient({ cars }: VoitureClientProps) {
                             e.stopPropagation();
                             setExpandedCarId(null);
                           }}
-                          className="w-8 h-8 sm:w-9 sm:h-9 bg-white/10 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center hover:bg-white/20 transition-all duration-300"
+                          className="w-8 h-8 sm:w-9 sm:h-9 bg-white/10 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center lg:hover:bg-white/20 transition-all duration-300"
                         >
                           <X className="w-4 h-4 text-white" />
                         </button>
@@ -439,7 +439,7 @@ export default function VoitureClient({ cars }: VoitureClientProps) {
                           transition={{ duration: 0.3 }}
                           className="absolute bottom-0 left-0 right-0 p-2.5 sm:p-3 md:p-4"
                         >
-                          <div className="bg-white/10 backdrop-blur-xl rounded-xl sm:rounded-2xl p-3 sm:p-3.5 md:p-4 border border-white/10 group-hover:bg-white/15 group-hover:border-white/20 transition-all duration-500">
+                          <div className="bg-white/10 backdrop-blur-xl rounded-xl sm:rounded-2xl p-3 sm:p-3.5 md:p-4 border border-white/10 lg:group-hover:bg-white/15 lg:group-hover:border-white/20 transition-all duration-500">
                             <div className="flex items-start justify-between mb-2">
                               <h3 className="text-sm sm:text-[15px] md:text-[17px] font-bold text-white leading-tight pr-2">
                                 {car.name}
@@ -466,12 +466,12 @@ export default function VoitureClient({ cars }: VoitureClientProps) {
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-1">
                                 <Star className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-yellow-400 fill-current" />
-                                <span className="text-[11px] sm:text-[12px] md:text-[13px] font-semibold text-white">4.8</span>
+                                <span className="text-[11px] sm:text-[12px] md:text-[13px] font-semibold text-white">4.9</span>
                                 <span className="text-[9px] sm:text-[10px] md:text-[11px] text-white/40">(50+)</span>
                               </div>
                               <div className="flex items-center gap-1 sm:gap-1.5 text-blue-400">
                                 <span className="text-[10px] sm:text-[11px] md:text-[12px] font-semibold tracking-wide">Détails</span>
-                                <div className="w-6 h-6 sm:w-7 sm:h-7 bg-blue-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                <div className="w-6 h-6 sm:w-7 sm:h-7 bg-blue-500 rounded-full flex items-center justify-center lg:group-hover:scale-110 transition-transform duration-300">
                                   <ArrowRight className="w-3 h-3 sm:w-[14px] sm:h-[14px] text-white" />
                                 </div>
                               </div>
@@ -502,7 +502,7 @@ export default function VoitureClient({ cars }: VoitureClientProps) {
                                 <h2 className="text-base sm:text-lg font-bold text-white leading-tight">{car.name}</h2>
                                 <div className="flex items-center gap-1.5 mt-1">
                                   <Star className="w-3.5 h-3.5 text-yellow-400 fill-current" />
-                                  <span className="text-xs font-semibold text-white">4.8</span>
+                                  <span className="text-xs font-semibold text-white">4.9</span>
                                   <span className="text-[10px] text-white/40">(50+)</span>
                                   <span className="text-white/20 mx-1">·</span>
                                   <span className="text-[10px] text-white/50">{car.year}</span>
@@ -557,7 +557,7 @@ export default function VoitureClient({ cars }: VoitureClientProps) {
                               onClick={() => handleReserve(car)}
                               whileHover={{ scale: 1.02 }}
                               whileTap={{ scale: 0.98 }}
-                              className="w-full py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 text-white text-sm font-bold rounded-full shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2 transition-all duration-300"
+                              className="w-full py-3 bg-gradient-to-r from-blue-500 to-blue-600 lg:hover:from-blue-400 lg:hover:to-blue-500 text-white text-sm font-bold rounded-full shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2 transition-all duration-300"
                             >
                               {car.period === "trajet" ? "Réserver ce transport" : "Réserver ce véhicule"}
                               <ArrowRight className="w-4 h-4" />
@@ -634,10 +634,10 @@ export default function VoitureClient({ cars }: VoitureClientProps) {
               href="/moto"
               whileHover={{ scale: 1.03, y: -2 }}
               whileTap={{ scale: 0.98 }}
-              className="group px-8 py-4 rounded-full bg-blue-500 text-white text-[15px] font-medium inline-flex items-center gap-2 transition-colors hover:bg-blue-600"
+              className="group px-8 py-4 rounded-full bg-blue-500 text-white text-[15px] font-medium inline-flex items-center gap-2 transition-colors lg:hover:bg-blue-600"
             >
               Découvrir les motos
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200" />
+              <ArrowRight className="w-4 h-4 lg:group-hover:translate-x-0.5 transition-transform duration-200" />
             </motion.a>
           </motion.div>
         </div>

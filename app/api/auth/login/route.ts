@@ -1,11 +1,18 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "h12admin2024";
-const AUTH_SECRET = process.env.AUTH_SECRET || "h12-secret-key-change-in-production";
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+const AUTH_SECRET = process.env.AUTH_SECRET;
 
 export async function POST(request: Request) {
   try {
+    if (!ADMIN_PASSWORD || !AUTH_SECRET) {
+      return NextResponse.json(
+        { error: "Auth not configured" },
+        { status: 503 }
+      );
+    }
+
     const { password } = await request.json();
 
     if (password === ADMIN_PASSWORD) {

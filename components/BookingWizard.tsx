@@ -586,7 +586,7 @@ export default function BookingWizard() {
             <button
               onClick={closeWizard}
               className="absolute top-4 right-4 w-8 h-8 rounded-full
-                         bg-white/10 hover:bg-white/20 transition z-10
+                         bg-white/10 lg:hover:bg-white/20 transition z-10
                          flex items-center justify-center"
             >
               <X className="w-4 h-4 text-white/70" />
@@ -858,7 +858,7 @@ export default function BookingWizard() {
                               className={`py-3 px-4 rounded-xl border text-sm font-medium transition-all
                                 ${bookingDetails.deliveryCity === "marrakech"
                                   ? "bg-blue-500/20 border-blue-500/50 text-blue-400"
-                                  : "bg-white/5 border-white/10 text-white/60 hover:bg-white/10"}`}
+                                  : "bg-white/5 border-white/10 text-white/60 lg:hover:bg-white/10"}`}
                             >
                               <span className="flex items-center justify-center gap-2">
                                 <Check className={`w-4 h-4 ${bookingDetails.deliveryCity === "marrakech" ? "opacity-100" : "opacity-0"}`} />
@@ -877,7 +877,7 @@ export default function BookingWizard() {
                                   ? "bg-blue-500/20 border-blue-500/50 text-blue-400"
                                   : bookingDetails.pickupZone === "hors_marrakech"
                                     ? "bg-blue-500/20 border-blue-500/50 text-blue-400"
-                                    : "bg-white/5 border-white/10 text-white/60 hover:bg-white/10"}`}
+                                    : "bg-white/5 border-white/10 text-white/60 lg:hover:bg-white/10"}`}
                             >
                               <span className="flex items-center justify-center gap-2">
                                 <Check className={`w-4 h-4 ${(bookingDetails.deliveryCity !== "marrakech" && bookingDetails.deliveryCity !== "") || bookingDetails.pickupZone === "hors_marrakech" ? "opacity-100" : "opacity-0"}`} />
@@ -1026,7 +1026,7 @@ export default function BookingWizard() {
                             className={`p-4 rounded-xl border cursor-pointer transition-all
                               ${bookingDetails.wantsDriver
                                 ? "bg-blue-500/10 border-blue-500/30"
-                                : "bg-white/5 border-white/10 hover:bg-white/10"}`}
+                                : "bg-white/5 border-white/10 lg:hover:bg-white/10"}`}
                           >
                             <div className="flex items-center gap-3">
                               <div className={`w-10 h-10 rounded-full flex items-center justify-center
@@ -1066,7 +1066,7 @@ export default function BookingWizard() {
                             })
                           }
                           className="w-12 h-12 rounded-xl bg-white/5 border border-white/10
-                                     flex items-center justify-center hover:bg-white/10 transition"
+                                     flex items-center justify-center lg:hover:bg-white/10 transition"
                         >
                           <Minus className="w-5 h-5 text-white" />
                         </button>
@@ -1083,7 +1083,7 @@ export default function BookingWizard() {
                             })
                           }
                           className="w-12 h-12 rounded-xl bg-white/5 border border-white/10
-                                     flex items-center justify-center hover:bg-white/10 transition"
+                                     flex items-center justify-center lg:hover:bg-white/10 transition"
                         >
                           <Plus className="w-5 h-5 text-white" />
                         </button>
@@ -1295,7 +1295,7 @@ export default function BookingWizard() {
                           >
                             <button
                               onClick={() => setCarSelectionMode('hidden')}
-                              className="flex items-center gap-2 text-white/60 hover:text-white mb-4 transition"
+                              className="flex items-center gap-2 text-white/60 lg:hover:text-white mb-4 transition"
                             >
                               <ArrowLeft className="w-4 h-4" />
                               <span className="text-sm">Retour</span>
@@ -1315,7 +1315,7 @@ export default function BookingWizard() {
                                     setCarSelectionMode('dates');
                                   }}
                                   className="w-full p-3 rounded-xl bg-white/5 border border-white/10
-                                             hover:border-blue-500/50 hover:bg-white/10 transition-all text-left
+                                             lg:hover:border-blue-500/50 lg:hover:bg-white/10 transition-all text-left
                                              flex items-center gap-3"
                                 >
                                   <div className="w-16 h-12 rounded-lg bg-white/10 overflow-hidden flex-shrink-0 relative">
@@ -1354,7 +1354,7 @@ export default function BookingWizard() {
                           >
                             <button
                               onClick={() => setCarSelectionMode('list')}
-                              className="flex items-center gap-2 text-white/60 hover:text-white mb-4 transition"
+                              className="flex items-center gap-2 text-white/60 lg:hover:text-white mb-4 transition"
                             >
                               <ArrowLeft className="w-4 h-4" />
                               <span className="text-sm">Changer de voiture</span>
@@ -1441,7 +1441,7 @@ export default function BookingWizard() {
                               className="w-full py-3 rounded-xl bg-blue-500
                                          text-white font-semibold flex items-center justify-center gap-2
                                          disabled:opacity-50 disabled:cursor-not-allowed
-                                         hover:bg-blue-600 transition"
+                                         lg:hover:bg-blue-600 transition"
                             >
                               <Check className="w-4 h-4" />
                               Ajouter cette voiture
@@ -1464,7 +1464,7 @@ export default function BookingWizard() {
                           >
                             <button
                               onClick={() => setMotoSelectionMode('hidden')}
-                              className="flex items-center gap-2 text-white/60 hover:text-white mb-4 transition"
+                              className="flex items-center gap-2 text-white/60 lg:hover:text-white mb-4 transition"
                             >
                               <ArrowLeft className="w-4 h-4" />
                               <span className="text-sm">Retour</span>
@@ -1484,7 +1484,7 @@ export default function BookingWizard() {
                                     setMotoSelectionMode('dates');
                                   }}
                                   className="w-full p-3 rounded-xl bg-white/5 border border-white/10
-                                             hover:border-orange-500/50 hover:bg-white/10 transition-all text-left
+                                             lg:hover:border-orange-500/50 lg:hover:bg-white/10 transition-all text-left
                                              flex items-center gap-3"
                                 >
                                   <div className="w-16 h-12 rounded-lg bg-white/10 overflow-hidden flex-shrink-0 relative">
@@ -1523,7 +1523,7 @@ export default function BookingWizard() {
                           >
                             <button
                               onClick={() => setMotoSelectionMode('list')}
-                              className="flex items-center gap-2 text-white/60 hover:text-white mb-4 transition"
+                              className="flex items-center gap-2 text-white/60 lg:hover:text-white mb-4 transition"
                             >
                               <ArrowLeft className="w-4 h-4" />
                               <span className="text-sm">Changer de moto</span>
@@ -1610,7 +1610,7 @@ export default function BookingWizard() {
                               className="w-full py-3 rounded-xl bg-orange-500
                                          text-white font-semibold flex items-center justify-center gap-2
                                          disabled:opacity-50 disabled:cursor-not-allowed
-                                         hover:bg-orange-600 transition"
+                                         lg:hover:bg-orange-600 transition"
                             >
                               <Check className="w-4 h-4" />
                               Ajouter cette moto
@@ -1641,12 +1641,12 @@ export default function BookingWizard() {
                             <button
                               onClick={() => setMotoSelectionMode('list')}
                               className="w-full p-4 rounded-xl border-2 border-dashed border-orange-500/30
-                                         bg-orange-500/5 hover:bg-orange-500/10 hover:border-orange-500/50
+                                         bg-orange-500/5 lg:hover:bg-orange-500/10 lg:hover:border-orange-500/50
                                          transition-all text-left group"
                             >
                               <div className="flex items-center gap-3">
                                 <div className="w-12 h-12 rounded-xl bg-orange-500/20 flex items-center justify-center
-                                                group-hover:bg-orange-500/30 transition">
+                                                lg:group-hover:bg-orange-500/30 transition">
                                   <Bike className="w-6 h-6 text-orange-400" />
                                 </div>
                                 <div className="flex-1">
@@ -1657,7 +1657,7 @@ export default function BookingWizard() {
                                     Louez une moto pour explorer librement
                                   </p>
                                 </div>
-                                <ChevronRight className="w-5 h-5 text-orange-400 group-hover:translate-x-1 transition" />
+                                <ChevronRight className="w-5 h-5 text-orange-400 lg:group-hover:translate-x-1 transition" />
                               </div>
                             </button>
                           )}
@@ -1667,12 +1667,12 @@ export default function BookingWizard() {
                             <button
                               onClick={() => setCarSelectionMode('list')}
                               className="w-full p-4 rounded-xl border-2 border-dashed border-blue-500/30
-                                         bg-blue-500/5 hover:bg-blue-500/10 hover:border-blue-500/50
+                                         bg-blue-500/5 lg:hover:bg-blue-500/10 lg:hover:border-blue-500/50
                                          transition-all text-left group"
                             >
                               <div className="flex items-center gap-3">
                                 <div className="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center
-                                                group-hover:bg-blue-500/30 transition">
+                                                lg:group-hover:bg-blue-500/30 transition">
                                   <Car className="w-6 h-6 text-blue-400" />
                                 </div>
                                 <div className="flex-1">
@@ -1683,7 +1683,7 @@ export default function BookingWizard() {
                                     Louez une voiture pour vos déplacements
                                   </p>
                                 </div>
-                                <ChevronRight className="w-5 h-5 text-blue-400 group-hover:translate-x-1 transition" />
+                                <ChevronRight className="w-5 h-5 text-blue-400 lg:group-hover:translate-x-1 transition" />
                               </div>
                             </button>
                           )}
@@ -1723,7 +1723,7 @@ export default function BookingWizard() {
                                                 ${
                                                   isSelected
                                                     ? "bg-amber-500/10 border-amber-500/50"
-                                                    : "bg-white/5 border-white/10 hover:border-white/20"
+                                                    : "bg-white/5 border-white/10 lg:hover:border-white/20"
                                                 }`}
                                   >
                                     <div className="flex items-center gap-3">
@@ -1780,7 +1780,7 @@ export default function BookingWizard() {
                                     key={excursion.id}
                                     onClick={() => toggleExcursion(excursion)}
                                     className="w-full p-4 rounded-xl border transition-all text-left
-                                               bg-white/5 border-white/10 hover:border-amber-500/30"
+                                               bg-white/5 border-white/10 lg:hover:border-amber-500/30"
                                   >
                                     <div className="flex items-center gap-3">
                                       <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-white/10 text-white">
@@ -1954,7 +1954,7 @@ export default function BookingWizard() {
                             href={`/devis/${createdQuote.reference}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="w-full py-3 rounded-xl bg-blue-500 hover:bg-blue-600
+                            className="w-full py-3 rounded-xl bg-blue-500 lg:hover:bg-blue-600
                                        text-white font-semibold transition flex items-center justify-center gap-2"
                           >
                             <Send className="w-5 h-5" />
@@ -1967,7 +1967,7 @@ export default function BookingWizard() {
                               setSubmissionMethod(null);
                               setCreatedQuote(null);
                             }}
-                            className="w-full py-3 rounded-xl bg-white/10 hover:bg-white/20
+                            className="w-full py-3 rounded-xl bg-white/10 lg:hover:bg-white/20
                                        text-white/70 font-medium transition"
                           >
                             Fermer
@@ -2008,7 +2008,7 @@ export default function BookingWizard() {
                     <button
                       onClick={prevStep}
                       className="px-4 py-3 rounded-xl bg-white/5 border border-white/10
-                                 text-white font-medium hover:bg-white/10 transition
+                                 text-white font-medium lg:hover:bg-white/10 transition
                                  flex items-center gap-2"
                     >
                       <ChevronLeft className="w-4 h-4" />
@@ -2021,7 +2021,7 @@ export default function BookingWizard() {
                       onClick={nextStep}
                       disabled={!canProceed()}
                       className="flex-1 py-3 rounded-xl bg-blue-500
-                                 text-white font-semibold hover:bg-blue-600
+                                 text-white font-semibold lg:hover:bg-blue-600
                                  transition flex items-center justify-center gap-2
                                  disabled:opacity-50 disabled:cursor-not-allowed"
                     >
@@ -2029,75 +2029,53 @@ export default function BookingWizard() {
                       <ChevronRight className="w-4 h-4" />
                     </button>
                   ) : (
-                    <button
-                      onClick={handleWhatsAppWithPDF}
-                      disabled={!canProceed() || isSubmitting}
-                      className="flex-1 py-3 rounded-xl bg-green-500
-                                text-white font-semibold hover:bg-green-600
-                                transition flex items-center justify-center gap-2
-                                disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      {isSubmitting && submissionMethod === 'whatsapp' ? (
-                        <>
-                          <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                          <span>Envoi...</span>
-                        </>
-                      ) : (
-                        <>
-                          <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-                          </svg>
-                          <span>Envoyer via WhatsApp</span>
-                        </>
-                      )}
-                    </button>
-                    // <div className="flex-1 flex flex-col gap-2">
-                    //   {/* WhatsApp Button */}
-                    //   <button
-                    //     onClick={handleWhatsAppWithPDF}
-                    //     disabled={!canProceed() || isSubmitting}
-                    //     className="w-full py-3 rounded-xl bg-green-500/20 border border-green-500/40
-                    //                text-green-400 font-semibold hover:bg-green-500/30
-                    //                transition flex items-center justify-center gap-2
-                    //                disabled:opacity-50 disabled:cursor-not-allowed"
-                    //   >
-                    //     {isSubmitting && submissionMethod === 'whatsapp' ? (
-                    //       <>
-                    //         <div className="w-5 h-5 border-2 border-green-400/30 border-t-green-400 rounded-full animate-spin" />
-                    //         <span>Envoi...</span>
-                    //       </>
-                    //     ) : (
-                    //       <>
-                    //         <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                    //           <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-                    //         </svg>
-                    //         <span>Envoyer via WhatsApp</span>
-                    //       </>
-                    //     )}
-                    //   </button>
+                    <div className="flex-1 flex flex-col gap-2">
+                      {/* WhatsApp Button */}
+                      <button
+                        onClick={handleWhatsAppWithPDF}
+                        disabled={!canProceed() || isSubmitting}
+                        className="w-full py-3 rounded-xl bg-gradient-to-r from-green-500 to-green-600
+                                   text-white font-bold lg:hover:from-green-400 lg:hover:to-green-500
+                                   transition flex items-center justify-center gap-2 shadow-lg shadow-green-500/25
+                                   disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {isSubmitting && submissionMethod === 'whatsapp' ? (
+                          <>
+                            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                            <span>Envoi...</span>
+                          </>
+                        ) : (
+                          <>
+                            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                            </svg>
+                            <span>Envoyer via WhatsApp</span>
+                          </>
+                        )}
+                      </button>
 
-                    //   {/* Devis Button */}
-                    //   <button
-                    //     onClick={handleSendDevis}
-                    //     disabled={!canProceed() || isSubmitting}
-                    //     className="w-full py-3 rounded-xl bg-blue-500/20 border border-blue-500/40
-                    //                text-blue-400 font-semibold hover:bg-blue-500/30
-                    //                transition flex items-center justify-center gap-2
-                    //                disabled:opacity-50 disabled:cursor-not-allowed"
-                    //   >
-                    //     {isSubmitting && submissionMethod === 'devis' ? (
-                    //       <>
-                    //         <div className="w-5 h-5 border-2 border-blue-400/30 border-t-blue-400 rounded-full animate-spin" />
-                    //         <span>Création du devis...</span>
-                    //       </>
-                    //     ) : (
-                    //       <>
-                    //         <Send className="w-5 h-5" />
-                    //         <span>Recevoir mon devis</span>
-                    //       </>
-                    //     )}
-                    //   </button>
-                    // </div>
+                      {/* Devis Button */}
+                      <button
+                        onClick={handleSendDevis}
+                        disabled={!canProceed() || isSubmitting}
+                        className="w-full py-3 rounded-xl bg-blue-500/20 border border-blue-500/40
+                                   text-blue-400 font-semibold lg:hover:bg-blue-500/30
+                                   transition flex items-center justify-center gap-2
+                                   disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {isSubmitting && submissionMethod === 'devis' ? (
+                          <>
+                            <div className="w-5 h-5 border-2 border-blue-400/30 border-t-blue-400 rounded-full animate-spin" />
+                            <span>Création du devis...</span>
+                          </>
+                        ) : (
+                          <>
+                            <Send className="w-5 h-5" />
+                            <span>Recevoir mon devis</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
                   )}
                 </div>
               </div>

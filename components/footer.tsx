@@ -10,8 +10,6 @@ import {
   MapPin,
   Phone,
   Mail,
-  Instagram,
-  Facebook,
   Car,
   Bike,
   Compass,
@@ -36,11 +34,6 @@ const contactInfo = [
   { icon: Phone, text: "+33 6 46 46 66 56", href: "tel:+33646466656" },
   { icon: Mail, text: "k0664676267@gmail.com", href: "mailto:k0664676267@gmail.com" },
   { icon: MapPin, text: "Marrakech, Maroc", href: "#" },
-];
-
-const socialLinks = [
-  { icon: Instagram, href: "https://instagram.com", label: "Instagram" },
-  { icon: Facebook, href: "https://facebook.com", label: "Facebook" },
 ];
 
 export default function Footer() {
@@ -79,18 +72,18 @@ export default function Footer() {
                 <motion.button
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.98 }}
-                  className="group px-6 py-3 rounded-full bg-blue-500 text-white text-sm font-semibold flex items-center gap-2 shadow-lg shadow-blue-500/20 hover:bg-blue-600 transition-all"
+                  className="group px-6 py-3 rounded-full bg-blue-500 text-white text-sm font-semibold flex items-center gap-2 shadow-lg shadow-blue-500/20 lg:hover:bg-blue-600 transition-all"
                 >
                   <Car className="w-4 h-4" />
                   Louer une Voiture
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                  <ArrowRight className="w-4 h-4 lg:group-hover:translate-x-0.5 transition-transform" />
                 </motion.button>
               </Link>
               <Link href="/moto">
                 <motion.button
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.98 }}
-                  className="group px-6 py-3 rounded-full bg-zinc-800 border border-zinc-700 text-white text-sm font-semibold flex items-center gap-2 hover:bg-zinc-700 hover:border-zinc-600 transition-all"
+                  className="group px-6 py-3 rounded-full bg-zinc-800 border border-zinc-700 text-white text-sm font-semibold flex items-center gap-2 lg:hover:bg-zinc-700 lg:hover:border-zinc-600 transition-all"
                 >
                   <Bike className="w-4 h-4" />
                   Louer une Moto
@@ -129,24 +122,6 @@ export default function Footer() {
               Location de véhicules premium et expériences exclusives à Marrakech. Qualité, confort et service personnalisé.
             </p>
 
-            {/* Social Links - Pill Style */}
-            <div className="flex items-center gap-2">
-              {socialLinks.map((social, idx) => (
-                <motion.a
-                  key={idx}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="px-4 py-2 rounded-full bg-zinc-800/80 border border-zinc-700/50 flex items-center gap-2 hover:bg-zinc-700 hover:border-zinc-600 transition-all group"
-                  aria-label={social.label}
-                >
-                  <social.icon className="w-4 h-4 text-zinc-400 group-hover:text-blue-400 transition-colors" />
-                  <span className="text-xs text-zinc-400 group-hover:text-white transition-colors">{social.label}</span>
-                </motion.a>
-              ))}
-            </div>
           </div>
 
           {/* Navigation Column */}
@@ -157,7 +132,7 @@ export default function Footer() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="text-zinc-400 hover:text-blue-400 text-sm transition-colors w-fit"
+                  className="text-zinc-400 lg:hover:text-blue-400 text-sm transition-colors w-fit"
                 >
                   {link.label}
                 </Link>
@@ -173,10 +148,10 @@ export default function Footer() {
                 <Link key={service.name} href={service.href}>
                   <motion.div
                     whileHover={{ x: 4 }}
-                    className="inline-flex items-center gap-2 px-3 py-2 rounded-full bg-zinc-800/50 border border-zinc-700/50 hover:bg-zinc-800 hover:border-zinc-600 transition-all group cursor-pointer"
+                    className="inline-flex items-center gap-2 px-3 py-2 rounded-full bg-zinc-800/50 border border-zinc-700/50 lg:hover:bg-zinc-800 lg:hover:border-zinc-600 transition-all group cursor-pointer"
                   >
                     <service.icon className="w-3.5 h-3.5 text-blue-400" />
-                    <span className="text-xs text-zinc-400 group-hover:text-white transition-colors">{service.name}</span>
+                    <span className="text-xs text-zinc-400 lg:group-hover:text-white transition-colors">{service.name}</span>
                   </motion.div>
                 </Link>
               ))}
@@ -191,10 +166,10 @@ export default function Footer() {
                 <a
                   key={idx}
                   href={info.href}
-                  className="inline-flex items-center gap-2 px-3 py-2 rounded-full bg-zinc-800/50 border border-zinc-700/50 hover:bg-zinc-800 hover:border-zinc-600 transition-all group w-fit"
+                  className="inline-flex items-center gap-2 px-3 py-2 rounded-full bg-zinc-800/50 border border-zinc-700/50 lg:hover:bg-zinc-800 lg:hover:border-zinc-600 transition-all group w-fit"
                 >
                   <info.icon className="w-3.5 h-3.5 text-blue-400" />
-                  <span className="text-xs text-zinc-400 group-hover:text-white transition-colors">{info.text}</span>
+                  <span className="text-xs text-zinc-400 lg:group-hover:text-white transition-colors">{info.text}</span>
                 </a>
               ))}
             </div>
@@ -218,7 +193,7 @@ export default function Footer() {
                   />
                   <button
                     type="submit"
-                    className="absolute right-1.5 top-1/2 -translate-y-1/2 p-1.5 rounded-full bg-blue-500 hover:bg-blue-600 transition-all"
+                    className="absolute right-1.5 top-1/2 -translate-y-1/2 p-1.5 rounded-full bg-blue-500 lg:hover:bg-blue-600 transition-all"
                   >
                     <ArrowRight className="w-3.5 h-3.5 text-white" />
                   </button>
@@ -235,12 +210,12 @@ export default function Footer() {
               © {new Date().getFullYear()} H12 Car. Tous droits réservés.
             </p>
             <a
-              href="https://digitalmaroc.com"
+              href="https://digital-maroc.vercel.app/services"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-zinc-600 hover:text-zinc-400 text-[11px] transition-colors"
+              className="text-zinc-600 lg:hover:text-zinc-400 text-[11px] transition-colors"
             >
-              Codé par <span className="font-medium">DigitalMaroc</span>
+              v2.5 — Codé par <span className="font-medium">DigitalMaroc Team</span>
             </a>
           </div>
         </div>

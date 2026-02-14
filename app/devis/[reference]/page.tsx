@@ -12,6 +12,7 @@ import {
   MapPin,
   Users,
   Car,
+  Bike,
   Plane,
   Mountain,
   CheckCircle,
@@ -119,7 +120,7 @@ export default function DevisPage() {
       case "car":
         return Car;
       case "moto":
-        return Car;
+        return Bike;
       case "transfer":
         return Plane;
       case "excursion":
@@ -195,7 +196,7 @@ export default function DevisPage() {
               <button
                 type="submit"
                 disabled={isVerifying || !phone}
-                className="w-full py-3 rounded-xl bg-blue-500 hover:bg-blue-600 disabled:bg-zinc-700 disabled:cursor-not-allowed text-white font-semibold transition-all flex items-center justify-center gap-2"
+                className="w-full py-3 rounded-xl bg-blue-500 lg:hover:bg-blue-600 disabled:bg-zinc-700 disabled:cursor-not-allowed text-white font-semibold transition-all flex items-center justify-center gap-2"
               >
                 {isVerifying ? (
                   <>
@@ -214,7 +215,7 @@ export default function DevisPage() {
           <div className="text-center mt-6">
             <Link
               href="/"
-              className="text-zinc-400 hover:text-white text-sm flex items-center justify-center gap-2"
+              className="text-zinc-400 lg:hover:text-white text-sm flex items-center justify-center gap-2"
             >
               <ArrowLeft className="w-4 h-4" />
               Retour à l&apos;accueil
@@ -236,14 +237,14 @@ export default function DevisPage() {
         <div className="flex items-center justify-between mb-6">
           <Link
             href="/"
-            className="text-zinc-400 hover:text-white flex items-center gap-2 text-sm"
+            className="text-zinc-400 lg:hover:text-white flex items-center gap-2 text-sm"
           >
             <ArrowLeft className="w-4 h-4" />
             Retour
           </Link>
           <button
             onClick={() => window.print()}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-sm transition-all"
+            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-zinc-800 lg:hover:bg-zinc-700 text-zinc-300 text-sm transition-all"
           >
             <Printer className="w-4 h-4" />
             Imprimer
@@ -473,10 +474,10 @@ export default function DevisPage() {
                   Des questions ? Contactez-nous
                 </p>
                 <a
-                  href="https://wa.me/212661398989"
+                  href="https://wa.me/212614968594"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 mt-2 px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg text-sm font-medium transition-all print:hidden"
+                  className="inline-flex items-center gap-2 mt-2 px-4 py-2 bg-green-500 lg:hover:bg-green-600 text-white rounded-lg text-sm font-medium transition-all print:hidden"
                 >
                   WhatsApp
                 </a>

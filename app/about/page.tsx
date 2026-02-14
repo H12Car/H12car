@@ -11,29 +11,29 @@ const features = [
   {
     icon: Clock,
     title: "Service Rapide",
-    description: "Livraison gratuite a l'aeroport ou en centre-ville"
+    description: "Livraison gratuite à l'aéroport ou en centre-ville"
   },
   {
     icon: Shield,
     title: "Assurance Incluse",
-    description: "Tous nos vehicules sont assures tous risques"
+    description: "Tous nos véhicules sont assurés tous risques"
   },
   {
     icon: Phone,
     title: "Assistance 7j/7",
-    description: "Une equipe disponible pour vous accompagner"
+    description: "Une équipe disponible pour vous accompagner"
   },
   {
     icon: Heart,
     title: "Sans Caution",
-    description: "Possibilite de location sans caution (sous conditions)"
+    description: "Possibilité de location sans caution (sous conditions)"
   },
 ];
 
 const stats = [
-  { value: "500+", label: "Clients Satisfaits" },
-  { value: "15+", label: "Vehicules" },
-  { value: "7j/7", label: "Disponibilite" },
+  { value: "2000+", label: "Clients Satisfaits" },
+  { value: "25+", label: "Véhicules" },
+  { value: "10+", label: "Ans d'Expérience" },
   { value: "4.9", label: "Note Moyenne", hasStar: true },
 ];
 
@@ -41,17 +41,17 @@ const services = [
   {
     icon: Car,
     title: "Location de Voitures",
-    description: "Des berlines de luxe aux SUV familiaux, trouvez le vehicule parfait pour vos deplacements."
+    description: "Des berlines de luxe aux SUV familiaux, trouvez le véhicule parfait pour vos déplacements."
   },
   {
     icon: Bike,
     title: "Location de Motos",
-    description: "Explorez Marrakech en toute liberte avec notre collection de motos et scooters."
+    description: "Explorez Marrakech en toute liberté avec notre collection de motos et scooters."
   },
   {
     icon: MapPin,
     title: "Excursions",
-    description: "Decouvrez les merveilles du Maroc avec nos excursions sur mesure : quad, dromadaire et plus."
+    description: "Découvrez les merveilles du Maroc avec nos excursions sur mesure : quad, dromadaire et plus."
   },
 ];
 
@@ -78,7 +78,7 @@ export default function AboutPage() {
             >
               <Sparkles className="w-4 h-4 text-blue-400" />
               <span className="text-sm font-semibold text-blue-400">
-                A Propos de H12
+                À Propos de H12
               </span>
             </motion.div>
 
@@ -122,7 +122,7 @@ export default function AboutPage() {
               className="text-base sm:text-lg text-zinc-400 leading-relaxed mb-6 max-w-md mx-auto"
             >
               Notre mission est simple : vous offrir un service de location fiable,
-              transparent et flexible, adapte aussi bien aux touristes qu&apos;aux residents.
+              transparent et flexible, adapté aussi bien aux touristes qu&apos;aux résidents.
             </motion.p>
 
             {/* Stats - Mobile */}
@@ -155,7 +155,7 @@ export default function AboutPage() {
                 transition={{ duration: 0.8, ease: [0.25, 0.4, 0.25, 1] }}
                 className="text-blue-500 text-sm font-medium tracking-[0.15em] uppercase mb-5"
               >
-                A Propos de H12
+                À Propos de H12
               </motion.p>
 
               {/* Main Title */}
@@ -180,7 +180,7 @@ export default function AboutPage() {
                 className="text-lg xl:text-xl text-zinc-400 leading-relaxed mb-10 max-w-[520px]"
               >
                 Notre mission est simple : vous offrir un service de location fiable,
-                transparent et flexible, adapte aussi bien aux touristes qu&apos;aux residents.
+                transparent et flexible, adapté aussi bien aux touristes qu&apos;aux résidents.
                 Chez H12, chaque client est accueilli avec le sourire.
               </motion.p>
 
@@ -215,10 +215,10 @@ export default function AboutPage() {
                   <motion.button
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.98 }}
-                    className="group px-7 py-3.5 rounded-full bg-blue-500 text-white text-[15px] font-medium flex items-center gap-2 transition-all hover:bg-blue-600 shadow-lg shadow-blue-500/20"
+                    className="group px-7 py-3.5 rounded-full bg-blue-500 text-white text-[15px] font-medium flex items-center gap-2 transition-all lg:hover:bg-blue-600 shadow-lg shadow-blue-500/20"
                   >
-                    Voir nos Vehicules
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200" />
+                    Voir nos Véhicules
+                    <ArrowRight className="w-4 h-4 lg:group-hover:translate-x-0.5 transition-transform duration-200" />
                   </motion.button>
                 </Link>
 
@@ -226,7 +226,7 @@ export default function AboutPage() {
                   <motion.button
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.98 }}
-                    className="px-7 py-3.5 rounded-full bg-zinc-800 border border-zinc-700 text-[15px] font-medium text-zinc-300 transition-colors hover:bg-zinc-700 hover:text-white"
+                    className="px-7 py-3.5 rounded-full bg-zinc-800 border border-zinc-700 text-[15px] font-medium text-zinc-300 transition-colors lg:hover:bg-zinc-700 lg:hover:text-white"
                   >
                     Voir Nos Motos
                   </motion.button>
@@ -277,7 +277,7 @@ export default function AboutPage() {
                   className="absolute -bottom-3 -left-3 px-4 py-2.5 rounded-full bg-blue-500 flex items-center gap-2 shadow-lg"
                 >
                   <Users className="w-4 h-4 text-white" />
-                  <span className="text-sm font-medium text-white">500+ Clients</span>
+                  <span className="text-sm font-medium text-white">2000+ Clients</span>
                 </motion.div>
               </MousePushCard>
             </motion.div>
@@ -326,19 +326,19 @@ export default function AboutPage() {
                 </span>
               </h2>
               <p className="text-zinc-400 leading-relaxed mb-6">
-                Nous proposons une flotte de vehicules economiques et confortables,
-                livres gratuitement a l&apos;aeroport ou en centre-ville, avec assurance
-                incluse et possibilite de location sans caution (sous conditions).
+                Nous proposons une flotte de véhicules économiques et confortables,
+                livrés gratuitement à l&apos;aéroport ou en centre-ville, avec assurance
+                incluse et possibilité de location sans caution (sous conditions).
               </p>
               <p className="text-zinc-400 leading-relaxed mb-8">
-                Nous organisons egalement des excursions sur devis pour vous faire
-                decouvrir les merveilles du Maroc. Faites le choix de la tranquillite
-                pour vos deplacements et aventures a Marrakech.
+                Nous organisons également des excursions sur devis pour vous faire
+                découvrir les merveilles du Maroc. Faites le choix de la tranquillité
+                pour vos déplacements et aventures à Marrakech.
               </p>
 
               {/* Feature List */}
               <div className="space-y-3">
-                {["Reservation simple par WhatsApp ou en ligne", "Aucun frais cache", "Service personnalise"].map((item, idx) => (
+                {["Réservation simple par WhatsApp ou en ligne", "Aucun frais caché", "Service personnalisé"].map((item, idx) => (
                   <div key={idx} className="flex items-center gap-3">
                     <div className="w-6 h-6 rounded-full bg-blue-500/20 flex items-center justify-center">
                       <CheckCircle className="w-4 h-4 text-blue-400" />
@@ -368,7 +368,7 @@ export default function AboutPage() {
             <h2 className="text-3xl sm:text-4xl font-bold text-white">
               Tout Pour Vos{" "}
               <span className="text-blue-500">
-                Deplacements
+                Déplacements
               </span>
             </h2>
           </motion.div>
@@ -382,8 +382,8 @@ export default function AboutPage() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: idx * 0.1 }}
               >
-                <MousePushCard maxTilt={8} smoothing={0.05} className="p-6 rounded-2xl bg-zinc-900 border border-zinc-700 shadow-sm hover:border-blue-500/30 hover:shadow-md transition-all group h-full">
-                  <div className="w-14 h-14 rounded-xl bg-blue-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <MousePushCard maxTilt={8} smoothing={0.05} className="p-6 rounded-2xl bg-zinc-900 border border-zinc-700 shadow-sm lg:hover:border-blue-500/30 lg:hover:shadow-md transition-all group h-full">
+                  <div className="w-14 h-14 rounded-xl bg-blue-500 flex items-center justify-center mb-4 lg:group-hover:scale-110 transition-transform">
                     <service.icon className="w-7 h-7 text-white" />
                   </div>
                   <h3 className="text-xl font-bold text-white mb-2">{service.title}</h3>
@@ -411,7 +411,7 @@ export default function AboutPage() {
             <h2 className="text-3xl sm:text-4xl font-bold text-white">
               L&apos;Excellence{" "}
               <span className="text-blue-500">
-                a Votre Service
+                à Votre Service
               </span>
             </h2>
           </motion.div>
@@ -453,25 +453,25 @@ export default function AboutPage() {
 
             <div className="relative p-8 sm:p-12 lg:p-16 text-center">
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
-                Pret a{" "}
+                Prêt à{" "}
                 <span className="text-white/90">
                   Commencer ?
                 </span>
               </h2>
               <p className="text-lg text-white/70 max-w-xl mx-auto mb-8">
-                Contactez-nous des maintenant et decouvrez pourquoi H12 est le choix prefere des voyageurs a Marrakech.
+                Contactez-nous dès maintenant et découvrez pourquoi H12 est le choix préféré des voyageurs à Marrakech.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Link
                   href="/voiture"
-                  className="px-8 py-4 rounded-full bg-white text-gray-900 font-semibold flex items-center gap-2 hover:bg-gray-50 transition shadow-lg"
+                  className="px-8 py-4 rounded-full bg-white text-gray-900 font-semibold flex items-center gap-2 lg:hover:bg-gray-50 transition shadow-lg"
                 >
-                  Voir nos vehicules
+                  Voir nos véhicules
                   <ArrowRight className="w-4 h-4" />
                 </Link>
                 <Link
                   href="/contact"
-                  className="px-8 py-4 rounded-full bg-white/20 border border-white/30 text-white font-semibold flex items-center gap-2 hover:bg-white/30 transition"
+                  className="px-8 py-4 rounded-full bg-white/20 border border-white/30 text-white font-semibold flex items-center gap-2 lg:hover:bg-white/30 transition"
                 >
                   Nous contacter
                 </Link>

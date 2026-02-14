@@ -21,10 +21,10 @@ export default function WhatsAppButton() {
       initial={{ opacity: 0, scale: 0 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.3 }}
-      className="fixed bottom-6 left-6 z-50 w-14 h-14 rounded-full bg-[#25D366] hover:bg-[#20BD5A] text-white shadow-2xl flex items-center justify-center transition-all group"
+      className="fixed bottom-6 left-6 z-50 w-14 h-14 rounded-full bg-[#25D366] lg:hover:bg-[#20BD5A] text-white shadow-2xl flex items-center justify-center transition-all group"
       aria-label="Contact via WhatsApp"
     >
-      <FaWhatsapp  className="w-8 h-8 group-hover:scale-110 transition-transform" />
+      <FaWhatsapp  className="w-8 h-8 lg:group-hover:scale-110 transition-transform" />
 
       {/* Pulse animation */}
       <span className="absolute inset-0 rounded-full bg-[#25D366] animate-ping opacity-20" />

@@ -255,7 +255,7 @@ export default function TransfersPage() {
         </div>
         <button
           onClick={() => openForm()}
-          className="flex items-center gap-2 px-4 py-2.5 bg-blue-500 hover:bg-blue-600 text-white rounded-xl font-medium transition-all"
+          className="flex items-center gap-2 px-4 py-2.5 bg-blue-500 lg:hover:bg-blue-600 text-white rounded-xl font-medium transition-all"
         >
           <Plus className="w-5 h-5" />
           Ajouter
@@ -269,7 +269,7 @@ export default function TransfersPage() {
           className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium transition-all whitespace-nowrap ${
             activeTab === "ALL"
               ? "bg-blue-500/20 text-blue-400 border border-blue-500/30"
-              : "bg-zinc-800 text-zinc-400 border border-zinc-700 hover:text-white"
+              : "bg-zinc-800 text-zinc-400 border border-zinc-700 lg:hover:text-white"
           }`}
         >
           Tous
@@ -285,7 +285,7 @@ export default function TransfersPage() {
               className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium transition-all whitespace-nowrap ${
                 activeTab === cat
                   ? "bg-blue-500/20 text-blue-400 border border-blue-500/30"
-                  : "bg-zinc-800 text-zinc-400 border border-zinc-700 hover:text-white"
+                  : "bg-zinc-800 text-zinc-400 border border-zinc-700 lg:hover:text-white"
               }`}
             >
               <Icon className="w-4 h-4" />
@@ -308,7 +308,7 @@ export default function TransfersPage() {
           </p>
           <button
             onClick={() => openForm()}
-            className="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-500 hover:bg-blue-600 text-white rounded-xl font-medium transition-all"
+            className="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-500 lg:hover:bg-blue-600 text-white rounded-xl font-medium transition-all"
           >
             <Plus className="w-5 h-5" />
             Ajouter
@@ -420,7 +420,7 @@ export default function TransfersPage() {
                             className={`p-2 rounded-lg transition-all ${
                               route.isActive
                                 ? "bg-green-500/20 text-green-400"
-                                : "bg-zinc-800 text-zinc-500 hover:text-green-400"
+                                : "bg-zinc-800 text-zinc-500 lg:hover:text-green-400"
                             }`}
                             title={route.isActive ? "Désactiver" : "Activer"}
                           >
@@ -433,7 +433,7 @@ export default function TransfersPage() {
                             className={`p-2 rounded-lg transition-all ${
                               route.popular
                                 ? "bg-amber-500/20 text-amber-400"
-                                : "bg-zinc-800 text-zinc-500 hover:text-amber-400"
+                                : "bg-zinc-800 text-zinc-500 lg:hover:text-amber-400"
                             }`}
                             title={route.popular ? "Retirer populaire" : "Marquer populaire"}
                           >
@@ -443,7 +443,7 @@ export default function TransfersPage() {
                           {/* Edit */}
                           <button
                             onClick={() => openForm(route)}
-                            className="p-2 rounded-lg bg-zinc-800 text-zinc-400 hover:text-white transition-all"
+                            className="p-2 rounded-lg bg-zinc-800 text-zinc-400 lg:hover:text-white transition-all"
                             title="Modifier"
                           >
                             <Pencil className="w-4 h-4" />
@@ -452,7 +452,7 @@ export default function TransfersPage() {
                           {/* Delete */}
                           <button
                             onClick={() => deleteRoute(route.id)}
-                            className="p-2 rounded-lg bg-zinc-800 text-zinc-400 hover:text-red-400 hover:bg-red-500/20 transition-all"
+                            className="p-2 rounded-lg bg-zinc-800 text-zinc-400 lg:hover:text-red-400 lg:hover:bg-red-500/20 transition-all"
                             title="Supprimer"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -482,7 +482,7 @@ export default function TransfersPage() {
               </h2>
               <button
                 onClick={closeForm}
-                className="p-2 rounded-lg bg-zinc-800 text-zinc-400 hover:text-white transition-all"
+                className="p-2 rounded-lg bg-zinc-800 text-zinc-400 lg:hover:text-white transition-all"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -650,31 +650,27 @@ export default function TransfersPage() {
 
               {/* Toggles */}
               <div className="flex items-center gap-6">
-                <label className="flex items-center gap-3 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={formData.isActive}
-                    onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
-                    className="sr-only peer"
-                  />
-                  <div className="w-11 h-6 bg-zinc-700 rounded-full peer peer-checked:bg-green-500 transition-colors relative">
-                    <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-5"></div>
+                <button
+                  type="button"
+                  onClick={() => setFormData({ ...formData, isActive: !formData.isActive })}
+                  className="flex items-center gap-3 cursor-pointer"
+                >
+                  <div className={`w-11 h-6 rounded-full relative transition-colors ${formData.isActive ? "bg-green-500" : "bg-zinc-700"}`}>
+                    <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-transform ${formData.isActive ? "left-6" : "left-1"}`} />
                   </div>
                   <span className="text-zinc-300">Actif</span>
-                </label>
+                </button>
 
-                <label className="flex items-center gap-3 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={formData.popular}
-                    onChange={(e) => setFormData({ ...formData, popular: e.target.checked })}
-                    className="sr-only peer"
-                  />
-                  <div className="w-11 h-6 bg-zinc-700 rounded-full peer peer-checked:bg-amber-500 transition-colors relative">
-                    <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-5"></div>
+                <button
+                  type="button"
+                  onClick={() => setFormData({ ...formData, popular: !formData.popular })}
+                  className="flex items-center gap-3 cursor-pointer"
+                >
+                  <div className={`w-11 h-6 rounded-full relative transition-colors ${formData.popular ? "bg-amber-500" : "bg-zinc-700"}`}>
+                    <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-transform ${formData.popular ? "left-6" : "left-1"}`} />
                   </div>
                   <span className="text-zinc-300">Populaire</span>
-                </label>
+                </button>
               </div>
 
               {/* Submit */}
@@ -682,14 +678,14 @@ export default function TransfersPage() {
                 <button
                   type="button"
                   onClick={closeForm}
-                  className="px-4 py-2.5 rounded-xl bg-zinc-800 text-white border border-zinc-700 hover:bg-zinc-700 transition-all"
+                  className="px-4 py-2.5 rounded-xl bg-zinc-800 text-white border border-zinc-700 lg:hover:bg-zinc-700 transition-all"
                 >
                   Annuler
                 </button>
                 <button
                   type="submit"
                   disabled={saving}
-                  className="px-6 py-2.5 rounded-xl bg-blue-500 hover:bg-blue-600 text-white font-medium transition-all disabled:opacity-50"
+                  className="px-6 py-2.5 rounded-xl bg-blue-500 lg:hover:bg-blue-600 text-white font-medium transition-all disabled:opacity-50"
                 >
                   {saving ? "Enregistrement..." : editingRoute ? "Modifier" : "Ajouter"}
                 </button>

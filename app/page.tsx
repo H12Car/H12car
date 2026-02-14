@@ -119,8 +119,8 @@ export default function HomePage() {
               className="flex items-center justify-center gap-3 mb-8"
             >
               {[
-                { value: '500', suffix: '+', label: 'Clients' },
-                { value: '40', suffix: '+', label: 'Véhicules' },
+                { value: '2000', suffix: '+', label: 'Clients' },
+                { value: '25', suffix: '+', label: 'Véhicules' },
                 { value: '4.9', label: 'Note', hasStar: true }
               ].map((stat, idx) => (
                 <div key={idx} className="min-w-[85px] px-4 py-2.5 rounded-xl bg-zinc-800/80 border border-zinc-700/50 backdrop-blur-sm">
@@ -141,7 +141,7 @@ export default function HomePage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.5 }}
                 whileTap={{ scale: 0.98 }}
-                className="mx-auto px-7 py-3.5 rounded-full bg-blue-500 text-white text-sm font-semibold shadow-lg shadow-blue-500/25 flex items-center gap-2 hover:bg-blue-600 transition-all"
+                className="mx-auto px-7 py-3.5 rounded-full bg-blue-500 text-white text-sm font-semibold shadow-lg shadow-blue-500/25 flex items-center gap-2 lg:hover:bg-blue-600 transition-all"
               >
                 Réserver maintenant
                 <ArrowRight className="w-4 h-4" />
@@ -196,8 +196,8 @@ export default function HomePage() {
                 className="flex items-center gap-4 mb-10"
               >
                 {[
-                  { value: '500', suffix: '+', label: 'Clients' },
-                  { value: '40', suffix: '+', label: 'Véhicules' },
+                  { value: '2000', suffix: '+', label: 'Clients' },
+                  { value: '25', suffix: '+', label: 'Véhicules' },
                   { value: '4.9', label: 'Note', hasStar: true }
                 ].map((stat, idx) => (
                   <div key={idx} className="min-w-[100px] px-5 py-3 rounded-xl bg-zinc-800/80 border border-zinc-700/50 backdrop-blur-sm">
@@ -224,10 +224,10 @@ export default function HomePage() {
                 <motion.button
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.98 }}
-                  className="group px-7 py-3.5 rounded-full bg-blue-500 text-white text-[15px] font-medium flex items-center gap-2 transition-all hover:bg-blue-600 shadow-lg shadow-blue-500/20"
+                  className="group px-7 py-3.5 rounded-full bg-blue-500 text-white text-[15px] font-medium flex items-center gap-2 transition-all lg:hover:bg-blue-600 shadow-lg shadow-blue-500/20"
                 >
                   Réserver maintenant
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200" />
+                  <ArrowRight className="w-4 h-4 lg:group-hover:translate-x-0.5 transition-transform duration-200" />
                 </motion.button>
               </Link>
 
@@ -235,7 +235,7 @@ export default function HomePage() {
                   <motion.button
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.98 }}
-                    className="px-7 py-3.5 rounded-full bg-zinc-800 border border-zinc-700 text-[15px] font-medium text-zinc-300 transition-colors hover:bg-zinc-700 hover:text-white"
+                    className="px-7 py-3.5 rounded-full bg-zinc-800 border border-zinc-700 text-[15px] font-medium text-zinc-300 transition-colors lg:hover:bg-zinc-700 lg:hover:text-white"
                   >
                     En savoir plus
                   </motion.button>
@@ -352,18 +352,38 @@ export default function HomePage() {
             };
             const cardImages = ['/voiture_h12/h12_car_new.webp', '/moto_h12/h12_moto_new.webp', '/excursions/h12_excursion_new.webp', '/voiture_h12/h12_transporttouristicmerco.png'];
 
+            // Per-card image styles to account for different source images
+            const cardImageStyles = [
+              // Car: studio shot, bright subject — default styling works
+              'object-cover scale-[1.12] opacity-70 lg:group-hover:opacity-90 lg:group-hover:scale-[1.15] transition-all duration-700',
+              // Moto: very dark studio shot — boost brightness so the bike is visible
+              'object-cover scale-[1.12] opacity-90 brightness-125 lg:group-hover:opacity-100 lg:group-hover:scale-[1.15] transition-all duration-700',
+              // Excursion: bright outdoor photo — lower opacity, position on rider
+              'object-cover object-center scale-[1.2] opacity-60 lg:group-hover:opacity-75 lg:group-hover:scale-[1.25] transition-all duration-700',
+              // Transfer: studio shot — default styling works
+              'object-cover scale-[1.12] opacity-70 lg:group-hover:opacity-90 lg:group-hover:scale-[1.15] transition-all duration-700',
+            ];
+
+            // Per-card gradient overlays
+            const cardGradients = [
+              'bg-gradient-to-t from-black via-black/50 to-black/20',
+              'bg-gradient-to-t from-black via-black/40 to-black/10',
+              'bg-gradient-to-t from-black via-black/60 to-black/30',
+              'bg-gradient-to-t from-black via-black/50 to-black/20',
+            ];
+
             const CardContent = (
-              <div className="relative bg-gray-900 rounded-[20px] sm:rounded-[24px] overflow-hidden h-[300px] sm:h-[350px] lg:h-[400px] hover:scale-[1.02] hover:shadow-2xl transition-all duration-500 shadow-xl">
+              <div className="relative bg-gray-900 rounded-[20px] sm:rounded-[24px] overflow-hidden h-[300px] sm:h-[350px] lg:h-[400px] lg:hover:scale-[1.02] lg:hover:shadow-2xl transition-all duration-500 shadow-xl">
                 {/* Image */}
                 <Image
                   src={cardImages[index]}
                   alt={service.title}
                   fill
-                  className="object-cover scale-[1.12] opacity-70 group-hover:opacity-90 group-hover:scale-[1.15] transition-all duration-700"
+                  className={cardImageStyles[index]}
                 />
 
                 {/* Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-black/20" />
+                <div className={`absolute inset-0 ${cardGradients[index]}`} />
 
                 {/* Number Tag - Top Left */}
                 <div className="absolute top-4 left-4 sm:top-5 sm:left-5">
@@ -377,18 +397,18 @@ export default function HomePage() {
 
                 {/* Content Card - Bottom */}
                 <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4">
-                  <div className="bg-white/10 backdrop-blur-xl rounded-xl sm:rounded-2xl p-3.5 sm:p-4 border border-white/10 group-hover:bg-white/15 group-hover:border-white/20 transition-all duration-500 h-[160px] sm:h-[180px] flex flex-col">
-                    <h3 className="text-[16px] sm:text-[18px] font-bold text-white mb-1.5 sm:mb-2">
+                  <div className="bg-white/10 backdrop-blur-xl rounded-xl sm:rounded-2xl p-3 sm:p-3.5 border border-white/10 lg:group-hover:bg-white/15 lg:group-hover:border-white/20 transition-all duration-500">
+                    <h3 className="text-[15px] sm:text-[17px] font-bold text-white mb-1">
                       {service.title}
                     </h3>
-                    <p className="text-[12px] sm:text-[13px] text-white/60 leading-relaxed mb-auto">
+                    <p className="text-[11px] sm:text-[12px] text-white/60 leading-relaxed line-clamp-2 mb-2.5">
                       {service.description}
                     </p>
-                    <div className="flex items-center justify-between mt-3">
+                    <div className="flex items-center justify-between">
                       <span className="text-[11px] sm:text-[12px] font-semibold text-blue-400 tracking-wide">
                         {ctaLabels[service.serviceType]}
                       </span>
-                      <div className="w-7 h-7 sm:w-8 sm:h-8 bg-blue-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                      <div className="w-7 h-7 sm:w-8 sm:h-8 bg-blue-500 rounded-full flex items-center justify-center lg:group-hover:scale-110 transition-transform duration-300">
                         <ArrowRight size={12} className="sm:w-[14px] sm:h-[14px] text-white" />
                       </div>
                     </div>
@@ -458,28 +478,36 @@ export default function HomePage() {
                 title: "Kilométrage Illimité",
                 description: "Roulez sans compter, sans frais cachés",
                 image: "/excursions/h12_quad.png",
-                tag: "01"
+                tag: "01",
+                cta: "Voir nos Voitures",
+                href: "/voiture"
               },
               {
                 icon: Shield,
                 title: "Assurance Incluse",
                 description: "Tous risques pour votre tranquillité",
                 image: "/h12_hero_new.webp",
-                tag: "02"
+                tag: "02",
+                cta: "En savoir plus",
+                href: "/about"
               },
               {
                 icon: MapPin,
                 title: "Livraison Gratuite",
                 description: "À l'aéroport ou à votre hôtel",
                 image: "/excursions/h12_quad.png",
-                tag: "03"
+                tag: "03",
+                cta: "Nous Contacter",
+                href: "/contact"
               },
               {
                 icon: Headphones,
                 title: "Support 24/7",
                 description: "Une équipe à votre écoute",
                 image: "/h12_hero_new.webp",
-                tag: "04"
+                tag: "04",
+                cta: "Nous Contacter",
+                href: "/contact"
               }
             ].map((feature, idx) => (
               <motion.div
@@ -490,13 +518,14 @@ export default function HomePage() {
                 transition={{ duration: 0.5, delay: idx * 0.1 }}
                 className="group"
               >
-                <div className="relative bg-zinc-900 rounded-[16px] sm:rounded-[20px] lg:rounded-[24px] overflow-hidden h-[220px] sm:h-[260px] lg:h-[320px] hover:scale-[1.02] hover:shadow-2xl transition-all duration-500 shadow-xl border border-zinc-800 hover:border-blue-500/30">
+                <Link href={feature.href}>
+                <div className="relative bg-zinc-900 rounded-[16px] sm:rounded-[20px] lg:rounded-[24px] overflow-hidden h-[220px] sm:h-[260px] lg:h-[320px] lg:hover:scale-[1.02] lg:hover:shadow-2xl transition-all duration-500 shadow-xl border border-zinc-800 lg:hover:border-blue-500/30">
                   {/* Image */}
                   <Image
                     src={feature.image}
                     alt={feature.title}
                     fill
-                    className="object-cover scale-[1.15] opacity-50 group-hover:opacity-70 group-hover:scale-[1.2] transition-all duration-700"
+                    className="object-cover scale-[1.15] opacity-50 lg:group-hover:opacity-70 lg:group-hover:scale-[1.2] transition-all duration-700"
                   />
 
                   {/* Gradient Overlay */}
@@ -514,21 +543,30 @@ export default function HomePage() {
 
                   {/* Content Card - Bottom */}
                   <div className="absolute bottom-0 left-0 right-0 p-2.5 sm:p-3 lg:p-4">
-                    <div className="bg-white/10 backdrop-blur-xl rounded-xl sm:rounded-2xl p-3 sm:p-4 border border-white/10 group-hover:bg-white/15 group-hover:border-white/20 transition-all duration-500">
+                    <div className="bg-white/10 backdrop-blur-xl rounded-xl sm:rounded-2xl p-3 sm:p-3.5 border border-white/10 lg:group-hover:bg-white/15 lg:group-hover:border-white/20 transition-all duration-500">
                       {/* Icon */}
-                      <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-blue-500/20 backdrop-blur-sm border border-blue-500/30 flex items-center justify-center mb-2.5 sm:mb-3 group-hover:bg-blue-500/30 transition-colors duration-300">
+                      <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-blue-500/20 backdrop-blur-sm border border-blue-500/30 flex items-center justify-center mb-2 sm:mb-2.5 lg:group-hover:bg-blue-500/30 transition-colors duration-300">
                         <feature.icon className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400" />
                       </div>
 
-                      <h3 className="text-[13px] sm:text-[15px] lg:text-[16px] font-bold text-white mb-1 sm:mb-1.5">
+                      <h3 className="text-[13px] sm:text-[15px] lg:text-[16px] font-bold text-white mb-1">
                         {feature.title}
                       </h3>
-                      <p className="text-[11px] sm:text-[12px] text-white/60 leading-relaxed line-clamp-2">
+                      <p className="text-[11px] sm:text-[12px] text-white/60 leading-relaxed line-clamp-2 mb-2.5">
                         {feature.description}
                       </p>
+                      <div className="flex items-center justify-between">
+                        <span className="text-[10px] sm:text-[11px] font-semibold text-blue-400 tracking-wide">
+                          {feature.cta}
+                        </span>
+                        <div className="w-6 h-6 sm:w-7 sm:h-7 bg-blue-500 rounded-full flex items-center justify-center lg:group-hover:scale-110 transition-transform duration-300">
+                          <ArrowRight size={10} className="sm:w-[12px] sm:h-[12px] text-white" />
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
+                </Link>
               </motion.div>
             ))}
           </div>
@@ -574,19 +612,25 @@ export default function HomePage() {
                 step: "01",
                 title: "Choisissez",
                 description: "Parcourez notre flotte premium et sélectionnez le véhicule idéal.",
-                icon: Car
+                icon: Car,
+                cta: "Voir la Flotte",
+                href: "/voiture"
               },
               {
                 step: "02",
                 title: "Réservez",
                 description: "Réservation en ligne simple. Confirmez vos dates et lieu de livraison.",
-                icon: Clock
+                icon: Clock,
+                cta: "Réserver maintenant",
+                href: "/voiture"
               },
               {
                 step: "03",
                 title: "Profitez",
                 description: "Recevez votre véhicule et partez à la découverte de Marrakech.",
-                icon: Compass
+                icon: Compass,
+                cta: "Nos Excursions",
+                href: "/excursion"
               }
             ].map((item, idx) => (
               <motion.div
@@ -597,15 +641,16 @@ export default function HomePage() {
                 transition={{ duration: 0.5, delay: idx * 0.1 }}
                 className="group"
               >
-                <div className="relative bg-zinc-900 rounded-[20px] sm:rounded-[24px] overflow-hidden h-[280px] sm:h-[320px] lg:h-[380px] hover:scale-[1.02] hover:shadow-2xl transition-all duration-500 shadow-xl border border-zinc-800 hover:border-blue-500/30">
+                <Link href={item.href}>
+                <div className="relative bg-zinc-900 rounded-[20px] sm:rounded-[24px] overflow-hidden h-[280px] sm:h-[320px] lg:h-[380px] lg:hover:scale-[1.02] lg:hover:shadow-2xl transition-all duration-500 shadow-xl border border-zinc-800 lg:hover:border-blue-500/30">
                   {/* Abstract SVG Background Pattern */}
-                  <div className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity duration-500">
+                  <div className="absolute inset-0 opacity-40 lg:group-hover:opacity-60 transition-opacity duration-500">
                     {idx === 0 && (
                       <svg className="w-full h-full" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="200" cy="200" r="150" stroke="url(#grad1)" strokeWidth="2" strokeDasharray="10 5" className="animate-[spin_30s_linear_infinite]" />
                         <circle cx="200" cy="200" r="100" stroke="url(#grad1)" strokeWidth="1.5" strokeDasharray="8 4" className="animate-[spin_25s_linear_infinite_reverse]" />
-                        <circle cx="200" cy="200" r="50" fill="url(#grad1)" fillOpacity="0.1" />
-                        <path d="M120 200 L200 120 L280 200 L200 280 Z" stroke="url(#grad1)" strokeWidth="1" fill="none" />
+                        <circle cx="200" cy="200" r="50" fill="url(#grad1)" fillOpacity="0.15" />
+                        <path d="M120 200 L200 120 L280 200 L200 280 Z" stroke="url(#grad1)" strokeWidth="1.5" fill="none" />
                         <defs>
                           <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
                             <stop offset="0%" stopColor="#3B82F6" />
@@ -617,11 +662,11 @@ export default function HomePage() {
                     {idx === 1 && (
                       <svg className="w-full h-full" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <rect x="100" y="100" width="200" height="200" rx="20" stroke="url(#grad2)" strokeWidth="2" strokeDasharray="15 5" className="animate-pulse" />
-                        <rect x="140" y="140" width="120" height="120" rx="10" stroke="url(#grad2)" strokeWidth="1.5" fill="url(#grad2)" fillOpacity="0.05" />
-                        <line x1="50" y1="200" x2="150" y2="200" stroke="url(#grad2)" strokeWidth="1" />
-                        <line x1="250" y1="200" x2="350" y2="200" stroke="url(#grad2)" strokeWidth="1" />
-                        <line x1="200" y1="50" x2="200" y2="150" stroke="url(#grad2)" strokeWidth="1" />
-                        <line x1="200" y1="250" x2="200" y2="350" stroke="url(#grad2)" strokeWidth="1" />
+                        <rect x="140" y="140" width="120" height="120" rx="10" stroke="url(#grad2)" strokeWidth="1.5" fill="url(#grad2)" fillOpacity="0.08" />
+                        <line x1="50" y1="200" x2="150" y2="200" stroke="url(#grad2)" strokeWidth="1.5" />
+                        <line x1="250" y1="200" x2="350" y2="200" stroke="url(#grad2)" strokeWidth="1.5" />
+                        <line x1="200" y1="50" x2="200" y2="150" stroke="url(#grad2)" strokeWidth="1.5" />
+                        <line x1="200" y1="250" x2="200" y2="350" stroke="url(#grad2)" strokeWidth="1.5" />
                         <defs>
                           <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
                             <stop offset="0%" stopColor="#3B82F6" />
@@ -632,9 +677,9 @@ export default function HomePage() {
                     )}
                     {idx === 2 && (
                       <svg className="w-full h-full" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M200 50 L350 150 L350 300 L200 350 L50 300 L50 150 Z" stroke="url(#grad3)" strokeWidth="2" fill="url(#grad3)" fillOpacity="0.05" />
-                        <path d="M200 100 L300 175 L300 275 L200 325 L100 275 L100 175 Z" stroke="url(#grad3)" strokeWidth="1" fill="none" strokeDasharray="5 3" />
-                        <circle cx="200" cy="200" r="30" fill="url(#grad3)" fillOpacity="0.2" />
+                        <path d="M200 50 L350 150 L350 300 L200 350 L50 300 L50 150 Z" stroke="url(#grad3)" strokeWidth="2" fill="url(#grad3)" fillOpacity="0.08" />
+                        <path d="M200 100 L300 175 L300 275 L200 325 L100 275 L100 175 Z" stroke="url(#grad3)" strokeWidth="1.5" fill="none" strokeDasharray="5 3" />
+                        <circle cx="200" cy="200" r="30" fill="url(#grad3)" fillOpacity="0.25" />
                         <circle cx="200" cy="200" r="10" fill="#3B82F6" />
                         <defs>
                           <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -646,8 +691,8 @@ export default function HomePage() {
                     )}
                   </div>
 
-                  {/* Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/40" />
+                  {/* Gradient Overlay - lighter to let SVGs show through */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
 
                   {/* Number Tag - Top Left */}
                   <div className="absolute top-4 left-4 sm:top-5 sm:left-5">
@@ -661,21 +706,30 @@ export default function HomePage() {
 
                   {/* Content Card - Bottom */}
                   <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4">
-                    <div className="bg-white/10 backdrop-blur-xl rounded-xl sm:rounded-2xl p-4 sm:p-5 border border-white/10 group-hover:bg-white/15 group-hover:border-white/20 transition-all duration-500">
+                    <div className="bg-white/10 backdrop-blur-xl rounded-xl sm:rounded-2xl p-3.5 sm:p-4 border border-white/10 lg:group-hover:bg-white/15 lg:group-hover:border-white/20 transition-all duration-500">
                       {/* Icon */}
-                      <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-blue-500 flex items-center justify-center mb-3 sm:mb-4 shadow-lg shadow-blue-500/20 mx-auto">
+                      <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-blue-500 flex items-center justify-center mb-2.5 sm:mb-3 shadow-lg shadow-blue-500/20 mx-auto">
                         <item.icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                       </div>
 
-                      <h3 className="text-[16px] sm:text-[18px] lg:text-[20px] font-bold text-white mb-2 text-center">
+                      <h3 className="text-[16px] sm:text-[18px] lg:text-[20px] font-bold text-white mb-1.5 text-center">
                         {item.title}
                       </h3>
-                      <p className="text-[12px] sm:text-[13px] text-white/60 leading-relaxed text-center">
+                      <p className="text-[12px] sm:text-[13px] text-white/60 leading-relaxed text-center mb-3">
                         {item.description}
                       </p>
+                      <div className="flex items-center justify-between">
+                        <span className="text-[11px] sm:text-[12px] font-semibold text-blue-400 tracking-wide">
+                          {item.cta}
+                        </span>
+                        <div className="w-7 h-7 sm:w-8 sm:h-8 bg-blue-500 rounded-full flex items-center justify-center lg:group-hover:scale-110 transition-transform duration-300">
+                          <ArrowRight size={12} className="sm:w-[14px] sm:h-[14px] text-white" />
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
+                </Link>
               </motion.div>
             ))}
           </div>
@@ -710,10 +764,10 @@ export default function HomePage() {
               <motion.button
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.98 }}
-                className="group flex items-center gap-2 px-6 py-3 rounded-full border border-zinc-700 text-zinc-300 font-medium hover:border-blue-500/50 hover:text-white transition-all"
+                className="group flex items-center gap-2 px-6 py-3 rounded-full border border-zinc-700 text-zinc-300 font-medium lg:hover:border-blue-500/50 lg:hover:text-white transition-all"
               >
                 Voir toute la flotte
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="w-4 h-4 lg:group-hover:translate-x-1 transition-transform" />
               </motion.button>
             </Link>
           </motion.div>
@@ -753,48 +807,55 @@ export default function HomePage() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: idx * 0.1 }}
                 whileHover={{ y: -8 }}
-                className="group relative rounded-3xl overflow-hidden bg-zinc-900 border border-zinc-800 hover:border-blue-500/30 transition-all duration-500"
+                className="group"
               >
-                {/* Image */}
-                <div className="relative h-48 lg:h-56 overflow-hidden">
-                  <Image
-                    src={vehicle.image}
-                    alt={vehicle.name}
-                    fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-transparent to-transparent" />
+                <Link href={vehicle.href} className="block relative rounded-3xl overflow-hidden bg-zinc-900 border border-zinc-800 lg:hover:border-blue-500/30 transition-all duration-500 shadow-xl">
+                  {/* Image */}
+                  <div className="relative h-56 sm:h-60 lg:h-64 overflow-hidden bg-zinc-950">
+                    <Image
+                      src={vehicle.image}
+                      alt={vehicle.name}
+                      fill
+                      className="object-cover scale-105 lg:group-hover:scale-110 transition-transform duration-700"
+                    />
+                    {/* Dark overlay to unify all images */}
+                    <div className="absolute inset-0 bg-black/25 lg:group-hover:bg-black/15 transition-colors duration-500" />
+                    {/* Bottom fade into card content */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-zinc-900/20 to-transparent" />
+                    {/* Edge vignette */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-zinc-900/30 via-transparent to-zinc-900/30" />
 
-                  {/* Category Badge */}
-                  <div className="absolute top-4 left-4">
-                    <span className="px-3 py-1.5 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 text-xs font-medium text-white">
-                      {vehicle.category}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Content */}
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-white mb-2">{vehicle.name}</h3>
-
-                  {/* Features */}
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {vehicle.features.map((feature, i) => (
-                      <span key={i} className="text-xs text-zinc-500">{feature}{i < vehicle.features.length - 1 && " •"}</span>
-                    ))}
-                  </div>
-
-                  {/* Price & CTA */}
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <span className="text-2xl font-black text-white">{vehicle.price}</span>
-                      <span className="text-zinc-500 text-sm ml-1">MAD/jour</span>
-                    </div>
-                    <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                      <ArrowRight className="w-5 h-5 text-white" />
+                    {/* Category Badge */}
+                    <div className="absolute top-4 left-4">
+                      <span className="px-3 py-1.5 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 text-xs font-medium text-white">
+                        {vehicle.category}
+                      </span>
                     </div>
                   </div>
-                </div>
+
+                  {/* Content */}
+                  <div className="p-5 sm:p-6">
+                    <h3 className="text-lg sm:text-xl font-bold text-white mb-2">{vehicle.name}</h3>
+
+                    {/* Features */}
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {vehicle.features.map((feature, i) => (
+                        <span key={i} className="text-xs text-zinc-500">{feature}{i < vehicle.features.length - 1 && " •"}</span>
+                      ))}
+                    </div>
+
+                    {/* Price & CTA */}
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <span className="text-2xl font-black text-white">{vehicle.price}</span>
+                        <span className="text-zinc-500 text-sm ml-1">MAD/jour</span>
+                      </div>
+                      <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center lg:group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-blue-500/20">
+                        <ArrowRight className="w-5 h-5 text-white" />
+                      </div>
+                    </div>
+                  </div>
+                </Link>
               </motion.div>
             ))}
           </div>
@@ -859,68 +920,84 @@ export default function HomePage() {
                 <div key={duplicateIndex} className="flex gap-4 sm:gap-6">
                   {[
                     {
-                      name: "Alex Johnson",
-                      role: "Entrepreneur",
-                      initials: "AJ",
-                      review: "H12 a rendu mon road trip inoubliable. Les voitures étaient impeccables et le service était de premier ordre. Je réserverai certainement à nouveau!",
+                      name: "Youssef El Amrani",
+                      role: "Marrakech",
+                      initials: "YA",
+                      review: "Voiture propre, Jabrane très sympa. On a fait l'Atlas sans souci. Je recommande les yeux fermés.",
                       rating: 5,
                       date: "Il y a 2 jours"
                     },
                     {
-                      name: "Maria Rodriguez",
-                      role: "Blogueuse Voyage",
-                      initials: "MR",
-                      review: "De la réservation à la restitution, tout s'est déroulé sans accroc. Les véhicules de luxe ont dépassé mes attentes. Je recommande vivement pour les voyages de luxe!",
+                      name: "Carlos Méndez",
+                      role: "Madrid",
+                      initials: "CM",
+                      review: "Alquilamos un Tucson para recorrer el sur de Marruecos. Todo perfecto, coche limpio y buen precio. Repetiré seguro.",
                       rating: 5,
                       date: "Il y a 1 semaine"
                     },
                     {
-                      name: "James Lee",
-                      role: "Aventurier",
-                      initials: "JL",
-                      review: "Des véhicules incroyables et des expériences uniques. H12 va bien au-delà des attentes de ses clients. Parfait pour les passionnés d'aventure!",
+                      name: "Stijn de Vries",
+                      role: "Amsterdam",
+                      initials: "SV",
+                      review: "Top service, auto stond klaar bij het hotel. Geen gedoe, geen verborgen kosten. Echt een aanrader voor Marrakech.",
+                      rating: 5,
+                      date: "Il y a 5 jours"
+                    },
+                    {
+                      name: "Nadia Benkirane",
+                      role: "Casablanca",
+                      initials: "NB",
+                      review: "J'ai loué une moto pour le weekend. Livraison rapide, moto nickel. Rapport qualité-prix au top.",
                       rating: 5,
                       date: "Il y a 3 jours"
                     },
                     {
-                      name: "Sophie Chen",
-                      role: "Voyageuse d'Affaires",
-                      initials: "SC",
-                      review: "Service professionnel et véhicules premium. A rendu mon voyage d'affaires fluide et confortable. J'utiliserai exclusivement H12!",
+                      name: "Thomas Lefèvre",
+                      role: "Lyon",
+                      initials: "TL",
+                      review: "Super excursion en quad dans la palmeraie. Le guide était au top et l'organisation impeccable. Merci H12 !",
                       rating: 5,
                       date: "Il y a 2 semaines"
                     },
                     {
-                      name: "David Wilson",
-                      role: "Voyageur en Famille",
-                      initials: "DW",
-                      review: "Parfait pour nos vacances en famille! Spacieux, propre et fiable. Les enfants ont adoré l'expérience aussi. Merci H12!",
+                      name: "Pilar García",
+                      role: "Barcelona",
+                      initials: "PG",
+                      review: "Nos recogieron en el aeropuerto con el coche listo. Muy profesionales y amables. Mejor que las grandes empresas de alquiler.",
+                      rating: 5,
+                      date: "Il y a 4 jours"
+                    },
+                    {
+                      name: "Karim Idrissi",
+                      role: "Rabat",
+                      initials: "KI",
+                      review: "Deuxième fois que je loue chez H12. Toujours au rendez-vous, véhicules propres et bien entretenus. Rien à dire.",
                       rating: 5,
                       date: "Il y a 1 mois"
                     },
                     {
-                      name: "Emma Thompson",
-                      role: "Passionnée de Luxe",
-                      initials: "ET",
-                      review: "Collection exquise de véhicules premium. L'attention aux détails et le service client sont exceptionnels. Une véritable expérience de luxe!",
+                      name: "Femke Jansen",
+                      role: "Rotterdam",
+                      initials: "FJ",
+                      review: "Wij hebben een Africa Twin gehuurd voor 3 dagen. Geweldige motor, goede staat. De WhatsApp-communicatie was heel makkelijk.",
                       rating: 5,
-                      date: "Il y a 4 jours"
+                      date: "Il y a 6 jours"
                     },
                   ].map((client, idx) => (
                     <div
                       key={`${duplicateIndex}-${idx}`}
-                      className="group relative flex-shrink-0 w-[300px] sm:w-[340px] lg:w-[380px] rounded-2xl sm:rounded-3xl bg-zinc-900 border border-zinc-800 p-5 sm:p-6 hover:border-blue-500/40 transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-2"
+                      className="group relative flex-shrink-0 w-[300px] sm:w-[340px] lg:w-[380px] rounded-2xl sm:rounded-3xl bg-zinc-900 border border-zinc-800 p-5 sm:p-6 lg:hover:border-blue-500/40 transition-all duration-300 lg:hover:shadow-xl lg:hover:shadow-blue-500/5 lg:hover:-translate-y-2"
                     >
                       {/* Glow effect on hover */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl sm:rounded-3xl" />
+                      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300 rounded-2xl sm:rounded-3xl" />
 
                       {/* Top section with avatar and info */}
                       <div className="relative z-10 flex items-start justify-between mb-4">
                         <div className="flex items-center gap-3">
                           {/* Avatar with initials */}
                           <div className="relative">
-                            <div className="absolute -inset-0.5 bg-blue-500 rounded-full blur opacity-0 group-hover:opacity-30 transition-opacity duration-300" />
-                            <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-blue-500/10 border border-blue-500/30 flex items-center justify-center group-hover:border-blue-500/50 transition-colors duration-300">
+                            <div className="absolute -inset-0.5 bg-blue-500 rounded-full blur opacity-0 lg:group-hover:opacity-30 transition-opacity duration-300" />
+                            <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-blue-500/10 border border-blue-500/30 flex items-center justify-center lg:group-hover:border-blue-500/50 transition-colors duration-300">
                               <span className="text-blue-400 font-bold text-base sm:text-lg">
                                 {client.initials}
                               </span>
@@ -953,7 +1030,7 @@ export default function HomePage() {
                         </div>
 
                         {/* Verified badge */}
-                        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 group-hover:bg-blue-500/20 group-hover:border-blue-500/30 transition-colors duration-300">
+                        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 lg:group-hover:bg-blue-500/20 lg:group-hover:border-blue-500/30 transition-colors duration-300">
                           <Sparkles className="w-3 h-3 text-blue-400" />
                           <span className="text-xs text-blue-400 font-medium">Vérifié</span>
                         </div>
@@ -977,10 +1054,10 @@ export default function HomePage() {
               <motion.button
                 whileHover={{ scale: 1.03, y: -2 }}
                 whileTap={{ scale: 0.98 }}
-                className="group relative px-8 py-4 rounded-full bg-blue-500 text-white text-[15px] font-semibold flex items-center gap-2 shadow-lg shadow-blue-500/20 hover:bg-blue-600 transition-all duration-300"
+                className="group relative px-8 py-4 rounded-full bg-blue-500 text-white text-[15px] font-semibold flex items-center gap-2 shadow-lg shadow-blue-500/20 lg:hover:bg-blue-600 transition-all duration-300"
               >
                 <span className="relative z-10">Louer une Voiture</span>
-                <ArrowRight className="w-4 h-4 relative z-10 group-hover:translate-x-1 transition-transform duration-300" />
+                <ArrowRight className="w-4 h-4 relative z-10 lg:group-hover:translate-x-1 transition-transform duration-300" />
               </motion.button>
             </Link>
 
@@ -988,10 +1065,10 @@ export default function HomePage() {
               <motion.button
                 whileHover={{ scale: 1.03, y: -2 }}
                 whileTap={{ scale: 0.98 }}
-                className="group relative px-8 py-4 rounded-full bg-zinc-800 border border-zinc-700 text-[15px] font-semibold text-zinc-300 flex items-center gap-2 hover:border-zinc-600 hover:bg-zinc-700 hover:text-white transition-all duration-300"
+                className="group relative px-8 py-4 rounded-full bg-zinc-800 border border-zinc-700 text-[15px] font-semibold text-zinc-300 flex items-center gap-2 lg:hover:border-zinc-600 lg:hover:bg-zinc-700 lg:hover:text-white transition-all duration-300"
               >
                 Louer une Moto
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+                <ArrowRight className="w-4 h-4 lg:group-hover:translate-x-1 transition-transform duration-300" />
               </motion.button>
             </Link>
           </motion.div>
@@ -1036,10 +1113,10 @@ export default function HomePage() {
                 }}
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.98 }}
-                className="group px-8 py-4 rounded-full bg-blue-500 text-white font-bold shadow-lg shadow-blue-500/20 transition-all duration-300 flex items-center gap-3 hover:bg-blue-600"
+                className="group px-8 py-4 rounded-full bg-blue-500 text-white font-bold shadow-lg shadow-blue-500/20 transition-all duration-300 flex items-center gap-3 lg:hover:bg-blue-600"
               >
                 <span>Voir nos Services</span>
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="w-5 h-5 lg:group-hover:translate-x-1 transition-transform" />
               </motion.button>
 
               {/* Contact Button */}
@@ -1047,7 +1124,7 @@ export default function HomePage() {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.98 }}
-                  className="px-8 py-4 rounded-full bg-zinc-800 border border-zinc-700 text-zinc-300 font-semibold hover:bg-zinc-700 hover:border-zinc-600 hover:text-white transition-all duration-300"
+                  className="px-8 py-4 rounded-full bg-zinc-800 border border-zinc-700 text-zinc-300 font-semibold lg:hover:bg-zinc-700 lg:hover:border-zinc-600 lg:hover:text-white transition-all duration-300"
                 >
                   Nous Contacter
                 </motion.button>

@@ -27,20 +27,20 @@ const contactInfo = [
     icon: MessageCircle,
     title: "WhatsApp",
     value: "+212 6 14 96 85 94",
-    description: "Reponse rapide garantie",
+    description: "Réponse rapide garantie",
     isWhatsApp: true
   },
   {
     icon: Mail,
     title: "Email",
     value: "k0664676267@gmail.com",
-    description: "Pour vos demandes detaillees"
+    description: "Pour vos demandes détaillées"
   },
   {
     icon: MapPin,
     title: "Adresse",
     value: "Marrakech, Maroc",
-    description: "Livraison aeroport & centre-ville"
+    description: "Livraison aéroport & centre-ville"
   },
 ];
 
@@ -160,8 +160,8 @@ export default function ContactPage() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-lg text-zinc-400 leading-relaxed"
             >
-              Une question ? Une demande de devis ? Notre equipe est la pour vous
-              accompagner dans tous vos projets de mobilite a Marrakech.
+              Une question ? Une demande de devis ? Notre équipe est là pour vous
+              accompagner dans tous vos projets de mobilité à Marrakech.
             </motion.p>
           </div>
         </div>
@@ -179,7 +179,7 @@ export default function ContactPage() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: idx * 0.1 }}
                 onClick={info.isWhatsApp ? openWhatsApp : undefined}
-                className={`p-6 rounded-2xl bg-zinc-900 border border-zinc-700 shadow-sm hover:border-blue-500/30 hover:shadow-md transition-all ${info.isWhatsApp ? 'cursor-pointer' : ''}`}
+                className={`p-6 rounded-2xl bg-zinc-900 border border-zinc-700 shadow-sm lg:hover:border-blue-500/30 lg:hover:shadow-md transition-all ${info.isWhatsApp ? 'cursor-pointer' : ''}`}
               >
                 <div className="w-12 h-12 rounded-xl bg-blue-500 flex items-center justify-center mb-4">
                   <info.icon className="w-6 h-6 text-white" />
@@ -221,7 +221,7 @@ export default function ContactPage() {
                 <div className="grid sm:grid-cols-2 gap-5">
                   <div>
                     <label htmlFor="fullName" className="block text-sm font-medium text-zinc-400 mb-2">
-                      Nom Complet *
+                      Nom complet *
                     </label>
                     <input
                       type="text"
@@ -254,7 +254,7 @@ export default function ContactPage() {
                 <div className="grid sm:grid-cols-2 gap-5">
                   <div>
                     <label htmlFor="phone" className="block text-sm font-medium text-zinc-400 mb-2">
-                      Telephone
+                      Téléphone
                     </label>
                     <input
                       type="tel"
@@ -278,7 +278,7 @@ export default function ContactPage() {
                       onChange={handleChange}
                       className="w-full px-4 py-3 rounded-xl bg-zinc-800 border border-zinc-700 text-white focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 transition"
                     >
-                      <option value="">Selectionnez un sujet</option>
+                      <option value="">Sélectionnez un sujet</option>
                       <option value="car">Location de voiture</option>
                       <option value="moto">Location de moto</option>
                       <option value="excursion">Excursion</option>
@@ -300,7 +300,7 @@ export default function ContactPage() {
                     value={formData.message}
                     onChange={handleChange}
                     className="w-full px-4 py-3 rounded-xl bg-zinc-800 border border-zinc-700 text-white placeholder-zinc-500 focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 transition resize-none"
-                    placeholder="Decrivez votre demande..."
+                    placeholder="Décrivez votre demande..."
                   />
                 </div>
 
@@ -312,7 +312,7 @@ export default function ContactPage() {
                   className={`w-full sm:w-auto px-8 py-4 rounded-full font-semibold flex items-center justify-center gap-2 transition ${
                     submitted
                       ? 'bg-green-500 text-white'
-                      : 'bg-green-500 text-white hover:bg-green-600'
+                      : 'bg-green-500 text-white lg:hover:bg-green-600'
                   } disabled:opacity-70`}
                 >
                   {submitted ? (
@@ -357,21 +357,21 @@ export default function ContactPage() {
                   ))}
                 </div>
                 <p className="text-xs text-zinc-500 mt-4">
-                  * Assistance telephonique disponible 7j/7
+                  * Assistance téléphonique disponible 7j/7
                 </p>
               </div>
 
               {/* WhatsApp CTA */}
               <div className="p-6 rounded-2xl bg-blue-500/20 border border-blue-500/30">
                 <h3 className="text-lg font-bold text-white mb-2">
-                  Reponse Immediate ?
+                  Réponse Immédiate ?
                 </h3>
                 <p className="text-zinc-400 text-sm mb-4">
-                  Contactez-nous directement sur WhatsApp pour une reponse rapide.
+                  Contactez-nous directement sur WhatsApp pour une réponse rapide.
                 </p>
                 <button
                   onClick={openWhatsApp}
-                  className="w-full px-6 py-3 rounded-xl bg-green-500 hover:bg-green-600 text-white font-semibold flex items-center justify-center gap-2 transition"
+                  className="w-full px-6 py-3 rounded-xl bg-green-500 lg:hover:bg-green-600 text-white font-semibold flex items-center justify-center gap-2 transition"
                 >
                   <MessageCircle className="w-5 h-5" />
                   Ouvrir WhatsApp
@@ -390,8 +390,8 @@ export default function ContactPage() {
                   Nous intervenons sur tout Marrakech et ses environs.
                 </p>
                 <ul className="text-sm text-zinc-500 space-y-1">
-                  <li>• Aeroport Menara</li>
-                  <li>• Medina & Gueliz</li>
+                  <li>• Aéroport Menara</li>
+                  <li>• Médina & Guéliz</li>
                   <li>• Palmeraie</li>
                   <li>• Environs de Marrakech</li>
                 </ul>

@@ -104,6 +104,41 @@ model Quote {
 
   @@index([status])
   @@index([createdAt])
+  @@index([vehicleId])
+  @@index([transferRouteId])
+  @@schema("h12")
+}
+
+// Excursion model
+model Excursion {
+  id          String   @id @default(cuid())
+  name        String
+  category    String   // e.g., "Palmeraie", "Aventure", "Extrême", "Pack"
+  price       Int      // Price per person in MAD
+  period      String   @default("personne")
+  image       String   // Image URL (Uploadcare or /public)
+  description String
+
+  // Details
+  features    String[] // e.g., ["Transport A/R", "Guide berbère"]
+  highlights  String[] // e.g., ["Palmeraie de Marrakech", "Villages berbères"]
+  duration    String?  // e.g., "1 heure", "2-3 heures"
+  groupSize   String?  // e.g., "1-8", "1-12"
+  departure   String?  // e.g., "Multiple", "09:00 / 14:00"
+  difficulty  String?  // e.g., "Facile", "Modéré", "Sportif"
+
+  // Display
+  rating      Float    @default(5.0)
+  reviews     Int      @default(0)
+  favorite    Boolean  @default(false)
+  isActive    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+
+  // Timestamps
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([isActive])
   @@schema("h12")
 }
 

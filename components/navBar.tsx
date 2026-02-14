@@ -130,7 +130,7 @@ export default function Navbar() {
                               className={`relative px-4 py-2.5 rounded-full text-[13px] font-medium transition-all duration-300 group/nav flex items-center gap-1 ${
                                 hoveredDropdown === link.label || link.dropdown?.some(item => activeLink === item.href)
                                   ? "text-blue-400 font-semibold"
-                                  : "text-zinc-400 hover:text-white"
+                                  : "text-zinc-400 lg:hover:text-white"
                               }`}
                             >
                               <span className="relative z-10">{link.label}</span>
@@ -176,7 +176,7 @@ export default function Navbar() {
                                           className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group/dropdown ${
                                             activeLink === item.href
                                               ? "bg-blue-500/20 text-blue-400"
-                                              : "text-zinc-400 hover:text-white hover:bg-zinc-800"
+                                              : "text-zinc-400 lg:hover:text-white lg:hover:bg-zinc-800"
                                           }`}
                                         >
                                           <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
@@ -209,7 +209,7 @@ export default function Navbar() {
                               className={`relative z-10 transition-colors duration-300 ${
                                 activeLink === link.href
                                   ? "text-blue-400 font-semibold"
-                                  : "text-zinc-400 hover:text-white"
+                                  : "text-zinc-400 lg:hover:text-white"
                               }`}
                             >
                               {link.label}
@@ -237,7 +237,7 @@ export default function Navbar() {
                     <motion.button
                       whileHover={{ scale: 1.03 }}
                       whileTap={{ scale: 0.97 }}
-                      className="px-5 py-2.5 rounded-full bg-blue-500 text-white font-semibold text-[13px] tracking-wide shadow-lg shadow-blue-500/20 hover:bg-blue-600 transition-all duration-300"
+                      className="px-5 py-2.5 rounded-full bg-blue-500 text-white font-semibold text-[13px] tracking-wide shadow-lg shadow-blue-500/20 lg:hover:bg-blue-600 transition-all duration-300"
                     >
                       Nous Contacter
                     </motion.button>
@@ -296,7 +296,7 @@ export default function Navbar() {
                             className={`w-full flex items-center justify-between px-5 py-3.5 rounded-xl transition-all duration-300 ${
                               mobileDropdownOpen === link.label || link.dropdown?.some(item => activeLink === item.href)
                                 ? "bg-blue-500/20 text-blue-400"
-                                : "text-zinc-400 hover:text-white hover:bg-zinc-800"
+                                : "text-zinc-400 lg:hover:text-white lg:hover:bg-zinc-800"
                             }`}
                           >
                             <span className="font-semibold">{link.label}</span>
@@ -332,7 +332,7 @@ export default function Navbar() {
                                         className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${
                                           activeLink === item.href
                                             ? "bg-blue-500/20 text-blue-400"
-                                            : "text-zinc-400 hover:text-white hover:bg-zinc-800"
+                                            : "text-zinc-400 lg:hover:text-white lg:hover:bg-zinc-800"
                                         }`}
                                       >
                                         <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
@@ -371,7 +371,7 @@ export default function Navbar() {
                             className={`block px-5 py-3.5 rounded-xl transition-all duration-300 ${
                               activeLink === link.href
                                 ? "bg-blue-500/20 text-blue-400"
-                                : "text-zinc-400 hover:text-white hover:bg-zinc-800"
+                                : "text-zinc-400 lg:hover:text-white lg:hover:bg-zinc-800"
                             }`}
                           >
                             <span className="font-semibold">{link.label}</span>
@@ -395,7 +395,7 @@ export default function Navbar() {
                     >
                       <motion.button
                         whileTap={{ scale: 0.98 }}
-                        className="w-full py-3.5 rounded-xl bg-blue-500 text-white font-bold tracking-wide shadow-lg shadow-blue-500/20 hover:bg-blue-600 transition-all duration-300"
+                        className="w-full py-3.5 rounded-xl bg-blue-500 text-white font-bold tracking-wide shadow-lg shadow-blue-500/20 lg:hover:bg-blue-600 transition-all duration-300"
                       >
                         Nous Contacter
                       </motion.button>

@@ -177,17 +177,17 @@ export default function TransferPage() {
 
               <div className="flex flex-wrap gap-4">
                 <a
-                  href="tel:+212661398989"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-blue-500 hover:bg-blue-600 text-white font-medium transition-all"
+                  href="tel:+212614968594"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-blue-500 lg:hover:bg-blue-600 text-white font-medium transition-all"
                 >
                   <Phone className="w-4 h-4" />
-                  <span>+212 661 398 989</span>
+                  <span>+212 6 14 96 85 94</span>
                 </a>
                 <a
-                  href="https://wa.me/212661398989"
+                  href="https://wa.me/212614968594"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-green-600 hover:bg-green-700 text-white font-medium transition-all"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-green-600 lg:hover:bg-green-700 text-white font-medium transition-all"
                 >
                   WhatsApp
                 </a>
@@ -271,7 +271,7 @@ export default function TransferPage() {
                       className={`min-w-[48px] h-12 px-3 rounded-xl font-semibold transition-all ${
                         numPeople === num
                           ? "bg-blue-500 text-white"
-                          : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-white"
+                          : "bg-zinc-800 text-zinc-400 lg:hover:bg-zinc-700 lg:hover:text-white"
                       }`}
                     >
                       {num}
@@ -297,7 +297,7 @@ export default function TransferPage() {
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                     selectedCategory === "all"
                       ? "bg-blue-500 text-white"
-                      : "bg-zinc-800 text-zinc-400 hover:text-white"
+                      : "bg-zinc-800 text-zinc-400 lg:hover:text-white"
                   }`}
                 >
                   Toutes les destinations
@@ -309,7 +309,7 @@ export default function TransferPage() {
                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                       selectedCategory === key
                         ? "bg-blue-500 text-white"
-                        : "bg-zinc-800 text-zinc-400 hover:text-white"
+                        : "bg-zinc-800 text-zinc-400 lg:hover:text-white"
                     }`}
                   >
                     {CATEGORY_LABELS[key]}
@@ -348,7 +348,7 @@ export default function TransferPage() {
                                 className={`relative bg-zinc-900 border rounded-xl p-5 transition-all ${
                                   route.popular
                                     ? "border-blue-500/50 shadow-lg shadow-blue-500/10"
-                                    : "border-zinc-700 hover:border-zinc-600"
+                                    : "border-zinc-700 lg:hover:border-zinc-600"
                                 } ${!isAvailable ? "opacity-60" : ""}`}
                               >
                                 {route.popular && (
@@ -398,7 +398,7 @@ export default function TransferPage() {
                                         duration: route.duration || undefined,
                                         numPeople: numPeople,
                                       })}
-                                      className="flex items-center gap-1.5 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-sm font-medium transition-all"
+                                      className="flex items-center gap-1.5 px-4 py-2 bg-blue-500 lg:hover:bg-blue-600 text-white rounded-lg text-sm font-medium transition-all"
                                     >
                                       Réserver
                                       <ChevronRight className="w-4 h-4" />
@@ -470,7 +470,7 @@ export default function TransferPage() {
                     key={route.id}
                     className={`border-t border-zinc-800 ${
                       idx % 2 === 0 ? "bg-zinc-900" : "bg-zinc-800/30"
-                    } hover:bg-zinc-800/50 transition-colors`}
+                    } lg:hover:bg-zinc-800/50 transition-colors`}
                   >
                     <td className="py-4 px-4">
                       <div className="flex items-center gap-3">
@@ -573,7 +573,7 @@ export default function TransferPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1 }}
-                className="bg-zinc-900 border border-zinc-700 rounded-2xl overflow-hidden hover:border-blue-500/50 transition-all"
+                className="bg-zinc-900 border border-zinc-700 rounded-2xl overflow-hidden lg:hover:border-blue-500/50 transition-all"
               >
                 <div className="relative h-40 bg-zinc-800">
                   <Image src={vehicle.image} alt={vehicle.name} fill className="object-cover" />
@@ -615,17 +615,17 @@ export default function TransferPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
-                href="https://wa.me/212661398989?text=Bonjour, je souhaite réserver un transfert."
+                href="https://wa.me/212614968594?text=Bonjour, je souhaite réserver un transfert."
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-green-600 hover:bg-green-700 text-white rounded-full font-semibold transition-all"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-green-600 lg:hover:bg-green-700 text-white rounded-full font-semibold transition-all"
               >
                 Réserver via WhatsApp
                 <ChevronRight className="w-5 h-5" />
               </a>
               <Link
                 href="/contact"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-white rounded-full font-semibold transition-all"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-zinc-800 lg:hover:bg-zinc-700 border border-zinc-700 text-white rounded-full font-semibold transition-all"
               >
                 Contactez-nous
                 <ChevronRight className="w-5 h-5" />

@@ -19,11 +19,11 @@ export default function PanelLayout({
   // Fetch pending quotes count for sidebar badge
   useEffect(() => {
     if (!isAuthPage) {
-      fetch("/api/quotes?status=PENDING")
+      fetch("/api/stats")
         .then(res => res.json())
         .then(data => {
-          if (Array.isArray(data)) {
-            setPendingQuotes(data.length);
+          if (data.quotes) {
+            setPendingQuotes(data.quotes.pending);
           }
         })
         .catch(() => setPendingQuotes(0));

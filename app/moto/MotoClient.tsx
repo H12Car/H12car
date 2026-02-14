@@ -126,7 +126,7 @@ export default function MotoClient({ motos }: MotoClientProps) {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="relative mb-6"
             >
-              <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl shadow-gray-300/50">
+              <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl shadow-black/50">
                 <Image
                   src="/moto_h12/h12_moto_new.webp"
                   alt="H12 Premium Moto"
@@ -159,7 +159,7 @@ export default function MotoClient({ motos }: MotoClientProps) {
               {[
                 { value: String(motos.length), suffix: '+', label: 'Modèles' },
                 { value: '100', suffix: '%', label: 'Assurés' },
-                { value: '4.8', label: 'Note', hasStar: true }
+                { value: '4.9', label: 'Note', hasStar: true }
               ].map((stat, idx) => (
                 <div key={idx} className="min-w-[80px] px-4 py-2.5 rounded-xl bg-zinc-800/80 border border-zinc-700/50 backdrop-blur-sm">
                   <div className="flex items-center justify-center gap-0.5">
@@ -181,7 +181,7 @@ export default function MotoClient({ motos }: MotoClientProps) {
                 document.getElementById('motos-grid')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
               }}
               whileTap={{ scale: 0.98 }}
-              className="mx-auto px-7 py-3.5 rounded-full bg-blue-500 text-white text-sm font-semibold shadow-lg flex items-center gap-2 hover:bg-blue-600 transition-all"
+              className="mx-auto px-7 py-3.5 rounded-full bg-blue-500 text-white text-sm font-semibold shadow-lg flex items-center gap-2 lg:hover:bg-blue-600 transition-all"
             >
               Voir nos Motos
               <ArrowRight className="w-4 h-4" />
@@ -237,7 +237,7 @@ export default function MotoClient({ motos }: MotoClientProps) {
                 {[
                   { value: String(motos.length), suffix: '+', label: 'Modèles' },
                   { value: '100', suffix: '%', label: 'Assurés' },
-                  { value: '4.8', label: 'Note', hasStar: true }
+                  { value: '4.9', label: 'Note', hasStar: true }
                 ].map((stat, idx) => (
                   <div key={idx} className="min-w-[100px] px-5 py-3 rounded-xl bg-zinc-800/80 border border-zinc-700/50 backdrop-blur-sm">
                     <div className="flex items-center justify-center gap-1">
@@ -265,10 +265,10 @@ export default function MotoClient({ motos }: MotoClientProps) {
                   }}
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.98 }}
-                  className="group px-7 py-3.5 rounded-full bg-blue-500 text-white text-[15px] font-medium flex items-center gap-2 transition-colors hover:bg-blue-600"
+                  className="group px-7 py-3.5 rounded-full bg-blue-500 text-white text-[15px] font-medium flex items-center gap-2 transition-colors lg:hover:bg-blue-600"
                 >
                   Voir nos Motos
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200" />
+                  <ArrowRight className="w-4 h-4 lg:group-hover:translate-x-0.5 transition-transform duration-200" />
                 </motion.button>
               </motion.div>
             </div>
@@ -308,7 +308,7 @@ export default function MotoClient({ motos }: MotoClientProps) {
                   <div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center">
                     <Star className="w-3.5 h-3.5 text-white fill-white" />
                   </div>
-                  <span className="text-sm font-medium text-white">4.8</span>
+                  <span className="text-sm font-medium text-white">4.9</span>
                 </motion.div>
 
                 <motion.div
@@ -342,7 +342,7 @@ export default function MotoClient({ motos }: MotoClientProps) {
                 className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
                   selectedCategory === category
                     ? "bg-blue-500 text-white shadow-lg shadow-blue-500/30"
-                    : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-white border border-zinc-700"
+                    : "bg-zinc-800 text-zinc-400 lg:hover:bg-zinc-700 lg:hover:text-white border border-zinc-700"
                 }`}
               >
                 {category}
@@ -370,7 +370,7 @@ export default function MotoClient({ motos }: MotoClientProps) {
                 >
                   <MousePushCard maxTilt={8} smoothing={0.05}>
                   <div
-                    className={`relative bg-black overflow-hidden rounded-[20px] sm:rounded-[24px] h-[380px] sm:h-[400px] lg:h-[440px] transition-all duration-500 ${!isExpanded ? 'hover:shadow-2xl' : 'shadow-2xl ring-2 ring-blue-500/30'}`}
+                    className={`relative bg-black overflow-hidden rounded-[20px] sm:rounded-[24px] h-[380px] sm:h-[400px] lg:h-[440px] transition-all duration-500 ${!isExpanded ? 'lg:hover:shadow-2xl' : 'shadow-2xl ring-2 ring-blue-500/30'}`}
                   >
                     {/* Moto Image - Always full size */}
                     <Image
@@ -378,7 +378,7 @@ export default function MotoClient({ motos }: MotoClientProps) {
                       alt={moto.name}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className={`object-cover object-center transition-all duration-700 ${isExpanded ? 'scale-[1.15]' : 'scale-[1.1] group-hover:scale-[1.12]'}`}
+                      className={`object-cover object-center transition-all duration-700 ${isExpanded ? 'scale-[1.15]' : 'scale-[1.1] lg:group-hover:scale-[1.12]'}`}
                     />
 
                     {/* Gradient Overlay - stronger when expanded */}
@@ -390,13 +390,13 @@ export default function MotoClient({ motos }: MotoClientProps) {
                         e.stopPropagation();
                         handleFavorite(moto.id);
                       }}
-                      className="absolute top-4 right-4 sm:top-5 sm:right-5 z-20 w-8 h-8 sm:w-9 sm:h-9 bg-white/10 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center hover:bg-white/20 transition-all duration-300"
+                      className="absolute top-4 right-4 sm:top-5 sm:right-5 z-20 w-8 h-8 sm:w-9 sm:h-9 bg-white/10 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center lg:hover:bg-white/20 transition-all duration-300"
                     >
                       <Heart
                         className={`w-4 h-4 sm:w-[18px] sm:h-[18px] transition-all duration-300 ${
                           favorites.includes(moto.id)
                             ? "fill-red-500 text-red-500"
-                            : "text-white/80 hover:text-red-400"
+                            : "text-white/80 lg:hover:text-red-400"
                         }`}
                       />
                     </button>
@@ -409,7 +409,7 @@ export default function MotoClient({ motos }: MotoClientProps) {
                             e.stopPropagation();
                             setExpandedMotoId(null);
                           }}
-                          className="w-8 h-8 sm:w-9 sm:h-9 bg-white/10 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center hover:bg-white/20 transition-all duration-300"
+                          className="w-8 h-8 sm:w-9 sm:h-9 bg-white/10 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center lg:hover:bg-white/20 transition-all duration-300"
                         >
                           <X className="w-4 h-4 text-white" />
                         </button>
@@ -433,7 +433,7 @@ export default function MotoClient({ motos }: MotoClientProps) {
                           transition={{ duration: 0.3 }}
                           className="absolute bottom-0 left-0 right-0 p-2.5 sm:p-3 md:p-4"
                         >
-                          <div className="bg-white/10 backdrop-blur-xl rounded-xl sm:rounded-2xl p-3 sm:p-3.5 md:p-4 border border-white/10 group-hover:bg-white/15 group-hover:border-white/20 transition-all duration-500">
+                          <div className="bg-white/10 backdrop-blur-xl rounded-xl sm:rounded-2xl p-3 sm:p-3.5 md:p-4 border border-white/10 lg:group-hover:bg-white/15 lg:group-hover:border-white/20 transition-all duration-500">
                             <div className="flex items-start justify-between mb-2">
                               <h3 className="text-sm sm:text-[15px] md:text-[17px] font-bold text-white leading-tight pr-2">
                                 {moto.name}
@@ -460,12 +460,12 @@ export default function MotoClient({ motos }: MotoClientProps) {
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-1">
                                 <Star className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-yellow-400 fill-current" />
-                                <span className="text-[11px] sm:text-[12px] md:text-[13px] font-semibold text-white">4.8</span>
+                                <span className="text-[11px] sm:text-[12px] md:text-[13px] font-semibold text-white">4.9</span>
                                 <span className="text-[9px] sm:text-[10px] md:text-[11px] text-white/40">(50+)</span>
                               </div>
                               <div className="flex items-center gap-1 sm:gap-1.5 text-blue-400">
                                 <span className="text-[10px] sm:text-[11px] md:text-[12px] font-semibold tracking-wide">Détails</span>
-                                <div className="w-6 h-6 sm:w-7 sm:h-7 bg-blue-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                <div className="w-6 h-6 sm:w-7 sm:h-7 bg-blue-500 rounded-full flex items-center justify-center lg:group-hover:scale-110 transition-transform duration-300">
                                   <ArrowRight className="w-3 h-3 sm:w-[14px] sm:h-[14px] text-white" />
                                 </div>
                               </div>
@@ -496,7 +496,7 @@ export default function MotoClient({ motos }: MotoClientProps) {
                                 <h2 className="text-base sm:text-lg font-bold text-white leading-tight">{moto.name}</h2>
                                 <div className="flex items-center gap-1.5 mt-1">
                                   <Star className="w-3.5 h-3.5 text-yellow-400 fill-current" />
-                                  <span className="text-xs font-semibold text-white">4.8</span>
+                                  <span className="text-xs font-semibold text-white">4.9</span>
                                   <span className="text-[10px] text-white/40">(50+)</span>
                                   <span className="text-white/20 mx-1">·</span>
                                   <span className="text-[10px] text-white/50">{moto.year}</span>
@@ -549,7 +549,7 @@ export default function MotoClient({ motos }: MotoClientProps) {
                               onClick={() => handleReserve(moto)}
                               whileHover={{ scale: 1.02 }}
                               whileTap={{ scale: 0.98 }}
-                              className="w-full py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 text-white text-sm font-bold rounded-full shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2 transition-all duration-300"
+                              className="w-full py-3 bg-gradient-to-r from-blue-500 to-blue-600 lg:hover:from-blue-400 lg:hover:to-blue-500 text-white text-sm font-bold rounded-full shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2 transition-all duration-300"
                             >
                               Réserver cette moto
                               <ArrowRight className="w-4 h-4" />
@@ -626,10 +626,10 @@ export default function MotoClient({ motos }: MotoClientProps) {
               href="/excursion"
               whileHover={{ scale: 1.03, y: -2 }}
               whileTap={{ scale: 0.98 }}
-              className="group px-8 py-4 rounded-full bg-blue-500 text-white text-[15px] font-medium inline-flex items-center gap-2 transition-colors hover:bg-blue-600"
+              className="group px-8 py-4 rounded-full bg-blue-500 text-white text-[15px] font-medium inline-flex items-center gap-2 transition-colors lg:hover:bg-blue-600"
             >
               Découvrir nos excursions
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200" />
+              <ArrowRight className="w-4 h-4 lg:group-hover:translate-x-0.5 transition-transform duration-200" />
             </motion.a>
           </motion.div>
         </div>

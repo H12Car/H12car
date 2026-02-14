@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect, useMemo, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import {
   FileText,
@@ -10,15 +10,29 @@ import {
   Clock,
   Car,
   Bike,
+  Plane,
+  Compass,
   Users,
   X,
   Check,
   Trash2,
-  Eye
+  Eye,
+  Search,
+  ArrowRight,
+  MapPin,
 } from "lucide-react";
+
+interface TransferRoute {
+  id: string;
+  name: string;
+  category: string;
+  distance: string | null;
+  duration: string | null;
+}
 
 interface Quote {
   id: string;
+  reference: string | null;
   status: "PENDING" | "CONFIRMED" | "COMPLETED" | "CANCELLED";
   serviceType: string;
   vehicleId: string | null;
@@ -34,6 +48,8 @@ interface Quote {
   wantsDriver: boolean;
   numberOfPeople: number | null;
   excursions: Array<{ name: string; price: number }> | null;
+  transferRouteId: string | null;
+  transferRoute: TransferRoute | null;
   fullName: string;
   phone: string;
   email: string | null;
@@ -70,6 +86,7 @@ function QuotesContent() {
 
   const [quotes, setQuotes] = useState<Quote[]>([]);
   const [filter, setFilter] = useState(initialFilter);
+  const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
   const [selectedQuote, setSelectedQuote] = useState<Quote | null>(null);
   const [updating, setUpdating] = useState<string | null>(null);
@@ -101,10 +118,15 @@ function QuotesContent() {
 
       if (res.ok) {
         setQuotes((prev) =>
-          prev.map((q) => (q.id === quoteId ? { ...q, status: status as Quote["status"] } : q))
+          prev.map((q) =>
+            q.id === quoteId ? { ...q, status: status as Quote["status"] } : q
+          )
         );
         if (selectedQuote?.id === quoteId) {
-          setSelectedQuote({ ...selectedQuote, status: status as Quote["status"] });
+          setSelectedQuote({
+            ...selectedQuote,
+            status: status as Quote["status"],
+          });
         }
       }
     } catch (error) {
@@ -133,14 +155,30 @@ function QuotesContent() {
     }
   }
 
-  const filteredQuotes =
-    filter === "all" ? quotes : quotes.filter((q) => q.status === filter);
+  const filteredQuotes = useMemo(() => {
+    let result = filter === "all" ? quotes : quotes.filter((q) => q.status === filter);
+
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase().trim();
+      result = result.filter(
+        (quote) =>
+          quote.fullName.toLowerCase().includes(q) ||
+          quote.phone.includes(q) ||
+          (quote.reference && quote.reference.toLowerCase().includes(q)) ||
+          (quote.email && quote.email.toLowerCase().includes(q)) ||
+          (quote.vehicleName && quote.vehicleName.toLowerCase().includes(q))
+      );
+    }
+
+    return result;
+  }, [quotes, filter, searchQuery]);
 
   const getStatusBadge = (status: string, size: "sm" | "md" = "sm") => {
     const option = statusOptions.find((o) => o.value === status);
     if (!option) return null;
 
-    const sizeClasses = size === "sm" ? "px-2 py-1 text-xs" : "px-3 py-1.5 text-sm";
+    const sizeClasses =
+      size === "sm" ? "px-2 py-0.5 text-[11px]" : "px-3 py-1.5 text-sm";
 
     return (
       <span
@@ -159,12 +197,59 @@ function QuotesContent() {
     );
   };
 
+  const getServiceIcon = (serviceType: string) => {
+    switch (serviceType) {
+      case "moto":
+        return <Bike className="w-4 h-4" />;
+      case "transfer":
+        return <Plane className="w-4 h-4" />;
+      case "excursion":
+        return <Compass className="w-4 h-4" />;
+      default:
+        return <Car className="w-4 h-4" />;
+    }
+  };
+
+  const getServiceLabel = (serviceType: string) => {
+    switch (serviceType) {
+      case "moto":
+        return "Moto";
+      case "transfer":
+        return "Transfert";
+      case "excursion":
+        return "Excursion";
+      case "car":
+        return "Voiture";
+      default:
+        return serviceType;
+    }
+  };
+
   const formatDate = (dateString: string | null) => {
     if (!dateString) return "-";
     return new Date(dateString).toLocaleDateString("fr-FR", {
       day: "numeric",
       month: "short",
       year: "numeric",
+    });
+  };
+
+  const formatCreatedAt = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffMin = Math.floor(diffMs / 60000);
+    const diffH = Math.floor(diffMin / 60);
+    const diffD = Math.floor(diffH / 24);
+
+    if (diffMin < 1) return "À l'instant";
+    if (diffMin < 60) return `Il y a ${diffMin}min`;
+    if (diffH < 24) return `Il y a ${diffH}h`;
+    if (diffD < 7) return `Il y a ${diffD}j`;
+
+    return date.toLocaleDateString("fr-FR", {
+      day: "numeric",
+      month: "short",
     });
   };
 
@@ -186,32 +271,47 @@ function QuotesContent() {
     <div className="p-8">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-white mb-2">Devis</h1>
+        <h1 className="text-2xl font-bold text-white mb-1">Devis</h1>
         <p className="text-zinc-400">
-          Gérez les demandes de réservation
+          {quotes.length} devis au total
         </p>
       </div>
 
-      {/* Filters */}
-      <div className="flex items-center gap-2 mb-6 overflow-x-auto pb-2">
-        {filterOptions.map((option) => (
-          <button
-            key={option.value}
-            onClick={() => setFilter(option.value)}
-            className={`px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-all ${
-              filter === option.value
-                ? "bg-blue-500/20 text-blue-400 border border-blue-500/30"
-                : "bg-zinc-800 text-zinc-400 border border-zinc-700 hover:text-white hover:border-zinc-600"
-            }`}
-          >
-            {option.label}
-            {option.value !== "all" && (
-              <span className="ml-2 text-xs opacity-70">
-                ({quotes.filter((q) => q.status === option.value).length})
-              </span>
-            )}
-          </button>
-        ))}
+      {/* Search + Filters */}
+      <div className="space-y-4 mb-6">
+        {/* Search */}
+        <div className="relative">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+          <input
+            type="text"
+            placeholder="Rechercher par nom, téléphone, référence, email..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-11 pr-4 py-3 bg-zinc-900 border border-zinc-700 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-zinc-500 transition-colors"
+          />
+        </div>
+
+        {/* Status Filters */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-1">
+          {filterOptions.map((option) => (
+            <button
+              key={option.value}
+              onClick={() => setFilter(option.value)}
+              className={`px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-all ${
+                filter === option.value
+                  ? "bg-blue-500/20 text-blue-400 border border-blue-500/30"
+                  : "bg-zinc-800 text-zinc-400 border border-zinc-700 lg:hover:text-white lg:hover:border-zinc-600"
+              }`}
+            >
+              {option.label}
+              {option.value !== "all" && (
+                <span className="ml-2 text-xs opacity-70">
+                  ({quotes.filter((q) => q.status === option.value).length})
+                </span>
+              )}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Quotes List */}
@@ -220,17 +320,19 @@ function QuotesContent() {
           <FileText className="w-16 h-16 text-zinc-600 mx-auto mb-4" />
           <h3 className="text-lg font-medium text-white mb-2">Aucun devis</h3>
           <p className="text-zinc-400">
-            {filter === "all"
+            {searchQuery
+              ? `Aucun résultat pour "${searchQuery}"`
+              : filter === "all"
               ? "Aucune demande de réservation pour le moment"
               : `Aucun devis avec le statut "${filterOptions.find((f) => f.value === filter)?.label}"`}
           </p>
         </div>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-3">
           {filteredQuotes.map((quote) => (
             <div
               key={quote.id}
-              className="bg-zinc-900 border border-zinc-700 rounded-2xl p-6 hover:border-zinc-600 transition-all"
+              className="bg-zinc-900 border border-zinc-700 rounded-2xl p-5 lg:hover:border-zinc-600 transition-all"
             >
               <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                 {/* Main Info */}
@@ -241,43 +343,62 @@ function QuotesContent() {
                     </span>
                     {getStatusBadge(quote.status)}
                   </div>
-                  <div className="flex flex-wrap items-center gap-4 text-sm text-zinc-400">
-                    <span className="flex items-center gap-1.5">
-                      {quote.serviceType === "moto" ? (
-                        <Bike className="w-4 h-4" />
-                      ) : (
-                        <Car className="w-4 h-4" />
-                      )}
-                      {quote.vehicleName || quote.serviceType}
-                    </span>
-                    <span className="flex items-center gap-1.5">
-                      <Phone className="w-4 h-4" />
-                      {quote.phone}
-                    </span>
-                    {quote.pickupDate && (
-                      <span className="flex items-center gap-1.5">
-                        <Calendar className="w-4 h-4" />
-                        {formatDate(quote.pickupDate)}
-                        {quote.returnDate && ` → ${formatDate(quote.returnDate)}`}
+                  <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-zinc-400">
+                    {/* Reference */}
+                    {quote.reference && (
+                      <span className="font-mono text-xs text-zinc-500 bg-zinc-800 px-2 py-0.5 rounded">
+                        {quote.reference}
                       </span>
                     )}
+                    {/* Service type + vehicle */}
                     <span className="flex items-center gap-1.5">
-                      <Clock className="w-4 h-4" />
-                      {formatDate(quote.createdAt)}
+                      {getServiceIcon(quote.serviceType)}
+                      {quote.vehicleName || getServiceLabel(quote.serviceType)}
+                    </span>
+                    {/* Phone */}
+                    <span className="flex items-center gap-1.5">
+                      <Phone className="w-3.5 h-3.5" />
+                      {quote.phone}
+                    </span>
+                    {/* Transfer route name */}
+                    {quote.transferRoute && (
+                      <span className="flex items-center gap-1.5">
+                        <MapPin className="w-3.5 h-3.5" />
+                        {quote.transferRoute.name}
+                      </span>
+                    )}
+                    {/* Dates */}
+                    {quote.pickupDate && (
+                      <span className="flex items-center gap-1.5">
+                        <Calendar className="w-3.5 h-3.5" />
+                        {formatDate(quote.pickupDate)}
+                        {quote.returnDate && (
+                          <>
+                            <ArrowRight className="w-3 h-3" />
+                            {formatDate(quote.returnDate)}
+                          </>
+                        )}
+                      </span>
+                    )}
+                    {/* Created */}
+                    <span className="flex items-center gap-1.5 text-zinc-500">
+                      <Clock className="w-3.5 h-3.5" />
+                      {formatCreatedAt(quote.createdAt)}
                     </span>
                   </div>
                 </div>
 
                 {/* Price & Actions */}
                 <div className="flex items-center gap-4">
-                  {quote.totalPrice && (
+                  {quote.totalPrice != null && quote.totalPrice > 0 && (
                     <div className="text-right">
                       <div className="text-xl font-bold text-white">
                         {quote.totalPrice} DH
                       </div>
                       {quote.rentalDays && (
-                        <div className="text-sm text-zinc-400">
-                          {quote.rentalDays} jour{quote.rentalDays > 1 ? "s" : ""}
+                        <div className="text-xs text-zinc-500">
+                          {quote.rentalDays} jour
+                          {quote.rentalDays > 1 ? "s" : ""}
                         </div>
                       )}
                     </div>
@@ -286,18 +407,19 @@ function QuotesContent() {
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => setSelectedQuote(quote)}
-                      className="p-2 rounded-lg bg-zinc-800 text-zinc-400 hover:text-white hover:bg-zinc-700 transition-all"
+                      className="p-2 rounded-lg bg-zinc-800 text-zinc-400 lg:hover:text-white lg:hover:bg-zinc-700 transition-all"
                       title="Voir détails"
                     >
                       <Eye className="w-5 h-5" />
                     </button>
 
-                    {/* Quick status change */}
                     {quote.status === "PENDING" && (
                       <button
-                        onClick={() => updateQuoteStatus(quote.id, "CONFIRMED")}
+                        onClick={() =>
+                          updateQuoteStatus(quote.id, "CONFIRMED")
+                        }
                         disabled={updating === quote.id}
-                        className="p-2 rounded-lg bg-green-500/20 text-green-400 hover:bg-green-500/30 transition-all disabled:opacity-50"
+                        className="p-2 rounded-lg bg-green-500/20 text-green-400 lg:hover:bg-green-500/30 transition-all disabled:opacity-50"
                         title="Confirmer"
                       >
                         <Check className="w-5 h-5" />
@@ -306,7 +428,7 @@ function QuotesContent() {
 
                     <button
                       onClick={() => deleteQuote(quote.id)}
-                      className="p-2 rounded-lg bg-zinc-800 text-zinc-400 hover:text-red-400 hover:bg-red-500/20 transition-all"
+                      className="p-2 rounded-lg bg-zinc-800 text-zinc-400 lg:hover:text-red-400 lg:hover:bg-red-500/20 transition-all"
                       title="Supprimer"
                     >
                       <Trash2 className="w-5 h-5" />
@@ -324,25 +446,34 @@ function QuotesContent() {
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-zinc-900 border border-zinc-700 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             {/* Modal Header */}
-            <div className="sticky top-0 bg-zinc-900 border-b border-zinc-800 p-6 flex items-center justify-between">
+            <div className="sticky top-0 bg-zinc-900 border-b border-zinc-800 p-6 flex items-center justify-between z-10">
               <div>
-                <h2 className="text-xl font-bold text-white">
-                  Détails du devis
-                </h2>
-                <p className="text-sm text-zinc-400">
+                <div className="flex items-center gap-3 mb-1">
+                  <h2 className="text-xl font-bold text-white">
+                    Détails du devis
+                  </h2>
+                  {selectedQuote.reference && (
+                    <span className="font-mono text-sm text-zinc-400 bg-zinc-800 px-2.5 py-1 rounded-lg">
+                      {selectedQuote.reference}
+                    </span>
+                  )}
+                </div>
+                <p className="text-sm text-zinc-500">
                   Créé le {formatDate(selectedQuote.createdAt)}
+                  {selectedQuote.pickupTime &&
+                    ` • Prise à ${selectedQuote.pickupTime}`}
                 </p>
               </div>
               <button
                 onClick={() => setSelectedQuote(null)}
-                className="p-2 rounded-lg bg-zinc-800 text-zinc-400 hover:text-white transition-all"
+                className="p-2 rounded-lg bg-zinc-800 text-zinc-400 lg:hover:text-white transition-all"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {/* Modal Body */}
-            <div className="p-6 space-y-6">
+            <div className="p-6 space-y-5">
               {/* Status */}
               <div>
                 <label className="block text-sm font-medium text-zinc-400 mb-2">
@@ -365,7 +496,7 @@ function QuotesContent() {
                             : option.color === "blue"
                             ? "bg-blue-500/20 text-blue-400 border border-blue-500/30"
                             : "bg-red-500/20 text-red-400 border border-red-500/30"
-                          : "bg-zinc-800 text-zinc-400 border border-zinc-700 hover:border-zinc-600"
+                          : "bg-zinc-800 text-zinc-400 border border-zinc-700 lg:hover:border-zinc-600"
                       }`}
                     >
                       {option.label}
@@ -386,7 +517,7 @@ function QuotesContent() {
                     <Phone className="w-4 h-4 text-zinc-500" />
                     <a
                       href={`tel:${selectedQuote.phone}`}
-                      className="text-blue-400 hover:underline"
+                      className="text-blue-400 lg:hover:underline"
                     >
                       {selectedQuote.phone}
                     </a>
@@ -396,7 +527,7 @@ function QuotesContent() {
                       <Mail className="w-4 h-4 text-zinc-500" />
                       <a
                         href={`mailto:${selectedQuote.email}`}
-                        className="text-blue-400 hover:underline"
+                        className="text-blue-400 lg:hover:underline"
                       >
                         {selectedQuote.email}
                       </a>
@@ -405,65 +536,158 @@ function QuotesContent() {
                 </div>
               </div>
 
-              {/* Vehicle Info */}
+              {/* Service Info */}
               <div className="bg-zinc-800/50 rounded-xl p-4">
-                <h3 className="font-medium text-white mb-3">Véhicule</h3>
+                <h3 className="font-medium text-white mb-3 flex items-center gap-2">
+                  {getServiceIcon(selectedQuote.serviceType)}
+                  {getServiceLabel(selectedQuote.serviceType)}
+                </h3>
                 <div className="space-y-2 text-zinc-300">
-                  <div className="flex items-center gap-2">
-                    {selectedQuote.serviceType === "moto" ? (
-                      <Bike className="w-4 h-4 text-zinc-500" />
-                    ) : (
-                      <Car className="w-4 h-4 text-zinc-500" />
-                    )}
-                    {selectedQuote.vehicleName || selectedQuote.serviceType}
-                  </div>
-                  {selectedQuote.vehiclePrice && (
-                    <div className="text-sm text-zinc-400">
-                      {selectedQuote.vehiclePrice} DH / jour
+                  {/* Vehicle name */}
+                  {selectedQuote.vehicleName && (
+                    <div className="flex items-center gap-2">
+                      {selectedQuote.serviceType === "moto" ? (
+                        <Bike className="w-4 h-4 text-zinc-500" />
+                      ) : (
+                        <Car className="w-4 h-4 text-zinc-500" />
+                      )}
+                      <span>{selectedQuote.vehicleName}</span>
+                      {selectedQuote.vehiclePrice != null && (
+                        <span className="text-sm text-zinc-500">
+                          ({selectedQuote.vehiclePrice} DH/jour)
+                        </span>
+                      )}
                     </div>
+                  )}
+
+                  {/* Transfer route details */}
+                  {selectedQuote.transferRoute && (
+                    <div className="bg-zinc-700/30 rounded-lg p-3 space-y-1.5">
+                      <div className="flex items-center gap-2 text-white font-medium">
+                        <Plane className="w-4 h-4 text-sky-400" />
+                        {selectedQuote.transferRoute.name}
+                      </div>
+                      <div className="flex items-center gap-3 text-sm text-zinc-400">
+                        {selectedQuote.transferRoute.distance && (
+                          <span>{selectedQuote.transferRoute.distance}</span>
+                        )}
+                        {selectedQuote.transferRoute.duration && (
+                          <span>{selectedQuote.transferRoute.duration}</span>
+                        )}
+                        <span className="capitalize">
+                          {selectedQuote.transferRoute.category.toLowerCase()}
+                        </span>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Number of people */}
+                  {selectedQuote.numberOfPeople != null && (
+                    <div className="flex items-center gap-2">
+                      <Users className="w-4 h-4 text-zinc-500" />
+                      <span>
+                        {selectedQuote.numberOfPeople} personne
+                        {selectedQuote.numberOfPeople > 1 ? "s" : ""}
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Wants driver */}
+                  {selectedQuote.wantsDriver && (
+                    <span className="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 border border-blue-500/30 rounded-full text-xs">
+                      Avec chauffeur
+                    </span>
                   )}
                 </div>
               </div>
+
+              {/* Excursions */}
+              {selectedQuote.excursions &&
+                selectedQuote.excursions.length > 0 && (
+                  <div className="bg-zinc-800/50 rounded-xl p-4">
+                    <h3 className="font-medium text-white mb-3 flex items-center gap-2">
+                      <Compass className="w-4 h-4 text-emerald-400" />
+                      Excursions ({selectedQuote.excursions.length})
+                    </h3>
+                    <div className="space-y-2">
+                      {selectedQuote.excursions.map((exc, i) => (
+                        <div
+                          key={i}
+                          className="flex items-center justify-between p-2.5 bg-zinc-700/30 rounded-lg"
+                        >
+                          <span className="text-zinc-300">{exc.name}</span>
+                          <span className="text-sm font-medium text-white">
+                            {exc.price} DH
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
               {/* Booking Details */}
               <div className="bg-zinc-800/50 rounded-xl p-4">
                 <h3 className="font-medium text-white mb-3">Réservation</h3>
                 <div className="grid grid-cols-2 gap-4 text-sm">
+                  {/* Pickup date */}
                   <div>
                     <div className="text-zinc-500 mb-1">Date de prise</div>
                     <div className="text-zinc-300">
                       {formatDate(selectedQuote.pickupDate)}
-                      {selectedQuote.pickupTime && ` à ${selectedQuote.pickupTime}`}
+                      {selectedQuote.pickupTime &&
+                        ` à ${selectedQuote.pickupTime}`}
                     </div>
                   </div>
-                  <div>
-                    <div className="text-zinc-500 mb-1">Date de retour</div>
-                    <div className="text-zinc-300">
-                      {formatDate(selectedQuote.returnDate)}
+
+                  {/* Return date */}
+                  {selectedQuote.returnDate && (
+                    <div>
+                      <div className="text-zinc-500 mb-1">Date de retour</div>
+                      <div className="text-zinc-300">
+                        {formatDate(selectedQuote.returnDate)}
+                      </div>
                     </div>
-                  </div>
+                  )}
+
+                  {/* Pickup location */}
                   {selectedQuote.pickupLocation && (
                     <div>
                       <div className="text-zinc-500 mb-1">Lieu de prise</div>
                       <div className="text-zinc-300">
                         {selectedQuote.pickupLocation}
-                        {selectedQuote.pickupZone && ` - ${selectedQuote.pickupZone}`}
                       </div>
                     </div>
                   )}
+
+                  {/* Pickup zone */}
+                  {selectedQuote.pickupZone && (
+                    <div>
+                      <div className="text-zinc-500 mb-1">Zone</div>
+                      <div className="text-zinc-300 capitalize">
+                        {selectedQuote.pickupZone === "hors_marrakech"
+                          ? "Hors Marrakech"
+                          : selectedQuote.pickupZone.replace(/_/g, " ")}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Drop-off location (transfers / trajet) */}
+                  {selectedQuote.dropoffLocation && (
+                    <div>
+                      <div className="text-zinc-500 mb-1">Destination</div>
+                      <div className="text-zinc-300">
+                        {selectedQuote.dropoffLocation}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Delivery city */}
                   {selectedQuote.deliveryCity && (
                     <div>
-                      <div className="text-zinc-500 mb-1">Ville</div>
+                      <div className="text-zinc-500 mb-1">Ville de livraison</div>
                       <div className="text-zinc-300 capitalize">
                         {selectedQuote.deliveryCity}
                       </div>
-                    </div>
-                  )}
-                  {selectedQuote.wantsDriver && (
-                    <div className="col-span-2">
-                      <span className="px-3 py-1 bg-blue-500/20 text-blue-400 border border-blue-500/30 rounded-full text-xs">
-                        Avec chauffeur
-                      </span>
                     </div>
                   )}
                 </div>
@@ -484,11 +708,13 @@ function QuotesContent() {
                 <div className="flex items-center justify-between">
                   <div>
                     <div className="text-blue-400 font-medium">Total</div>
-                    {selectedQuote.rentalDays && (
-                      <div className="text-sm text-zinc-400">
-                        {selectedQuote.rentalDays} jour{selectedQuote.rentalDays > 1 ? "s" : ""}
-                      </div>
-                    )}
+                    {selectedQuote.rentalDays != null &&
+                      selectedQuote.rentalDays > 0 && (
+                        <div className="text-sm text-zinc-400">
+                          {selectedQuote.rentalDays} jour
+                          {selectedQuote.rentalDays > 1 ? "s" : ""}
+                        </div>
+                      )}
                   </div>
                   <div className="text-2xl font-bold text-white">
                     {selectedQuote.totalPrice || 0} DH
@@ -501,13 +727,13 @@ function QuotesContent() {
             <div className="sticky bottom-0 bg-zinc-900 border-t border-zinc-800 p-6 flex justify-end gap-3">
               <button
                 onClick={() => deleteQuote(selectedQuote.id)}
-                className="px-4 py-2 rounded-xl bg-red-500/20 text-red-400 border border-red-500/30 hover:bg-red-500/30 transition-all"
+                className="px-4 py-2 rounded-xl bg-red-500/20 text-red-400 border border-red-500/30 lg:hover:bg-red-500/30 transition-all"
               >
                 Supprimer
               </button>
               <button
                 onClick={() => setSelectedQuote(null)}
-                className="px-4 py-2 rounded-xl bg-zinc-800 text-white border border-zinc-700 hover:bg-zinc-700 transition-all"
+                className="px-4 py-2 rounded-xl bg-zinc-800 text-white border border-zinc-700 lg:hover:bg-zinc-700 transition-all"
               >
                 Fermer
               </button>

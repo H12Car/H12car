@@ -89,7 +89,7 @@ function BookingContent() {
         {/* Status Badge */}
         <div className="flex items-center gap-2 text-green-600 bg-green-50 px-4 py-3 rounded-xl">
           <CheckCircle className="w-5 h-5" />
-          <span className="font-medium">Demande de reservation</span>
+          <span className="font-medium">Demande de réservation</span>
         </div>
 
         {/* Client Info */}
@@ -139,7 +139,7 @@ function BookingContent() {
               <div className="mt-3 pt-3 border-t border-gray-100 flex justify-between text-sm">
                 <span className="text-gray-500">{days} jour{days > 1 ? "s" : ""}</span>
                 <span className="font-semibold text-blue-600">
-                  {parseInt(vehiclePrice) * days} DH
+                  {(parseInt(vehiclePrice) || 0) * days} DH
                 </span>
               </div>
             )}
@@ -248,11 +248,11 @@ function BookingContent() {
         {/* Footer */}
         <div className="text-center pt-4 pb-8">
           <p className="text-sm text-gray-500 mb-4">
-            Cette demande sera confirmee par notre equipe.
+            Cette demande sera confirmée par notre équipe.
           </p>
           <Link
             href="/"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-full font-medium hover:bg-gray-800 transition"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-full font-medium lg:hover:bg-gray-800 transition"
           >
             Visiter h12.ma
             <ArrowRight className="w-4 h-4" />

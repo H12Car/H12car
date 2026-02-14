@@ -304,7 +304,7 @@ export default function VehiclesPage() {
         </div>
         <button
           onClick={() => openForm()}
-          className="flex items-center gap-2 px-4 py-2.5 bg-blue-500 hover:bg-blue-600 text-white rounded-xl font-medium transition-all"
+          className="flex items-center gap-2 px-4 py-2.5 bg-blue-500 lg:hover:bg-blue-600 text-white rounded-xl font-medium transition-all"
         >
           <Plus className="w-5 h-5" />
           Ajouter
@@ -318,7 +318,7 @@ export default function VehiclesPage() {
           className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium transition-all ${
             activeTab === "CAR"
               ? "bg-blue-500/20 text-blue-400 border border-blue-500/30"
-              : "bg-zinc-800 text-zinc-400 border border-zinc-700 hover:text-white"
+              : "bg-zinc-800 text-zinc-400 border border-zinc-700 lg:hover:text-white"
           }`}
         >
           <Car className="w-5 h-5" />
@@ -332,7 +332,7 @@ export default function VehiclesPage() {
           className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium transition-all ${
             activeTab === "MOTO"
               ? "bg-blue-500/20 text-blue-400 border border-blue-500/30"
-              : "bg-zinc-800 text-zinc-400 border border-zinc-700 hover:text-white"
+              : "bg-zinc-800 text-zinc-400 border border-zinc-700 lg:hover:text-white"
           }`}
         >
           <Bike className="w-5 h-5" />
@@ -359,7 +359,7 @@ export default function VehiclesPage() {
           </p>
           <button
             onClick={() => openForm()}
-            className="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-500 hover:bg-blue-600 text-white rounded-xl font-medium transition-all"
+            className="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-500 lg:hover:bg-blue-600 text-white rounded-xl font-medium transition-all"
           >
             <Plus className="w-5 h-5" />
             Ajouter
@@ -372,7 +372,7 @@ export default function VehiclesPage() {
               key={vehicle.id}
               className={`bg-zinc-900 border rounded-2xl overflow-hidden transition-all ${
                 vehicle.available
-                  ? "border-zinc-700 hover:border-zinc-600"
+                  ? "border-zinc-700 lg:hover:border-zinc-600"
                   : "border-red-500/30 opacity-75"
               }`}
             >
@@ -461,8 +461,8 @@ export default function VehiclesPage() {
                     onClick={() => toggleAvailability(vehicle)}
                     className={`flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
                       vehicle.available
-                        ? "bg-green-500/20 text-green-400 hover:bg-green-500/30"
-                        : "bg-zinc-800 text-zinc-400 hover:text-white"
+                        ? "bg-green-500/20 text-green-400 lg:hover:bg-green-500/30"
+                        : "bg-zinc-800 text-zinc-400 lg:hover:text-white"
                     }`}
                   >
                     {vehicle.available ? (
@@ -484,7 +484,7 @@ export default function VehiclesPage() {
                     className={`p-2 rounded-lg transition-all ${
                       vehicle.featured
                         ? "bg-amber-500/20 text-amber-400"
-                        : "bg-zinc-800 text-zinc-500 hover:text-amber-400"
+                        : "bg-zinc-800 text-zinc-500 lg:hover:text-amber-400"
                     }`}
                     title={vehicle.featured ? "Retirer des favoris" : "Ajouter aux favoris"}
                   >
@@ -496,7 +496,7 @@ export default function VehiclesPage() {
                   {/* Edit */}
                   <button
                     onClick={() => openForm(vehicle)}
-                    className="p-2 rounded-lg bg-zinc-800 text-zinc-400 hover:text-white transition-all"
+                    className="p-2 rounded-lg bg-zinc-800 text-zinc-400 lg:hover:text-white transition-all"
                     title="Modifier"
                   >
                     <Pencil className="w-4 h-4" />
@@ -505,7 +505,7 @@ export default function VehiclesPage() {
                   {/* Delete */}
                   <button
                     onClick={() => deleteVehicle(vehicle.id)}
-                    className="p-2 rounded-lg bg-zinc-800 text-zinc-400 hover:text-red-400 hover:bg-red-500/20 transition-all"
+                    className="p-2 rounded-lg bg-zinc-800 text-zinc-400 lg:hover:text-red-400 lg:hover:bg-red-500/20 transition-all"
                     title="Supprimer"
                   >
                     <Trash2 className="w-4 h-4" />
@@ -563,7 +563,7 @@ export default function VehiclesPage() {
               </h2>
               <button
                 onClick={closeForm}
-                className="p-2 rounded-lg bg-zinc-800 text-zinc-400 hover:text-white transition-all"
+                className="p-2 rounded-lg bg-zinc-800 text-zinc-400 lg:hover:text-white transition-all"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -701,7 +701,7 @@ export default function VehiclesPage() {
                     <button
                       type="button"
                       onClick={() => setFormData({ ...formData, image: "" })}
-                      className="absolute top-2 right-2 p-2 bg-red-500/80 hover:bg-red-500 text-white rounded-lg transition-all"
+                      className="absolute top-2 right-2 p-2 bg-red-500/80 lg:hover:bg-red-500 text-white rounded-lg transition-all"
                       title="Supprimer l'image"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -709,7 +709,7 @@ export default function VehiclesPage() {
                     <button
                       type="button"
                       onClick={() => fileInputRef.current?.click()}
-                      className="absolute bottom-2 right-2 px-3 py-1.5 bg-zinc-700/80 hover:bg-zinc-600 text-white text-sm rounded-lg transition-all flex items-center gap-2"
+                      className="absolute bottom-2 right-2 px-3 py-1.5 bg-zinc-700/80 lg:hover:bg-zinc-600 text-white text-sm rounded-lg transition-all flex items-center gap-2"
                     >
                       <Upload className="w-4 h-4" />
                       Changer
@@ -720,7 +720,7 @@ export default function VehiclesPage() {
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
                     disabled={uploading}
-                    className="w-full h-48 border-2 border-dashed border-zinc-700 hover:border-zinc-500 rounded-xl flex flex-col items-center justify-center gap-3 text-zinc-400 hover:text-zinc-300 transition-all disabled:opacity-50"
+                    className="w-full h-48 border-2 border-dashed border-zinc-700 lg:hover:border-zinc-500 rounded-xl flex flex-col items-center justify-center gap-3 text-zinc-400 lg:hover:text-zinc-300 transition-all disabled:opacity-50"
                   >
                     {uploading ? (
                       <>
@@ -858,35 +858,27 @@ export default function VehiclesPage() {
 
               {/* Toggles */}
               <div className="flex items-center gap-6">
-                <label className="flex items-center gap-3 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={formData.available}
-                    onChange={(e) =>
-                      setFormData({ ...formData, available: e.target.checked })
-                    }
-                    className="sr-only peer"
-                  />
-                  <div className="w-11 h-6 bg-zinc-700 rounded-full peer peer-checked:bg-green-500 transition-colors relative">
-                    <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-5"></div>
+                <button
+                  type="button"
+                  onClick={() => setFormData({ ...formData, available: !formData.available })}
+                  className="flex items-center gap-3 cursor-pointer"
+                >
+                  <div className={`w-11 h-6 rounded-full relative transition-colors ${formData.available ? "bg-green-500" : "bg-zinc-700"}`}>
+                    <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-transform ${formData.available ? "left-6" : "left-1"}`} />
                   </div>
                   <span className="text-zinc-300">Disponible</span>
-                </label>
+                </button>
 
-                <label className="flex items-center gap-3 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={formData.featured}
-                    onChange={(e) =>
-                      setFormData({ ...formData, featured: e.target.checked })
-                    }
-                    className="sr-only peer"
-                  />
-                  <div className="w-11 h-6 bg-zinc-700 rounded-full peer peer-checked:bg-amber-500 transition-colors relative">
-                    <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-5"></div>
+                <button
+                  type="button"
+                  onClick={() => setFormData({ ...formData, featured: !formData.featured })}
+                  className="flex items-center gap-3 cursor-pointer"
+                >
+                  <div className={`w-11 h-6 rounded-full relative transition-colors ${formData.featured ? "bg-amber-500" : "bg-zinc-700"}`}>
+                    <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-transform ${formData.featured ? "left-6" : "left-1"}`} />
                   </div>
                   <span className="text-zinc-300">Favori</span>
-                </label>
+                </button>
               </div>
 
               {/* Submit */}
@@ -894,14 +886,14 @@ export default function VehiclesPage() {
                 <button
                   type="button"
                   onClick={closeForm}
-                  className="px-4 py-2.5 rounded-xl bg-zinc-800 text-white border border-zinc-700 hover:bg-zinc-700 transition-all"
+                  className="px-4 py-2.5 rounded-xl bg-zinc-800 text-white border border-zinc-700 lg:hover:bg-zinc-700 transition-all"
                 >
                   Annuler
                 </button>
                 <button
                   type="submit"
                   disabled={saving}
-                  className="px-6 py-2.5 rounded-xl bg-blue-500 hover:bg-blue-600 text-white font-medium transition-all disabled:opacity-50"
+                  className="px-6 py-2.5 rounded-xl bg-blue-500 lg:hover:bg-blue-600 text-white font-medium transition-all disabled:opacity-50"
                 >
                   {saving ? "Enregistrement..." : editingVehicle ? "Modifier" : "Ajouter"}
                 </button>

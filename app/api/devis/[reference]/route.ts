@@ -46,11 +46,26 @@ export async function GET(
     // Verify phone matches (normalize both for comparison)
     const quotePhone = quote.phone.replace(/[\s\-\(\)]/g, "");
 
-    // Check if phone matches (allow partial match for country code variations)
+    // Require minimum 8 digits to prevent trivial partial matches
+    const digitsOnly = normalizedPhone.replace(/\D/g, "");
+    if (digitsOnly.length < 8) {
+      return NextResponse.json(
+        { error: "Numéro de téléphone trop court" },
+        { status: 400 }
+      );
+    }
+
+    // Normalize country code: strip leading +212 or 0 prefix for comparison
+    const stripPrefix = (p: string) => {
+      const d = p.replace(/\D/g, "");
+      if (d.startsWith("212")) return d.slice(3);
+      if (d.startsWith("0")) return d.slice(1);
+      return d;
+    };
+
     const phoneMatches =
       quotePhone === normalizedPhone ||
-      quotePhone.endsWith(normalizedPhone) ||
-      normalizedPhone.endsWith(quotePhone);
+      stripPrefix(quotePhone) === stripPrefix(normalizedPhone);
 
     if (!phoneMatches) {
       return NextResponse.json(
