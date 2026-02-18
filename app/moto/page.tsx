@@ -25,11 +25,19 @@
 
 import { prisma } from "@/lib/db";
 import MotoClient from "./MotoClient";
-import { JsonValue } from "@prisma/client/runtime/library";
 
 export const dynamic = "force-dynamic";
 
-// Définir un type pour les véhicules avec features en Json
+// Définir localement le type JsonValue (sans import)
+type JsonValue = 
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: JsonValue }
+  | JsonValue[];
+
+// Type pour les véhicules avec features en Json
 type VehicleWithJson = {
   id: string;
   type: "MOTO" | "CAR";
@@ -66,7 +74,6 @@ async function getMotos() {
   // Convertir les features JSON en tableau pour le client
   const motosConverties = motos.map(moto => ({
     ...moto,
-    // S'assurer que features est un tableau
     features: Array.isArray(moto.features) 
       ? moto.features 
       : typeof moto.features === 'string' 
