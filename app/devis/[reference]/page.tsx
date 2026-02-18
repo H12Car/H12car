@@ -141,15 +141,7 @@ export default function DevisPage() {
         >
           {/* Logo */}
           <div className="text-center mb-8">
-            <Link href="/">
-              <Image
-                src="/h12_logob.png"
-                alt="H12"
-                width={120}
-                height={40}
-                className="mx-auto mb-4"
-              />
-            </Link>
+            
             <h1 className="text-2xl font-bold text-white">Votre Devis</h1>
             <p className="text-zinc-400 mt-2">Référence: {reference}</p>
           </div>

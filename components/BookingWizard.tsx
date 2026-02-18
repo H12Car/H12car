@@ -26,7 +26,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { useBooking, type Excursion, type Car as CarType, type Transfer } from "@/context/bookingContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 // Web link is used instead of PDF - see /app/demande/page.tsx
 
@@ -165,6 +165,23 @@ export default function BookingWizard() {
   const [motoSelectionMode, setMotoSelectionMode] = useState<'hidden' | 'list' | 'dates'>('hidden');
   const [pendingMoto, setPendingMoto] = useState<CarType | null>(null);
   const [motoRentalDates, setMotoRentalDates] = useState({ pickupDate: '', returnDate: '' });
+
+
+  useEffect(() => {
+  if (isWizardOpen) {
+    // Reset submission state when wizard opens
+    setIsSubmitted(false);
+    setIsSubmitting(false);
+    setSubmissionMethod(null);
+    setCreatedQuote(null);
+    setCarSelectionMode('hidden');
+    setMotoSelectionMode('hidden');
+    setPendingCar(null);
+    setPendingMoto(null);
+    setCarRentalDates({ pickupDate: '', returnDate: '' });
+    setMotoRentalDates({ pickupDate: '', returnDate: '' });
+  }
+}, [isWizardOpen]);
 
   const canProceed = () => {
     switch (currentStep) {
