@@ -39,7 +39,7 @@ model Vehicle {
   period       String      @default("jour")
   image        String
   description  String?
-  features     String[]
+  features     Json?       @default("[]")
   fuel         String?
   seats        Int?
   transmission String?
@@ -59,7 +59,7 @@ model Vehicle {
 
 model Quote {
   id              String      @id @default(cuid())
-  reference       String?     @unique // e.g., "H12-ABC123" for easy lookup
+  reference       String?     @unique
   status          QuoteStatus @default(PENDING)
 
   // Service info
@@ -113,28 +113,25 @@ model Quote {
 model Excursion {
   id          String   @id @default(cuid())
   name        String
-  category    String   // e.g., "Palmeraie", "Aventure", "Extrême", "Pack"
-  price       Int      // Price per person in MAD
+  category    String
+  price       Int
   period      String   @default("personne")
-  image       String   // Image URL (Uploadcare or /public)
+  image       String
   description String
 
-  // Details
-  features    String[] // e.g., ["Transport A/R", "Guide berbère"]
-  highlights  String[] // e.g., ["Palmeraie de Marrakech", "Villages berbères"]
-  duration    String?  // e.g., "1 heure", "2-3 heures"
-  groupSize   String?  // e.g., "1-8", "1-12"
-  departure   String?  // e.g., "Multiple", "09:00 / 14:00"
-  difficulty  String?  // e.g., "Facile", "Modéré", "Sportif"
-
-  // Display
+  // Changer String[] en Json
+  features    Json     // Pour JSONB
+  highlights  Json     // Pour JSONB
+  
+  duration    String?
+  groupSize   String?
+  departure   String?
+  difficulty  String?
   rating      Float    @default(5.0)
   reviews     Int      @default(0)
   favorite    Boolean  @default(false)
   isActive    Boolean  @default(true)
   sortOrder   Int      @default(0)
-
-  // Timestamps
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -182,5 +179,17 @@ model TransferRoute {
 
   @@index([category])
   @@index([isActive])
+  @@schema("h12")
+}
+
+// Admin model for authentication
+model Admin {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("createdat")
+  email     String   @unique
+  password  String
+  name      String?
+
+  @@map("Admin")
   @@schema("h12")
 }

@@ -1,11 +1,264 @@
+// // "use client";
+
+// // import { useState } from "react";
+// // import { useRouter } from "next/navigation";
+// // import { Lock, Eye, EyeOff, Loader2 } from "lucide-react";
+// // import Image from "next/image";
+
+// // export default function LoginPage() {
+// //   const [password, setPassword] = useState("");
+// //   const [showPassword, setShowPassword] = useState(false);
+// //   const [error, setError] = useState("");
+// //   const [loading, setLoading] = useState(false);
+// //   const router = useRouter();
+
+// //   async function handleSubmit(e: React.FormEvent) {
+// //     e.preventDefault();
+// //     setError("");
+// //     setLoading(true);
+
+// //     try {
+// //       const res = await fetch("/api/auth/login", {
+// //         method: "POST",
+// //         headers: { "Content-Type": "application/json" },
+// //         body: JSON.stringify({ password }),
+// //       });
+
+// //       if (res.ok) {
+// //         router.push("/panel/dashboard");
+// //         router.refresh();
+// //       } else {
+// //         setError("Mot de passe incorrect");
+// //       }
+// //     } catch {
+// //       setError("Erreur de connexion");
+// //     } finally {
+// //       setLoading(false);
+// //     }
+// //   }
+
+// //   return (
+// //     <div className="panel-auth min-h-screen bg-zinc-900 flex items-center justify-center p-4">
+// //       <div className="w-full max-w-sm">
+// //         {/* Logo */}
+// //         <div className="text-center mb-8">
+// //           <Image
+// //             src="/h12carlogo.png"
+// //             alt="H12 Logo"
+// //             width={80}
+// //             height={80}
+// //             className="mx-auto mb-4 rounded-full"
+// //           />
+// //           <h1 className="text-2xl font-bold text-white">Admin Panel</h1>
+// //           <p className="text-zinc-500 text-sm mt-1">Connectez-vous pour continuer</p>
+// //         </div>
+
+// //         {/* Login Form */}
+// //         <form onSubmit={handleSubmit} className="bg-zinc-800/50 border border-zinc-700 rounded-2xl p-6">
+// //           <div className="mb-6">
+// //             <label className="block text-sm font-medium text-zinc-400 mb-2">
+// //               Mot de passe
+// //             </label>
+// //             <div className="relative">
+// //               <div className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500">
+// //                 <Lock className="w-5 h-5" />
+// //               </div>
+// //               <input
+// //                 type={showPassword ? "text" : "password"}
+// //                 value={password}
+// //                 onChange={(e) => setPassword(e.target.value)}
+// //                 className="w-full pl-11 pr-11 py-3 rounded-xl bg-zinc-900 border border-zinc-700 text-white placeholder-zinc-500 focus:outline-none focus:border-blue-500/50 transition-colors"
+// //                 placeholder="Entrez le mot de passe"
+// //                 required
+// //               />
+// //               <button
+// //                 type="button"
+// //                 onClick={() => setShowPassword(!showPassword)}
+// //                 className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 lg:hover:text-zinc-300 transition-colors"
+// //               >
+// //                 {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+// //               </button>
+// //             </div>
+// //           </div>
+
+// //           {error && (
+// //             <div className="mb-4 p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center">
+// //               {error}
+// //             </div>
+// //           )}
+
+// //           <button
+// //             type="submit"
+// //             disabled={loading}
+// //             className="w-full py-3 rounded-xl bg-blue-500 lg:hover:bg-blue-600 text-white font-semibold transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+// //           >
+// //             {loading ? (
+// //               <>
+// //                 <Loader2 className="w-5 h-5 animate-spin" />
+// //                 Connexion...
+// //               </>
+// //             ) : (
+// //               "Se connecter"
+// //             )}
+// //           </button>
+// //         </form>
+
+// //         <p className="text-center text-zinc-600 text-xs mt-6">
+// //           H12 Premium Rentals - Admin v1.0
+// //         </p>
+// //       </div>
+// //     </div>
+// //   );
+// // }
+
+
+// "use client";
+
+// import { useState } from "react";
+// import { useRouter } from "next/navigation";
+// import { Lock, Mail, Eye, EyeOff, Loader2 } from "lucide-react";
+// import Image from "next/image";
+
+// export default function LoginPage() {
+//   const [email, setEmail] = useState("");
+//   const [password, setPassword] = useState("");
+//   const [showPassword, setShowPassword] = useState(false);
+//   const [error, setError] = useState("");
+//   const [loading, setLoading] = useState(false);
+//   const router = useRouter();
+
+//   async function handleSubmit(e: React.FormEvent) {
+//     e.preventDefault();
+//     setError("");
+//     setLoading(true);
+
+//     try {
+//       const res = await fetch("/api/auth/login", {
+//         method: "POST",
+//         headers: { "Content-Type": "application/json" },
+//         body: JSON.stringify({ email, password }),
+//       });
+
+//       const data = await res.json();
+
+//       if (res.ok) {
+//         router.push("/panel/dashboard");
+//         router.refresh();
+//       } else {
+//         setError(data.error || "Email ou mot de passe incorrect");
+//       }
+//     } catch {
+//       setError("Erreur de connexion");
+//     } finally {
+//       setLoading(false);
+//     }
+//   }
+
+//   return (
+//     <div className="panel-auth min-h-screen bg-zinc-900 flex items-center justify-center p-4">
+//       <div className="w-full max-w-sm">
+//         {/* Logo */}
+//         <div className="text-center mb-8">
+//           <Image
+//             src="/h12carlogo.png"
+//             alt="H12 Logo"
+//             width={80}
+//             height={80}
+//             className="mx-auto mb-4 rounded-full"
+//           />
+//           <h1 className="text-2xl font-bold text-white">Admin Panel</h1>
+//           <p className="text-zinc-500 text-sm mt-1">Connectez-vous à votre compte</p>
+//         </div>
+
+//         {/* Login Form */}
+//         <form onSubmit={handleSubmit} className="bg-zinc-800/50 border border-zinc-700 rounded-2xl p-6">
+//           {/* Email Field */}
+//           <div className="mb-4">
+//             <label className="block text-sm font-medium text-zinc-400 mb-2">
+//               Email
+//             </label>
+//             <div className="relative">
+//               <div className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500">
+//                 <Mail className="w-5 h-5" />
+//               </div>
+//               <input
+//                 type="email"
+//                 value={email}
+//                 onChange={(e) => setEmail(e.target.value)}
+//                 className="w-full pl-11 pr-3 py-3 rounded-xl bg-zinc-900 border border-zinc-700 text-white placeholder-zinc-500 focus:outline-none focus:border-blue-500/50 transition-colors"
+//                 placeholder="admin@example.com"
+//                 required
+//               />
+//             </div>
+//           </div>
+
+//           {/* Password Field */}
+//           <div className="mb-6">
+//             <label className="block text-sm font-medium text-zinc-400 mb-2">
+//               Mot de passe
+//             </label>
+//             <div className="relative">
+//               <div className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500">
+//                 <Lock className="w-5 h-5" />
+//               </div>
+//               <input
+//                 type={showPassword ? "text" : "password"}
+//                 value={password}
+//                 onChange={(e) => setPassword(e.target.value)}
+//                 className="w-full pl-11 pr-11 py-3 rounded-xl bg-zinc-900 border border-zinc-700 text-white placeholder-zinc-500 focus:outline-none focus:border-blue-500/50 transition-colors"
+//                 placeholder="••••••••"
+//                 required
+//               />
+//               <button
+//                 type="button"
+//                 onClick={() => setShowPassword(!showPassword)}
+//                 className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 transition-colors"
+//               >
+//                 {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+//               </button>
+//             </div>
+//           </div>
+
+//           {error && (
+//             <div className="mb-4 p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center">
+//               {error}
+//             </div>
+//           )}
+
+//           <button
+//             type="submit"
+//             disabled={loading}
+//             className="w-full py-3 rounded-xl bg-blue-500 hover:bg-blue-600 text-white font-semibold transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+//           >
+//             {loading ? (
+//               <>
+//                 <Loader2 className="w-5 h-5 animate-spin" />
+//                 Connexion...
+//               </>
+//             ) : (
+//               "Se connecter"
+//             )}
+//           </button>
+//         </form>
+
+//         <p className="text-center text-zinc-600 text-xs mt-6">
+//           H12 Premium Rentals - Admin v1.0
+//         </p>
+//       </div>
+//     </div>
+//   );
+// }
+
 "use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Lock, Eye, EyeOff, Loader2 } from "lucide-react";
+import { Lock, Mail, Eye, EyeOff, Loader2 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link"; // Ajoutez cet import
 
 export default function LoginPage() {
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
@@ -21,14 +274,16 @@ export default function LoginPage() {
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password }),
+        body: JSON.stringify({ email, password }),
       });
+
+      const data = await res.json();
 
       if (res.ok) {
         router.push("/panel/dashboard");
         router.refresh();
       } else {
-        setError("Mot de passe incorrect");
+        setError(data.error || "Email ou mot de passe incorrect");
       }
     } catch {
       setError("Erreur de connexion");
@@ -50,11 +305,32 @@ export default function LoginPage() {
             className="mx-auto mb-4 rounded-full"
           />
           <h1 className="text-2xl font-bold text-white">Admin Panel</h1>
-          <p className="text-zinc-500 text-sm mt-1">Connectez-vous pour continuer</p>
+          <p className="text-zinc-500 text-sm mt-1">Connectez-vous à votre compte</p>
         </div>
 
         {/* Login Form */}
         <form onSubmit={handleSubmit} className="bg-zinc-800/50 border border-zinc-700 rounded-2xl p-6">
+          {/* Email Field */}
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-zinc-400 mb-2">
+              Email
+            </label>
+            <div className="relative">
+              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500">
+                <Mail className="w-5 h-5" />
+              </div>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full pl-11 pr-3 py-3 rounded-xl bg-zinc-900 border border-zinc-700 text-white placeholder-zinc-500 focus:outline-none focus:border-blue-500/50 transition-colors"
+                placeholder="admin@example.com"
+                required
+              />
+            </div>
+          </div>
+
+          {/* Password Field */}
           <div className="mb-6">
             <label className="block text-sm font-medium text-zinc-400 mb-2">
               Mot de passe
@@ -68,13 +344,13 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full pl-11 pr-11 py-3 rounded-xl bg-zinc-900 border border-zinc-700 text-white placeholder-zinc-500 focus:outline-none focus:border-blue-500/50 transition-colors"
-                placeholder="Entrez le mot de passe"
+                placeholder="••••••••"
                 required
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 lg:hover:text-zinc-300 transition-colors"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 transition-colors"
               >
                 {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
               </button>
@@ -90,7 +366,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 rounded-xl bg-blue-500 lg:hover:bg-blue-600 text-white font-semibold transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+            className="w-full py-3 rounded-xl bg-blue-500 hover:bg-blue-600 text-white font-semibold transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
           >
             {loading ? (
               <>
@@ -101,6 +377,19 @@ export default function LoginPage() {
               "Se connecter"
             )}
           </button>
+
+          {/* Lien d'inscription */}
+          <div className="text-center mt-4">
+            <Link 
+              href="/panel/signup" 
+              className="text-sm text-zinc-400 hover:text-blue-400 transition-colors"
+            >
+              Pas encore de compte ?{" "}
+              <span className="text-blue-400 hover:text-blue-300 font-medium">
+                Créer un compte
+              </span>
+            </Link>
+          </div>
         </form>
 
         <p className="text-center text-zinc-600 text-xs mt-6">

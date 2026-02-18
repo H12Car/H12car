@@ -101,17 +101,41 @@ export default function ExcursionPage() {
   const [loadingTransfers, setLoadingTransfers] = useState(false);
   const [numPeople, setNumPeople] = useState(2);
 
-  // Fetch excursions on mount
-  useEffect(() => {
-    fetch("/api/excursions")
-      .then((res) => res.json())
-      .then((data: ExcursionData[]) => {
+
+
+const [errorExcursions, setErrorExcursions] = useState<string | null>(null);
+
+useEffect(() => {
+  const fetchExcursions = async () => {
+    try {
+      setLoadingExcursions(true);
+      setErrorExcursions(null);
+      
+      const response = await fetch("/api/excursions");
+      
+      if (!response.ok) {
+        throw new Error(`Erreur ${response.status}: ${response.statusText}`);
+      }
+      
+      const data = await response.json();
+      
+      if (Array.isArray(data)) {
         setExcursions(data);
         setFavorites(data.filter((e) => e.favorite).map((e) => e.id));
-      })
-      .catch(console.error)
-      .finally(() => setLoadingExcursions(false));
-  }, []);
+      } else {
+        throw new Error("Format de données invalide");
+      }
+    } catch (error) {
+      console.error("Erreur:", error);
+      setErrorExcursions(error instanceof Error ? error.message : "Erreur inconnue");
+      setExcursions([]);
+    } finally {
+      setLoadingExcursions(false);
+    }
+  };
+
+  fetchExcursions();
+}, []);
 
   // Fetch transfer routes when tab switches
   useEffect(() => {
@@ -259,6 +283,20 @@ export default function ExcursionPage() {
                 <div className="text-center py-16">
                   <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
                   <p className="text-zinc-400">Chargement des excursions...</p>
+                </div>
+              ) : errorExcursions ? (
+                <div className="text-center py-16">
+                  <div className="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <X className="w-8 h-8 text-red-400" />
+                  </div>
+                  <p className="text-red-400 mb-2">Erreur de chargement</p>
+                  <p className="text-zinc-500 text-sm">{errorExcursions}</p>
+                  <button 
+                    onClick={() => window.location.reload()}
+                    className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg text-sm"
+                  >
+                    Réessayer
+                  </button>
                 </div>
               ) : excursions.length === 0 ? (
                 <div className="text-center py-16">

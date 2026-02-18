@@ -17,15 +17,20 @@ export async function GET(request: NextRequest) {
       ],
     });
 
+    // Vérifier que nous avons bien un tableau
+    if (!Array.isArray(excursions)) {
+      console.error("Prisma n'a pas retourné un tableau:", excursions);
+      return NextResponse.json([], { status: 200 }); // Retourner un tableau vide
+    }
+
     return NextResponse.json(excursions);
   } catch (error) {
     console.error("Failed to fetch excursions:", error);
-    return NextResponse.json(
-      { error: "Failed to fetch excursions" },
-      { status: 500 }
-    );
+    // Retourner un tableau vide avec un statut 200 pour éviter les erreurs côté client
+    return NextResponse.json([], { status: 200 });
   }
 }
+
 
 // POST /api/excursions - Create a new excursion (admin only)
 export async function POST(request: NextRequest) {
