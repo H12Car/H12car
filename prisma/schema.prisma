@@ -39,7 +39,7 @@ model Vehicle {
   period       String      @default("jour")
   image        String
   description  String?
-  features     Json?       @default("[]")
+  features     String[]
   fuel         String?
   seats        Int?
   transmission String?
@@ -119,9 +119,8 @@ model Excursion {
   image       String
   description String
 
-  // Changer String[] en Json
-  features    Json     // Pour JSONB
-  highlights  Json     // Pour JSONB
+  features    String[]
+  highlights  String[]
   
   duration    String?
   groupSize   String?
