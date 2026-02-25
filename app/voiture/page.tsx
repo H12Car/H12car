@@ -1,5 +1,3 @@
-"use server";
-
 import { prisma } from "@/lib/db";
 import VoitureClient from "./VoitureClient";
 import type { Metadata } from "next";
