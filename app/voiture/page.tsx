@@ -1,3 +1,5 @@
+"use server";
+
 import { prisma } from "@/lib/db";
 import VoitureClient from "./VoitureClient";
 import type { Metadata } from "next";
@@ -53,11 +55,14 @@ async function getCars() {
   const carsConverties = cars.map((car) => {
     let features: Prisma.JsonValue[] = [];
     try {
-      features = Array.isArray(car.features)
-        ? car.features
-        : typeof car.features === "string" && (car.features as string).trim() !== ""
-        ? JSON.parse(car.features as string)
-        : [];
+      const raw = car.features;
+      if (Array.isArray(raw)) {
+        features = raw;
+      } else if (typeof raw === "string" && raw.trim() !== "") {
+        features = JSON.parse(raw);
+      } else {
+        features = [];
+      }
     } catch {
       features = [];
     }
