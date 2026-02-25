@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/db";
 import VoitureClient from "./VoitureClient";
 import type { Metadata } from "next";
+import type { Prisma } from "@prisma/client";
 
 export const dynamic = "force-dynamic";
 
@@ -8,7 +9,7 @@ export const metadata: Metadata = {
   title: "Location Voiture Marrakech | H12 Car — SUV, Berlines, Kilométrage Illimité",
   description:
     "Louez une voiture à Marrakech avec H12 Car. Large choix de SUV, berlines et citadines. Kilométrage illimité, assurance incluse, livraison à l'hôtel ou à l'aéroport Menara. Réservez en ligne.",
-  
+
   openGraph: {
     title: "Location Voiture Marrakech | H12 Car",
     description:
@@ -23,7 +24,7 @@ export const metadata: Metadata = {
         alt: "Location voiture Marrakech — flotte H12 Car",
       },
     ],
-    locale: "fr_FR",
+    locale: "fr_MA",
     type: "website",
   },
 
@@ -40,15 +41,6 @@ export const metadata: Metadata = {
   },
 };
 
-// Définir le type JsonValue localement
-type JsonValue =
-  | string
-  | number
-  | boolean
-  | null
-  | { [key: string]: JsonValue }
-  | JsonValue[];
-
 async function getCars() {
   const cars = await prisma.vehicle.findMany({
     where: {
@@ -59,15 +51,14 @@ async function getCars() {
   });
 
   const carsConverties = cars.map((car) => {
-    let features: JsonValue[] = [];
+    let features: Prisma.JsonValue[] = [];
     try {
       features = Array.isArray(car.features)
         ? car.features
-        : typeof car.features === "string" && car.features.trim() !== ""
-        ? JSON.parse(car.features)
+        : typeof car.features === "string" && (car.features as string).trim() !== ""
+        ? JSON.parse(car.features as string)
         : [];
     } catch {
-      // Malformed JSON in DB — default to empty array
       features = [];
     }
     return { ...car, features };
