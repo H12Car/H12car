@@ -53,11 +53,11 @@ async function getCars() {
   const carsConverties = cars.map((car) => {
     let features: Prisma.JsonValue[] = [];
     try {
-      const raw = car.features;
+      const raw: unknown = car.features;
       if (Array.isArray(raw)) {
-        features = raw;
+        features = raw as Prisma.JsonValue[];
       } else if (typeof raw === "string" && raw.trim() !== "") {
-        features = JSON.parse(raw);
+        features = JSON.parse(raw) as Prisma.JsonValue[];
       } else {
         features = [];
       }
