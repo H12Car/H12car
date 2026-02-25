@@ -107,17 +107,17 @@ export default function MotoClient({ motos }: MotoClientProps) {
 
             {/* Title */}
             <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-4xl sm:text-5xl font-black text-white mb-4 leading-tight tracking-tight"
-            >
-              L&apos;Aventure.
-              <br />
-              <span className="text-blue-500">
-                A Deux Roues.
-              </span>
-            </motion.h1>
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.6, delay: 0.1 }}
+  className="text-4xl sm:text-5xl font-black text-white mb-4 leading-tight tracking-tight"
+>
+  Location Motos Marrakech
+  <br />
+  <span className="text-blue-500">
+    Mobilité Premium
+  </span>
+</motion.h1>
 
             {/* Image Card - Mobile */}
             <motion.div
@@ -129,8 +129,7 @@ export default function MotoClient({ motos }: MotoClientProps) {
               <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl shadow-black/50">
                 <Image
                   src="/moto_h12/h12_moto_new.webp"
-                  alt="H12 Premium Moto"
-                  fill
+alt="Location de motos premium à Marrakech – H12 Car"                  fill
                   priority
                   sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-cover scale-[1.12]"
@@ -204,17 +203,17 @@ export default function MotoClient({ motos }: MotoClientProps) {
 
               {/* Main Title */}
               <motion.h1
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.1, ease: [0.25, 0.4, 0.25, 1] }}
-                className="text-5xl xl:text-6xl font-bold text-white leading-[1.1] tracking-[-0.02em] mb-6"
-              >
-                L&apos;Aventure.
-                <br />
-                <span className="text-blue-500">
-                  A Deux Roues.
-                </span>
-              </motion.h1>
+  initial={{ opacity: 0, y: 30 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.8, delay: 0.1, ease: [0.25, 0.4, 0.25, 1] }}
+  className="text-5xl xl:text-6xl font-bold text-white leading-[1.1] tracking-[-0.02em] mb-6"
+>
+  Location Motos Marrakech
+  <br />
+  <span className="text-blue-500">
+    Mobilité Premium
+  </span>
+</motion.h1>
 
               {/* Description */}
               <motion.p
@@ -375,8 +374,7 @@ export default function MotoClient({ motos }: MotoClientProps) {
                     {/* Moto Image - Always full size */}
                     <Image
                       src={moto.image}
-                      alt={moto.name}
-                      fill
+alt={`Location moto Marrakech – ${moto.name}`}                      fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       className={`object-cover object-center transition-all duration-700 ${isExpanded ? 'scale-[1.15]' : 'scale-[1.1] lg:group-hover:scale-[1.12]'}`}
                     />

@@ -79,9 +79,8 @@ export default function VoitureClient({ cars }: VoitureClientProps) {
 
   return (
     <div className="min-h-screen bg-zinc-800">
-      {/* Hero Section - Apple Style */}
+      {/* Hero Section */}
       <section className="relative pt-24 sm:pt-28 pb-12 lg:pt-40 lg:pb-20 overflow-hidden">
-        {/* Background Elements - CSS animations for GPU acceleration */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div
             className="absolute top-1/4 -left-20 w-[500px] h-[500px] rounded-full bg-blue-500/20 blur-3xl animate-pulse-slow"
@@ -96,7 +95,6 @@ export default function VoitureClient({ cars }: VoitureClientProps) {
         <div className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-16 xl:px-24">
           {/* Mobile Layout */}
           <div className="lg:hidden text-center">
-            {/* Badge */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -111,17 +109,17 @@ export default function VoitureClient({ cars }: VoitureClientProps) {
               </div>
             </motion.div>
 
-            {/* Title */}
+            {/* ✅ H1 optimisé — mobile (affiché uniquement sur mobile via lg:hidden) */}
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-4xl sm:text-5xl font-black text-white mb-4 leading-tight tracking-tight"
+              className="text-4xl sm:text-5xl font-black text-white mb-4 leading-tight tracking-tight lg:hidden"
             >
-              Notre Flotte.
+              Location Voiture Marrakech
               <br />
               <span className="text-blue-500">
-                Votre Liberté.
+                Kilométrage Illimité
               </span>
             </motion.h1>
 
@@ -135,7 +133,7 @@ export default function VoitureClient({ cars }: VoitureClientProps) {
               <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl shadow-black/50">
                 <Image
                   src="/voiture_h12/h12_car_new.webp"
-                  alt="H12 Premium Car"
+                  alt="Location voiture premium à Marrakech — flotte H12 Car"
                   fill
                   priority
                   sizes="(max-width: 768px) 100vw, 50vw"
@@ -145,7 +143,6 @@ export default function VoitureClient({ cars }: VoitureClientProps) {
               </div>
             </motion.div>
 
-            {/* Description */}
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -178,7 +175,6 @@ export default function VoitureClient({ cars }: VoitureClientProps) {
               ))}
             </motion.div>
 
-            {/* CTA Button - Mobile */}
             <motion.button
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -194,11 +190,10 @@ export default function VoitureClient({ cars }: VoitureClientProps) {
             </motion.button>
           </div>
 
-          {/* Desktop Layout - Apple Style Two Column */}
+          {/* Desktop Layout */}
           <div className="hidden lg:grid lg:grid-cols-2 gap-16 xl:gap-24 items-center">
             {/* Left - Content */}
             <div>
-              {/* Overline */}
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -208,21 +203,20 @@ export default function VoitureClient({ cars }: VoitureClientProps) {
                 Location de Voitures Premium
               </motion.p>
 
-              {/* Main Title */}
+              {/* ✅ H1 optimisé — desktop (dans le bloc hidden lg:grid, donc un seul H1 actif à la fois) */}
               <motion.h1
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.1, ease: [0.25, 0.4, 0.25, 1] }}
                 className="text-5xl xl:text-6xl font-bold text-white leading-[1.1] tracking-[-0.02em] mb-6"
               >
-                Notre Flotte.
+                Location Voiture
                 <br />
                 <span className="text-blue-500">
-                  Votre Liberté.
+                  Marrakech
                 </span>
               </motion.h1>
 
-              {/* Description */}
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -258,7 +252,6 @@ export default function VoitureClient({ cars }: VoitureClientProps) {
                 ))}
               </motion.div>
 
-              {/* CTA Button */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -286,25 +279,20 @@ export default function VoitureClient({ cars }: VoitureClientProps) {
               transition={{ duration: 1, delay: 0.3, ease: [0.25, 0.4, 0.25, 1] }}
               className="relative flex justify-center"
             >
-              {/* Ambient Glow */}
               <div className="absolute inset-0 bg-blue-500/30 blur-[80px] rounded-full" />
-
-              {/* Image Container */}
               <MousePushCard maxTilt={10} smoothing={0.06} className="relative max-w-[466px] w-full">
                 <div className="relative aspect-square rounded-3xl overflow-hidden border border-zinc-700 shadow-2xl shadow-black/50">
                   <Image
                     src="/voiture_h12/h12_car_new.webp"
-                    alt="H12 Premium Vehicle"
+                    alt="Flotte de voitures premium H12 Car — location à Marrakech"
                     fill
                     priority
                     sizes="(max-width: 1024px) 100vw, 466px"
                     className="object-cover scale-[1.12]"
                   />
-                  {/* Subtle gradient overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
                 </div>
 
-                {/* Floating Icon Pills */}
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -334,7 +322,6 @@ export default function VoitureClient({ cars }: VoitureClientProps) {
       {/* Categories Filter Section */}
       <section className="relative py-8 lg:py-12">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-16">
-          {/* Categories Filter */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -378,19 +365,18 @@ export default function VoitureClient({ cars }: VoitureClientProps) {
                   <div
                     className={`relative bg-black overflow-hidden rounded-[20px] sm:rounded-[24px] h-[380px] sm:h-[400px] lg:h-[440px] transition-all duration-500 ${!isExpanded ? 'lg:hover:shadow-2xl' : 'shadow-2xl ring-2 ring-blue-500/30'}`}
                   >
-                    {/* Car Image - Always full size */}
+                    {/* ✅ Alt tag dynamique basé sur le nom et la catégorie du véhicule */}
                     <Image
                       src={car.image}
-                      alt={car.name}
+                      alt={`Location ${car.name} ${car.category} à Marrakech — H12 Car`}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       className={`object-cover object-center transition-all duration-700 ${isExpanded ? 'scale-[1.15]' : 'scale-[1.1] lg:group-hover:scale-[1.12]'}`}
                     />
 
-                    {/* Gradient Overlay - stronger when expanded */}
                     <div className={`absolute inset-0 transition-all duration-500 ${isExpanded ? 'bg-gradient-to-t from-black/90 via-black/50 to-black/20' : 'bg-gradient-to-t from-black/70 via-black/20 to-transparent'}`} />
 
-                    {/* Favorite Button - Top Right */}
+                    {/* Favorite Button */}
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
@@ -407,7 +393,7 @@ export default function VoitureClient({ cars }: VoitureClientProps) {
                       />
                     </button>
 
-                    {/* Top Left - Close Button (expanded) or Category Badge */}
+                    {/* Top Left - Close or Category */}
                     <div className="absolute top-4 left-4 sm:top-5 sm:left-5 z-20">
                       {isExpanded ? (
                         <button
@@ -426,10 +412,9 @@ export default function VoitureClient({ cars }: VoitureClientProps) {
                       )}
                     </div>
 
-                    {/* Accent line at top */}
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-10 sm:w-12 h-1 bg-blue-500 rounded-b-full z-10" />
 
-                    {/* Collapsed: Info Card at Bottom */}
+                    {/* Collapsed Info Card */}
                     <AnimatePresence>
                       {!isExpanded && (
                         <motion.div
@@ -481,7 +466,7 @@ export default function VoitureClient({ cars }: VoitureClientProps) {
                       )}
                     </AnimatePresence>
 
-                    {/* Expanded: Frosted Glass Overlay Sheet */}
+                    {/* Expanded Sheet */}
                     <AnimatePresence>
                       {isExpanded && (
                         <motion.div
@@ -493,10 +478,8 @@ export default function VoitureClient({ cars }: VoitureClientProps) {
                           onClick={(e) => e.stopPropagation()}
                         >
                           <div className="bg-black/60 backdrop-blur-2xl rounded-t-[20px] border-t border-white/10 p-4 sm:p-5">
-                            {/* Grab Handle */}
                             <div className="w-8 h-1 bg-white/20 rounded-full mx-auto mb-3" />
 
-                            {/* Name + Price Row */}
                             <div className="flex items-start justify-between mb-3">
                               <div>
                                 <h2 className="text-base sm:text-lg font-bold text-white leading-tight">{car.name}</h2>
@@ -514,7 +497,6 @@ export default function VoitureClient({ cars }: VoitureClientProps) {
                               </div>
                             </div>
 
-                            {/* Specs Row - Horizontal minimal */}
                             <div className="flex items-center gap-3 mb-3">
                               {[
                                 { icon: Users, value: `${car.seats}pl` },
@@ -529,7 +511,6 @@ export default function VoitureClient({ cars }: VoitureClientProps) {
                               ))}
                             </div>
 
-                            {/* Features as Pills */}
                             <div className="flex flex-wrap gap-1.5 mb-3">
                               <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-blue-500/15 border border-blue-500/20">
                                 <Shield className="w-3 h-3 text-blue-400" />
@@ -542,7 +523,6 @@ export default function VoitureClient({ cars }: VoitureClientProps) {
                               ))}
                             </div>
 
-                            {/* Delivery + CTA Row */}
                             <div className="flex items-center gap-2 mb-3">
                               <MapPin className="w-3 h-3 text-green-400 flex-shrink-0" />
                               <span className="text-[10px] text-green-300/80">
@@ -552,7 +532,6 @@ export default function VoitureClient({ cars }: VoitureClientProps) {
                               </span>
                             </div>
 
-                            {/* CTA Button */}
                             <motion.button
                               onClick={() => handleReserve(car)}
                               whileHover={{ scale: 1.02 }}
@@ -589,13 +568,11 @@ export default function VoitureClient({ cars }: VoitureClientProps) {
               </p>
             </motion.div>
           )}
-
         </div>
       </section>
 
       {/* Moto CTA Section */}
       <section className="relative py-20 lg:py-28 overflow-hidden">
-        {/* Background Gradient - CSS animation */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-blue-500/20 blur-3xl animate-pulse-slow"
@@ -611,25 +588,22 @@ export default function VoitureClient({ cars }: VoitureClientProps) {
             transition={{ duration: 0.8, ease: [0.25, 0.4, 0.25, 1] }}
             className="text-center"
           >
-            {/* Subtitle */}
             <p className="text-blue-400 text-sm font-medium tracking-[0.15em] uppercase mb-4">
               Explorer Marrakech Autrement
             </p>
 
-            {/* Main Title */}
+            {/* ✅ H2 optimisé avec mots-clés */}
             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
-              Voulez-vous une{" "}
+              Vous préférez une{" "}
               <span className="text-blue-500">
-                Moto ?
+                Location Moto à Marrakech ?
               </span>
             </h2>
 
-            {/* Description */}
             <p className="text-lg text-zinc-400 max-w-xl mx-auto mb-10">
               Parcourez Marrakech en toute liberté avec notre collection de motos et scooters premium.
             </p>
 
-            {/* CTA Button */}
             <motion.a
               href="/moto"
               whileHover={{ scale: 1.03, y: -2 }}

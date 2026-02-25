@@ -7,6 +7,7 @@ import Link from "next/link";
 import { services } from "@/types/home_service";
 import MousePushCard from "@/components/MousePushCard";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import Script from "next/script";
 
 // Animation variants moved outside component for better performance
 const containerVariants: Variants = {
@@ -31,10 +32,53 @@ const cardVariants: Variants = {
   }
 };
 
+// JSON-LD Schema for LocalBusiness
+const schemaOrg = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  name: "H12 Car",
+  description: "Location de voiture, moto et excursions à Marrakech. Kilométrage illimité, assurance incluse, livraison à l'hôtel ou à l'aéroport Menara.",
+  url: "https://h12car.com",
+  telephone: "+212614968594",
+  email: "contact@h12car.com",
+  priceRange: "400-800 MAD/jour",
+  image: "https://h12car.com/h12carlogo.png",
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Marrakech",
+    addressCountry: "MA",
+  },
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: 31.6295,
+    longitude: -7.9811,
+  },
+  openingHoursSpecification: {
+    "@type": "OpeningHoursSpecification",
+    dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+    opens: "00:00",
+    closes: "23:59",
+  },
+  aggregateRating: {
+    "@type": "AggregateRating",
+    ratingValue: "4.9",
+    reviewCount: "2000",
+  },
+  sameAs: ["https://wa.me/212614968594"],
+};
+
 export default function HomePage() {
 
   return (
     <div className="bg-zinc-800 min-h-screen">
+
+      {/* JSON-LD Structured Data */}
+      <Script
+        id="schema-org"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrg) }}
+      />
+
       {/* Hero Section */}
       <section className="relative pt-24 sm:pt-28 pb-12 lg:pt-40 lg:pb-20 overflow-hidden">
         {/* Subtle Background Elements */}
@@ -67,17 +111,16 @@ export default function HomePage() {
               </div>
             </motion.div>
 
-            {/* Title */}
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-4xl sm:text-5xl font-black text-white mb-4 leading-tight tracking-tight"
+              className="text-4xl sm:text-5xl font-black text-white mb-4 leading-tight tracking-tight lg:hidden"
             >
-              Votre voyage.
+              Location de Voiture à Marrakech —
               <br />
               <span className="text-blue-500">
-                Notre Passion.
+                Kilométrage Illimité
               </span>
             </motion.h1>
 
@@ -91,7 +134,7 @@ export default function HomePage() {
               <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl shadow-black/50">
                 <Image
                   src="/h12_hero_new.webp"
-                  alt="H12 Premium Car"
+                  alt="Location de voiture premium à Marrakech — H12 Car"
                   fill
                   priority
                   sizes="(max-width: 768px) 100vw, 50vw"
@@ -163,17 +206,16 @@ export default function HomePage() {
                 Location Premium à Marrakech
               </motion.p>
 
-              {/* Main Title */}
               <motion.h1
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.1, ease: [0.25, 0.4, 0.25, 1] }}
                 className="text-5xl xl:text-6xl font-bold text-white leading-[1.1] tracking-[-0.02em] mb-6"
               >
-                Votre voyage.
+                Location de Voiture
                 <br />
                 <span className="text-blue-500">
-                  Notre Passion.
+                  à Marrakech
                 </span>
               </motion.h1>
 
@@ -258,7 +300,7 @@ export default function HomePage() {
                 <div className="relative aspect-square rounded-3xl overflow-hidden border border-zinc-700 shadow-2xl shadow-black/50">
                   <Image
                     src="/h12_hero_new.webp"
-                    alt="H12 Premium Vehicle"
+                    alt="Flotte H12 Car — véhicules disponibles à Marrakech"
                     fill
                     priority
                     sizes="(max-width: 1024px) 100vw, 466px"
@@ -322,10 +364,10 @@ export default function HomePage() {
           </div>
 
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight">
-            L&apos;Excellence dans chaque
+            Nos Services de Location
             <br />
             <span className="text-blue-500">
-              Détail
+              à Marrakech
             </span>
           </h2>
 
@@ -352,15 +394,19 @@ export default function HomePage() {
             };
             const cardImages = ['/voiture_h12/h12_car_new.webp', '/moto_h12/h12_moto_new.webp', '/excursions/h12_excursion_new.webp', '/voiture_h12/h12_transporttouristicmerco.png'];
 
+            // ✅ SEO FIX #5c: Descriptive alt tags for service cards
+            const cardAlts = [
+              'Location de voiture à Marrakech — berlines et SUV H12',
+              'Location moto Marrakech — scooters et motos H12 Car',
+              'Excursion Marrakech Atlas désert — H12 Car',
+              'Transfert aéroport Menara Marrakech — H12 Car',
+            ];
+
             // Per-card image styles to account for different source images
             const cardImageStyles = [
-              // Car: studio shot, bright subject — default styling works
               'object-cover scale-[1.12] opacity-70 lg:group-hover:opacity-90 lg:group-hover:scale-[1.15] transition-all duration-700',
-              // Moto: very dark studio shot — boost brightness so the bike is visible
               'object-cover scale-[1.12] opacity-90 brightness-125 lg:group-hover:opacity-100 lg:group-hover:scale-[1.15] transition-all duration-700',
-              // Excursion: bright outdoor photo — lower opacity, position on rider
               'object-cover object-center scale-[1.2] opacity-60 lg:group-hover:opacity-75 lg:group-hover:scale-[1.25] transition-all duration-700',
-              // Transfer: studio shot — default styling works
               'object-cover scale-[1.12] opacity-70 lg:group-hover:opacity-90 lg:group-hover:scale-[1.15] transition-all duration-700',
             ];
 
@@ -377,7 +423,7 @@ export default function HomePage() {
                 {/* Image */}
                 <Image
                   src={cardImages[index]}
-                  alt={service.title}
+                  alt={cardAlts[index]}
                   fill
                   className={cardImageStyles[index]}
                 />
@@ -462,8 +508,8 @@ export default function HomePage() {
             </div>
 
             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white mb-4 leading-tight">
-              La Confiance <br className="hidden sm:block" />
-              <span className="text-blue-500">Avant Tout</span>
+              Pourquoi Choisir H12 <br className="hidden sm:block" />
+              <span className="text-blue-500">pour Louer à Marrakech</span>
             </h2>
             <p className="text-lg text-zinc-400 max-w-2xl mx-auto">
               Des services premium pensés pour votre tranquillité
@@ -478,6 +524,7 @@ export default function HomePage() {
                 title: "Kilométrage Illimité",
                 description: "Roulez sans compter, sans frais cachés",
                 image: "/excursions/h12_quad.png",
+                imageAlt: "Excursion quad Marrakech kilométrage illimité — H12 Car",
                 tag: "01",
                 cta: "Voir nos Voitures",
                 href: "/voiture"
@@ -487,6 +534,7 @@ export default function HomePage() {
                 title: "Assurance Incluse",
                 description: "Tous risques pour votre tranquillité",
                 image: "/h12_hero_new.webp",
+                imageAlt: "Location voiture Marrakech assurance incluse — H12 Car",
                 tag: "02",
                 cta: "En savoir plus",
                 href: "/about"
@@ -496,6 +544,7 @@ export default function HomePage() {
                 title: "Livraison Gratuite",
                 description: "À l'aéroport ou à votre hôtel",
                 image: "/excursions/h12_quad.png",
+                imageAlt: "Livraison voiture aéroport Menara Marrakech — H12 Car",
                 tag: "03",
                 cta: "Nous Contacter",
                 href: "/contact"
@@ -505,6 +554,7 @@ export default function HomePage() {
                 title: "Support 24/7",
                 description: "Une équipe à votre écoute",
                 image: "/h12_hero_new.webp",
+                imageAlt: "Support client H12 Car Marrakech 24h/24",
                 tag: "04",
                 cta: "Nous Contacter",
                 href: "/contact"
@@ -523,7 +573,7 @@ export default function HomePage() {
                   {/* Image */}
                   <Image
                     src={feature.image}
-                    alt={feature.title}
+                    alt={feature.imageAlt}
                     fill
                     className="object-cover scale-[1.15] opacity-50 lg:group-hover:opacity-70 lg:group-hover:scale-[1.2] transition-all duration-700"
                   />
@@ -597,8 +647,8 @@ export default function HomePage() {
             </div>
 
             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white mb-4 leading-tight">
-              Simple. Rapide. <br className="hidden sm:block" />
-              <span className="text-blue-500">Efficace.</span>
+              Réservez votre Location <br className="hidden sm:block" />
+              <span className="text-blue-500">en 3 Étapes Simples</span>
             </h2>
             <p className="text-lg text-zinc-400 max-w-2xl mx-auto">
               Trois étapes pour votre prochaine aventure
@@ -756,7 +806,7 @@ export default function HomePage() {
               </div>
 
               <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight">
-                Véhicules <span className="text-blue-500">Premium</span>
+                Notre Flotte de Voitures <span className="text-blue-500">et Motos Premium</span>
               </h2>
             </div>
 
@@ -780,6 +830,7 @@ export default function HomePage() {
                 category: "SUV Premium",
                 price: "800",
                 image: "/voiture_h12/h12_touareg.png",
+                imageAlt: "Location Volkswagen Touareg SUV 7 places Marrakech — H12 Car",
                 features: ["Climatisation", "GPS", "7 Places"],
                 href: "/voiture"
               },
@@ -788,6 +839,7 @@ export default function HomePage() {
                 category: "Adventure",
                 price: "600",
                 image: "/moto_h12/h12_africatwin1100.png",
+                imageAlt: "Location Honda Africa Twin 1100 Marrakech — H12 Car",
                 features: ["ABS", "DCT", "Adventure"],
                 href: "/moto"
               },
@@ -796,6 +848,7 @@ export default function HomePage() {
                 category: "Excursion",
                 price: "400",
                 image: "/excursions/h12_quad.png",
+                imageAlt: "Excursion quad palmeraie Marrakech — H12 Car",
                 features: ["Guide inclus", "Équipement", "Aventure"],
                 href: "/excursion"
               }
@@ -814,7 +867,7 @@ export default function HomePage() {
                   <div className="relative h-56 sm:h-60 lg:h-64 overflow-hidden bg-zinc-950">
                     <Image
                       src={vehicle.image}
-                      alt={vehicle.name}
+                      alt={vehicle.imageAlt}
                       fill
                       className="object-cover scale-105 lg:group-hover:scale-110 transition-transform duration-700"
                     />
@@ -893,9 +946,9 @@ export default function HomePage() {
             </div>
 
             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight">
-              Ce Que Disent <br />
+              Avis Clients — <br />
               <span className="text-blue-500">
-                Nos Clients
+                2000+ Voyageurs Satisfaits
               </span>
             </h2>
 
@@ -1092,9 +1145,9 @@ export default function HomePage() {
             {/* Title */}
             <div>
               <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight">
-                Prêt à
+                Prêt à Explorer
                 <span className="text-blue-500 ml-3">
-                  Découvrir ?
+                  Marrakech ?
                 </span>
               </h2>
 
