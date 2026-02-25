@@ -1,7 +1,6 @@
 import { prisma } from "@/lib/db";
 import VoitureClient from "./VoitureClient";
 import type { Metadata } from "next";
-import type { Prisma } from "@prisma/client";
 
 export const dynamic = "force-dynamic";
 
@@ -50,24 +49,21 @@ async function getCars() {
     orderBy: [{ featured: "desc" }, { price: "desc" }],
   });
 
-  const carsConverties = cars.map((car) => {
-    let features: Prisma.JsonValue[] = [];
+  return cars.map((car) => {
+    let features: string[] = [];
     try {
       const raw: unknown = car.features;
       if (Array.isArray(raw)) {
-        features = raw as Prisma.JsonValue[];
+        features = raw.map((f) => String(f));
       } else if (typeof raw === "string" && raw.trim() !== "") {
-        features = JSON.parse(raw) as Prisma.JsonValue[];
-      } else {
-        features = [];
+        const parsed: unknown = JSON.parse(raw);
+        features = Array.isArray(parsed) ? parsed.map((f) => String(f)) : [];
       }
     } catch {
       features = [];
     }
     return { ...car, features };
   });
-
-  return carsConverties;
 }
 
 export default async function VoiturePage() {
