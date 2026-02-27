@@ -5,9 +5,9 @@ import type { Metadata } from "next";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Location Voiture Marrakech | H12 Car — SUV, Berlines, Kilométrage Illimité",
-  description:
-    "Louez une voiture à Marrakech avec H12 Car. Large choix de SUV, berlines et citadines. Kilométrage illimité, assurance incluse, livraison à l'hôtel ou à l'aéroport Menara. Réservez en ligne.",
+  title: "Location Voiture Marrakech | SUV, Berlines - H12 Car",
+  description: "Louez une voiture à Marrakech dès 400 MAD/jour. Large choix de SUV, berlines, citadines. Kilométrage illimité, livraison gratuite aéroport Menara.",
+  // ... rest
 
   openGraph: {
     title: "Location Voiture Marrakech | H12 Car",

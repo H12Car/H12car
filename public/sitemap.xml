@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <!-- Homepage -->
+  <url>
+    <loc>https://h12car.com</loc>
+    <lastmod>2026-02-25</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://h12car.com"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://h12car.com/en"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://h12car.com/ar"/>
+    <image:image>
+      <image:loc>https://h12car.com/h12_hero_new.webp</image:loc>
+      <image:title>Location de voiture premium à Marrakech - H12 Car</image:title>
+      <image:caption>Flotte de véhicules H12 Car Marrakech</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Car Rental Page -->
+  <url>
+    <loc>https://h12car.com/voiture</loc>
+    <lastmod>2026-02-25</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://h12car.com/voiture"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://h12car.com/en/voiture"/>
+    <image:image>
+      <image:loc>https://h12car.com/voiture_h12/h12_car_new.webp</image:loc>
+      <image:title>Location voiture Marrakech - Flotte H12 Car</image:title>
+    </image:image>
+  </url>
+
+  <!-- Motorcycle Rental Page -->
+  <url>
+    <loc>https://h12car.com/moto</loc>
+    <lastmod>2026-02-25</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://h12car.com/moto"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://h12car.com/en/moto"/>
+  </url>
+
+  <!-- Excursions Page -->
+  <url>
+    <loc>https://h12car.com/excursions</loc>
+    <lastmod>2026-02-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://h12car.com/excursions"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://h12car.com/en/excursions"/>
+  </url>
+
+  <!-- Transfer Page -->
+  <url>
+    <loc>https://h12car.com/transfer</loc>
+    <lastmod>2026-02-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://h12car.com/transfer"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://h12car.com/en/transfer"/>
+  </url>
+
+  <!-- About Page -->
+  <url>
+    <loc>https://h12car.com/about</loc>
+    <lastmod>2026-02-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://h12car.com/about"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://h12car.com/en/about"/>
+  </url>
+
+  <!-- Contact Page -->
+  <url>
+    <loc>https://h12car.com/contact</loc>
+    <lastmod>2026-02-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://h12car.com/contact"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://h12car.com/en/contact"/>
+  </url>
+
+  <!-- FAQ Page (to be created) -->
+  <url>
+    <loc>https://h12car.com/faq</loc>
+    <lastmod>2026-02-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- Blog Section (to be created) -->
+  <url>
+    <loc>https://h12car.com/blog</loc>
+    <lastmod>2026-02-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+</urlset>

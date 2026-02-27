@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Excursions & Transfert Aéroport Marrakech | H12 Car",
-  description:
-    "Réservez vos excursions guidées à Marrakech : Atlas, désert, cascades, quad. Service de transfert aéroport Menara avec chauffeur privé. Prix fixes, véhicules climatisés.",
+  title: "Excursions Marrakech | Désert, Atlas, Essaouira - H12 Car",
+  description: "Excursions organisées depuis Marrakech: désert Merzouga, vallée Ourika, Atlas, Essaouira. Circuits tout compris avec guide francophone.",
+  // ... rest
   keywords: [
     "excursion Marrakech",
     "excursion Atlas Marrakech",

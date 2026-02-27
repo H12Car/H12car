@@ -6,9 +6,9 @@ export const dynamic = "force-dynamic";
 
 /* ✅ SEO METADATA — THIS IS THE MOST IMPORTANT PART */
 export const metadata: Metadata = {
-  title: "Location de Motos à Marrakech | Scooters & Motos Premium – H12 Car",
-  description:
-    "Louez des motos et scooters premium à Marrakech. Large choix de modèles Adventure, Maxi-Scooters et Scooters. Assurance incluse, livraison rapide, réservation facile.",
+  title: "Location Moto Marrakech | Scooters, Motos - H12 Car",
+  description: "Location de moto et scooter à Marrakech dès 300 MAD/jour. Harley Davidson, Honda Africa Twin, scooters. Assurance incluse, kilométrage illimité.",
+  // ... rest
   keywords: [
     "location moto Marrakech",
     "location scooter Marrakech",

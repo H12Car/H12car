@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Transfert Aéroport Marrakech Menara | Prix Fixes | H12 Car",
-  description:
-    "Service de transfert privé depuis l'aéroport Marrakech Menara. Berline, minivan, minibus ou bus pour 1 à 48 personnes. Tarifs fixes 2025/2026, chauffeurs professionnels, disponible 24h/24.",
+  title: "Transfert Aéroport Marrakech | Service VIP - H12 Car",
+  description: "Service de transfert aéroport Menara Marrakech. Chauffeur privé, véhicules premium, suivi de vol, attente gratuite. Réservation 24h/24.",
+  // ... rest
   keywords: [
     "transfert aéroport Marrakech",
     "navette aéroport Menara",
