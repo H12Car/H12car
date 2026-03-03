@@ -20,6 +20,7 @@ const quickLinks = [
   { href: "/voiture", label: "Voitures" },
   { href: "/moto", label: "Motos" },
   { href: "/excursion", label: "Excursions" },
+  { href: "/blog", label: "Blog" },
   { href: "/about", label: "À Propos" },
 ];
 
