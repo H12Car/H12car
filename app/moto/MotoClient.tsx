@@ -286,7 +286,7 @@ alt="Location de motos premium à Marrakech – H12 Car"                  fill
               <MousePushCard maxTilt={10} smoothing={0.06} className="relative max-w-[466px] w-full">
                 <div className="relative aspect-square rounded-3xl overflow-hidden border border-zinc-700 shadow-2xl shadow-black/50">
                   <Image
-                    src="/moto_h12/h12_moto_new.webp"
+                    src="/moto_h12/Mt450.webp"
                     alt="H12 Premium Moto"
                     fill
                     priority
