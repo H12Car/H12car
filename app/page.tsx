@@ -64,7 +64,7 @@ const schemaOrg = {
   description: "Location de voiture, moto et excursions à Marrakech. Kilométrage illimité, assurance incluse, livraison à l'hôtel ou à l'aéroport Menara.",
   url: "https://h12car.com",
   telephone: "+212614968594",
-  email: "contact@h12car.com",
+  email: "K0664676267@gmail.com",
   priceRange: "400-800 MAD/jour",
   image: "https://h12car.com/h12carlogo.png",
   address: {

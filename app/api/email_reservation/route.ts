@@ -289,7 +289,7 @@ export async function POST(request: NextRequest) {
     // Envoyer l'email
     const { data, error } = await resend.emails.send({
       from: 'H12 Réservations <onboarding@resend.dev>', // Remplacez par votre domaine vérifié
-      to: ['digitalmaroc@idravision.com'], // Remplacez par votre email
+      to: ['K0664676267@gmail.com'], // Remplacez par votre email
       subject: `Nouvelle réservation - ${safeName}`,
       html: emailHtml,
       replyTo: contactInfo.email || undefined,

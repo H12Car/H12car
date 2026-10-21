@@ -14,7 +14,7 @@ export default function PanelLayout({
   const [pendingQuotes, setPendingQuotes] = useState(0);
 
   // Check if we're on login or logout page
-  const isAuthPage = pathname === "/panel/login" || pathname === "/panel/logout" || pathname === "/panel/signup";
+  const isAuthPage = pathname === "/panel/login" || pathname === "/panel/logout";
 
   // Fetch pending quotes count for sidebar badge
   useEffect(() => {

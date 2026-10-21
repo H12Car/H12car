@@ -20,7 +20,7 @@ const faqs = [
       },
       {
         q: "Comment annuler ou modifier ma réservation?",
-        a: "Vous pouvez annuler ou modifier votre réservation gratuitement jusqu'à 24h avant la date de prise en charge. Contactez-nous par WhatsApp au +212 614 968 594 ou par email à contact@h12car.com."
+        a: "Vous pouvez annuler ou modifier votre réservation gratuitement jusqu'à 24h avant la date de prise en charge. Contactez-nous par WhatsApp au +212 614 968 594 ou par email à K0664676267@gmail.com."
       },
       {
         q: "Acceptez-vous les réservations de dernière minute?",

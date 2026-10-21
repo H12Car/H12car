@@ -33,7 +33,7 @@ const services = [
 const contactInfo = [
   { icon: Phone, text: "Jabrane: +212 6 14 96 85 94", href: "tel:+212614968594" },
   { icon: Phone, text: "+33 6 46 46 66 56", href: "tel:+33646466656" },
-  { icon: Mail, text: "k0664676267@gmail.com", href: "mailto:k0664676267@gmail.com" },
+  { icon: Mail, text: "K0664676267@gmail.com", href: "mailto:K0664676267@gmail.com" },
   { icon: MapPin, text: "Marrakech, Maroc", href: "#" },
 ];
 

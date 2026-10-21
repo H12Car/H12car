@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
     // Envoyer l'email avec Resend
     const { data, error } = await resend.emails.send({
       from: 'H12 Car Contact <onboarding@resend.dev>',
-      to: ['digitalmaroc@idravision.com'],
+      to: ['K0664676267@gmail.com'],
       replyTo: email,
       subject: `[H12 Contact] ${formatSubject(subject)} - ${fullName}`,
       html: `

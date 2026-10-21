@@ -33,7 +33,7 @@ const contactInfo = [
   {
     icon: Mail,
     title: "Email",
-    value: "contact@h12car.com",
+    value: "K0664676267@gmail.com",
     description: "Pour vos demandes détaillées"
   },
   {

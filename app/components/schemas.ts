@@ -6,7 +6,7 @@ export const carRentalServiceSchema = {
   "description": "Location de voiture et moto à Marrakech avec kilométrage illimité. Service premium 24/7, livraison gratuite à l'aéroport Menara et dans tous les hôtels.",
   "url": "https://h12car.com",
   "telephone": "+212614968594",
-  "email": "contact@h12car.com",
+  "email": "K0664676267@gmail.com",
   "priceRange": "400-800 MAD",
   "image": [
     "https://h12car.com/h12_hero_new.webp",
@@ -72,7 +72,7 @@ export const organizationSchema = {
   "url": "https://h12car.com",
   "logo": "https://h12car.com/h12carlogo.png",
   "description": "Service premium de location de voiture et moto à Marrakech",
-  "email": "contact@h12car.com",
+  "email": "K0664676267@gmail.com",
   "telephone": "+212614968594",
   "address": {
     "@type": "PostalAddress",

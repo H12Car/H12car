@@ -255,7 +255,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Lock, Mail, Eye, EyeOff, Loader2 } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link"; // Ajoutez cet import
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -378,18 +377,6 @@ export default function LoginPage() {
             )}
           </button>
 
-          {/* Lien d'inscription */}
-          <div className="text-center mt-4">
-            <Link 
-              href="/panel/signup" 
-              className="text-sm text-zinc-400 hover:text-blue-400 transition-colors"
-            >
-              Pas encore de compte ?{" "}
-              <span className="text-blue-400 hover:text-blue-300 font-medium">
-                Créer un compte
-              </span>
-            </Link>
-          </div>
         </form>
 
         <p className="text-center text-zinc-600 text-xs mt-6">
