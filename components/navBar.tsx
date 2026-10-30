@@ -92,7 +92,7 @@ export default function Navbar() {
                     {/* Logo Image */}
                     <div className="relative w-11 h-11 flex items-center justify-center rounded-full overflow-hidden border border-zinc-700/50">
                       <Image
-                        src="/h12carlogo.png"
+                        src="/newlogo.jpg"
                         alt="H12 Car Logo"
                         width={44}
                         height={44}

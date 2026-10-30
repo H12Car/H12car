@@ -101,7 +101,7 @@ export default function AboutPage() {
             >
               <div className="relative w-48 h-48 mx-auto rounded-full overflow-hidden shadow-2xl shadow-black/50 border-4 border-zinc-700">
                 <Image
-                  src="/h12carlogo.png"
+                  src="/newlogo.jpg"
                   alt="H12 Car — agence de location voiture et moto Marrakech"
                   fill
                   priority
@@ -235,7 +235,7 @@ export default function AboutPage() {
               <MousePushCard maxTilt={6} smoothing={0.04} className="relative max-w-[400px] w-full">
                 <div className="relative aspect-square rounded-full overflow-hidden border-8 border-zinc-700 shadow-2xl shadow-black/50">
                   <Image
-                    src="/h12carlogo.png"
+                    src="/newlogo.jpg"
                     alt="H12 Car — agence de location voiture et moto Marrakech"
                     fill
                     priority

@@ -297,7 +297,7 @@ export default function LoginPage() {
         {/* Logo */}
         <div className="text-center mb-8">
           <Image
-            src="/h12carlogo.png"
+            src="/newlogo.jpg"
             alt="H12 Logo"
             width={80}
             height={80}

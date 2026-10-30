@@ -66,7 +66,7 @@ const schemaOrg = {
   telephone: "+212614968594",
   email: "K0664676267@gmail.com",
   priceRange: "400-800 MAD/jour",
-  image: "https://h12car.com/h12carlogo.png",
+  image: "https://h12car.com/newlogo.jpg",
   address: {
     "@type": "PostalAddress",
     addressLocality: "Marrakech",

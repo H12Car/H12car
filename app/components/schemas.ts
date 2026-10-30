@@ -10,7 +10,7 @@ export const carRentalServiceSchema = {
   "priceRange": "400-800 MAD",
   "image": [
     "https://h12car.com/h12_hero_new.webp",
-    "https://h12car.com/h12carlogo.png"
+    "https://h12car.com/newlogo.jpg"
   ],
   "address": {
     "@type": "PostalAddress",
@@ -58,7 +58,7 @@ export const websiteSchema = {
     "name": "H12 Car",
     "logo": {
       "@type": "ImageObject",
-      "url": "https://h12car.com/h12carlogo.png"
+      "url": "https://h12car.com/newlogo.jpg"
     }
   },
   "inLanguage": ["fr-FR", "en-US", "ar-MA"]
@@ -70,7 +70,7 @@ export const organizationSchema = {
   "name": "H12 Car",
   "alternateName": ["Kechstraw", "H12 Car Marrakech"],
   "url": "https://h12car.com",
-  "logo": "https://h12car.com/h12carlogo.png",
+  "logo": "https://h12car.com/newlogo.jpg",
   "description": "Service premium de location de voiture et moto à Marrakech",
   "email": "K0664676267@gmail.com",
   "telephone": "+212614968594",

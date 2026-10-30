@@ -254,11 +254,10 @@ export default function DevisPage() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <Image
-                  src="/h12_logob.png"
+                  src="/newlogo.jpg"
                   alt="H12"
-                  width={80}
-                  height={30}
-                  className="brightness-0 invert"
+                  width={44}
+                  height={36}
                 />
                 <div className="h-8 w-px bg-white/30" />
                 <div>

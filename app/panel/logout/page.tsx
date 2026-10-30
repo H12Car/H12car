@@ -34,7 +34,7 @@ export default function LogoutPage() {
         {/* Logo */}
         <div className="mb-8">
           <Image
-            src="/h12carlogo.png"
+            src="/newlogo.jpg"
             alt="H12 Logo"
             width={120}
             height={120}

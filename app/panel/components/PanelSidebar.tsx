@@ -55,7 +55,7 @@ export default function PanelSidebar({ pendingQuotes = 0 }: PanelSidebarProps) {
       <div className="p-6">
         <Link href="/panel/dashboard" className="flex items-center gap-3">
           <Image
-            src="/h12carlogo.png"
+            src="/newlogo.jpg"
             alt="H12 Logo"
             width={44}
             height={44}
